@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { toast } from '@gorgias/axiom'
+
 import { useQueryClient } from '@tanstack/react-query'
 import { chain as _chain } from 'lodash'
 
@@ -22,8 +24,6 @@ import {
     updateArticle as updateArticleAction,
     updateArticlesOrder,
 } from 'state/entities/helpCenter/articles'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE } from '../constants'
@@ -487,20 +487,10 @@ export const useArticlesActions = () => {
                 dispatch(updateArticlesOrder(response))
 
                 setIsLoading(false)
-                void dispatch(
-                    notify({
-                        message: 'Articles reordered with success',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Articles reordered with success')
             } catch (err) {
                 setIsLoading(false)
-                void dispatch(
-                    notify({
-                        message: 'Failed to reorder articles',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to reorder articles')
                 throw err
             }
         },

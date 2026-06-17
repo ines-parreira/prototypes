@@ -7,6 +7,8 @@ import _isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router-dom'
 import { usePrevious } from '@gorgias/toolkit-react'
 
+import { toast } from '@gorgias/axiom'
+
 import { useLimitations } from 'hooks/helpCenter/useLimitations'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -25,8 +27,6 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { resetArticles } from 'state/entities/helpCenter/articles'
 import { resetCategories } from 'state/entities/helpCenter/categories'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 import { unreachable } from 'utils'
 
@@ -220,12 +220,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         view: HelpCenterArticleModalView.BASIC,
                     })
                 } catch (err) {
-                    void dispatch(
-                        notify({
-                            message: 'Failed to fetch article',
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error('Failed to fetch article')
                     reportError(err as Error)
                 }
             }
@@ -293,12 +288,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
                 setSelectedExistingArticleTranslation(translation || null)
             } catch (err) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch article translations',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to fetch article translations')
                 reportError(err as Error)
             } finally {
                 setIsFetchingArticleTranslations(false)
@@ -552,23 +542,15 @@ export const HelpCenterArticlesView: React.FC = () => {
                     : 'from-scratch',
             })
 
-            void dispatch(
-                notify({
-                    message: `Article created${
-                        isPublished ? ' and published' : ''
-                    } with success`,
-                    status: NotificationStatus.Success,
-                }),
+            toast.success(
+                `Article created${
+                    isPublished ? ' and published' : ''
+                } with success`,
             )
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
 
-            void dispatch(
-                notify({
-                    message: `Failed to create the article: ${errorMessage}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Failed to create the article: ${errorMessage}`)
             reportError(err as Error)
         }
     }
@@ -616,23 +598,15 @@ export const HelpCenterArticlesView: React.FC = () => {
                 editedFrom: 'help-center-settings',
             })
 
-            void dispatch(
-                notify({
-                    message: `Article saved${
-                        isPublished ? ' and published' : ''
-                    } with success`,
-                    status: NotificationStatus.Success,
-                }),
+            toast.success(
+                `Article saved${
+                    isPublished ? ' and published' : ''
+                } with success`,
             )
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
 
-            void dispatch(
-                notify({
-                    message: `Failed to save the article: ${errorMessage}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Failed to save the article: ${errorMessage}`)
             reportError(err as Error)
         }
     }
@@ -644,19 +618,9 @@ export const HelpCenterArticlesView: React.FC = () => {
 
         try {
             await articlesActions.deleteArticle(selectedArticle.id)
-            void dispatch(
-                notify({
-                    message: 'Article deleted with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Article deleted with success')
         } catch (err) {
-            void dispatch(
-                notify({
-                    message: 'Failed to delete the article',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to delete the article')
             reportError(err as Error)
         } finally {
             setSelectedExistingArticleTranslation(null)
@@ -707,19 +671,9 @@ export const HelpCenterArticlesView: React.FC = () => {
                     await articlesActions.cloneArticle(article)
                     resetSearch()
 
-                    void dispatch(
-                        notify({
-                            message: 'Article duplicated with success',
-                            status: NotificationStatus.Success,
-                        }),
-                    )
+                    toast.success('Article duplicated with success')
                 } catch (err) {
-                    void dispatch(
-                        notify({
-                            message: 'Failed to duplicate the article',
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error('Failed to duplicate the article')
                     reportError(err as Error)
                 }
 
@@ -761,19 +715,9 @@ export const HelpCenterArticlesView: React.FC = () => {
                       }),
             )
 
-            void dispatch(
-                notify({
-                    message: 'Link copied with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Link copied with success')
         } catch (err) {
-            void dispatch(
-                notify({
-                    message: 'Failed to copy the link',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to copy the link')
             reportError(err as Error)
         }
     }

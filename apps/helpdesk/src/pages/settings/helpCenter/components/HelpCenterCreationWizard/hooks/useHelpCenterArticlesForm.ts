@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { filter, flatMap, map, mapValues } from 'lodash'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     HelpCenter,
     HelpCenterArticleItem,
@@ -61,8 +60,6 @@ export const useHelpCenterArticlesForm = (
         shopName: helpCenter.shop_name || '',
     })
 
-    const dispatch = useAppDispatch()
-
     useEffect(() => {
         setArticles(articles)
     }, [articles])
@@ -104,7 +101,7 @@ export const useHelpCenterArticlesForm = (
                 ),
             ),
         )
-        handleOnSuccess('Article saved.', dispatch)
+        handleOnSuccess('Article saved.')
     }
 
     const handleArticleSelect = useCallback((key: string) => {
@@ -245,7 +242,7 @@ export const useHelpCenterArticlesForm = (
                 typeof error === 'string'
                     ? error
                     : 'Article not successfully saved.'
-            handleOnError(error, message, dispatch)
+            handleOnError(error, message)
         }
     }
 
@@ -325,7 +322,7 @@ export const useHelpCenterArticlesForm = (
             await Promise.all(handleArticlesFromTemplate)
             await Promise.all(handleArticlesTranslations)
         } catch (error) {
-            handleOnError(error, 'An error occured.', dispatch)
+            handleOnError(error, 'An error occured.')
         }
     }
 

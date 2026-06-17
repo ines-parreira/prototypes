@@ -11,6 +11,7 @@ import {
 import { reportError } from '@repo/logging'
 import type { Draft } from 'immer'
 import { produce } from 'immer'
+import { toast } from '@gorgias/axiom'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -27,8 +28,6 @@ import {
     helpCenterSeoMetaFields,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 import { changeViewLanguage } from 'state/ui/helpCenter/actions'
 
@@ -190,21 +189,11 @@ export const HelpCenterPreferencesSettings = ({
                 }
             }
 
-            void dispatch(
-                notify({
-                    message: 'Help Center updated with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Help Center updated with success')
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
 
-            void dispatch(
-                notify({
-                    message: `Could not update the Help Center: ${errorMessage}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Could not update the Help Center: ${errorMessage}`)
 
             reportError(err as Error)
         } finally {

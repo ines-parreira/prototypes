@@ -1,12 +1,12 @@
+import { toast } from '@gorgias/axiom'
+
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { fetchSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import { getHelpCenterList } from 'state/entities/helpCenter/helpCenters/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 export const useEnableArticleRecommendation = () => {
@@ -15,7 +15,6 @@ export const useEnableArticleRecommendation = () => {
     )
     const { hasAccess } = useAiAgentAccess()
     const storeIntegrations = useAppSelector(getStoreIntegrations)
-    const dispatch = useAppDispatch()
 
     const { handleSelfServiceConfigurationUpdate } =
         useSelfServiceConfigurationUpdate({
@@ -24,12 +23,7 @@ export const useEnableArticleRecommendation = () => {
                     notification.status === NotificationStatus.Error &&
                     notification.message
                 ) {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: notification.message,
-                        }),
-                    )
+                    toast.error(notification.message)
                 }
             },
         })

@@ -21,9 +21,9 @@ import {
     Select,
     SelectTrigger,
     TextField,
+    toast,
 } from '@gorgias/axiom'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     Category,
@@ -56,8 +56,6 @@ import {
     getCategoriesById,
     getParentCategories,
 } from 'state/entities/helpCenter/categories'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import type { FileUpload } from '../../hooks/useFileUpload'
@@ -118,7 +116,6 @@ export const HelpCenterCategoryEdit = ({
     onDelete,
     onDeleteTranslation,
 }: Props): JSX.Element => {
-    const dispatch = useAppDispatch()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const locales = useSupportedLocales()
@@ -362,12 +359,7 @@ export const HelpCenterCategoryEdit = ({
         try {
             categoryImageUrl = await getFileUploadURL(imageFile)
         } catch {
-            void dispatch(
-                notify({
-                    message: 'Error during image upload',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Error during image upload')
         }
         imageFile.discardFile()
 
@@ -532,12 +524,7 @@ export const HelpCenterCategoryEdit = ({
                   }),
         )
 
-        void dispatch(
-            notify({
-                message: 'Link copied with success',
-                status: NotificationStatus.Success,
-            }),
-        )
+        toast.success('Link copied with success')
     }
 
     const canSaveCategory = useMemo(

@@ -1,8 +1,9 @@
 import { useRef } from 'react'
 
+import { toast } from '@gorgias/axiom'
+
 import { useQueryClient } from '@tanstack/react-query'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     AIArticle,
     AILibraryArticleItem,
@@ -18,8 +19,6 @@ import {
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import type { AIArticleArchiveModalHandle } from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
 
@@ -52,7 +51,6 @@ const useAILibraryActions = (
         shopName: helpCenter.shop_name || '',
     })
     const queryClient = useQueryClient()
-    const appDispatch = useAppDispatch()
 
     const editorPayloadDetails = useRef<{
         title: string
@@ -75,12 +73,7 @@ const useAILibraryActions = (
                         'Article dismissed from Top Questions section',
                 }
 
-            void appDispatch(
-                notify({
-                    message: successMessages[body.action],
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success(successMessages[body.action])
 
             await queryClient.invalidateQueries(
                 aiArticleKeys.list(helpCenter.id),
@@ -132,14 +125,7 @@ const useAILibraryActions = (
                 dismissFromTopQuestions: 'dismissed from Top Questions',
             }
 
-            void appDispatch(
-                notify({
-                    message: `Article could not be ${
-                        errorActions[body.action]
-                    }.`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Article could not be ${errorActions[body.action]}.`)
         },
     })
 

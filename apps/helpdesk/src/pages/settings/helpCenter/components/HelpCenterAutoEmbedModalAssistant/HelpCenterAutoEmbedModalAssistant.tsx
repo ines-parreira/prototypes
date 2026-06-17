@@ -3,9 +3,8 @@ import { get } from 'lodash'
 import _noop from 'lodash/noop'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
 import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
@@ -17,8 +16,6 @@ import {
     SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
     usePageEmbedmentForm,
 } from 'pages/common/components/PageEmbedmentForm'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     HELP_CENTER_BASE_PATH,
@@ -61,7 +58,6 @@ const HelpCenterAutoEmbedModalAssistant = (
         reset: resetPageEmbedmentForm,
     } = usePageEmbedmentForm()
 
-    const appDispatch = useAppDispatch()
     const history = useHistory()
 
     const queryClient = useQueryClient()
@@ -69,20 +65,11 @@ const HelpCenterAutoEmbedModalAssistant = (
     const createPageEmbedmentMutation = useCreatePageEmbedment({
         onSuccess: async (newPageEmbedment) => {
             if (!newPageEmbedment) {
-                void appDispatch(
-                    notify({
-                        message: 'Something went wrong',
-                    }),
-                )
+                toast.info('Something went wrong')
                 return
             }
 
-            void appDispatch(
-                notify({
-                    message: 'Help Center embedded to page.',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Help Center embedded to page.')
 
             await queryClient.invalidateQueries(
                 helpCenterPageEmbedmentsKeys.all(helpCenterId),
@@ -111,12 +98,7 @@ const HelpCenterAutoEmbedModalAssistant = (
                 })
             }
 
-            void appDispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(message)
         },
     })
 

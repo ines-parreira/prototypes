@@ -14,6 +14,7 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import {
     LegacyButton as Button,
     LegacyLabel as Label,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -35,8 +36,6 @@ import {
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters/actions'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import { notify as notifyAction } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { EMAIL_INTEGRATION_TYPES } from '../../../../constants/integration'
 import { useAppDispatch } from '../../../../hooks/useAppDispatch'
@@ -74,10 +73,7 @@ const initialFormState: CreateHelpCenterDto = {
     shop_name: undefined,
 }
 
-const HelpCenterNewView = ({
-    notify,
-    helpCenterCreated,
-}: Props): JSX.Element => {
+const HelpCenterNewView = ({ helpCenterCreated }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation()
@@ -255,15 +251,9 @@ const HelpCenterNewView = ({
             }
 
             void enableArticleRecommendation(createdHelpCenter)
-            void notify({
-                message: 'Help Center created with success',
-                status: NotificationStatus.Success,
-            })
+            toast.success('Help Center created with success')
         } catch (err) {
-            void notify({
-                message: 'Failed to create the Help Center',
-                status: NotificationStatus.Error,
-            })
+            toast.error('Failed to create the Help Center')
             reportError(err as Error)
         } finally {
             setIsLoading(false)
@@ -495,7 +485,6 @@ const HelpCenterNewView = ({
 
 const connector = connect(null, {
     helpCenterCreated,
-    notify: notifyAction,
 })
 
 const DefaultExportHelpCenterNewView = connector(HelpCenterNewView)

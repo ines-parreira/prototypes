@@ -1,9 +1,15 @@
+import { toast } from '@gorgias/axiom'
+
 import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { HelpCenterEditor } from '../HelpCenterEditor'
 
 const mockUseCurrentHelpCenter = jest.fn()
 const mockUseAppDispatch = jest.fn()
+const mockUploadAttachments = jest.fn()
+
+let capturedConfig: any = null
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
     __esModule: true,
@@ -15,11 +21,18 @@ jest.mock('hooks/useAppDispatch', () => ({
     useAppDispatch: () => mockUseAppDispatch(),
 }))
 
+jest.mock('rest_api/help_center_api/uploadAttachments', () => ({
+    __esModule: true,
+    uploadAttachments: (...args: unknown[]) => mockUploadAttachments(...args),
+}))
+
 jest.mock('../FroalaEditorComponent', () => {
     return {
         FroalaEditorFunctionality: function MockFroalaEditorComponent(
             props: any,
         ) {
+            capturedConfig = props.config
+
             return (
                 <div
                     data-testid="froala-editor"
@@ -54,12 +67,17 @@ describe('HelpCenterEditor', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        capturedConfig = null
 
         mockUseCurrentHelpCenter.mockReturnValue({
             id: 1,
             layout: 'normal',
         })
         mockUseAppDispatch.mockReturnValue(mockDispatch)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     describe('XS Layout Configuration', () => {
@@ -168,6 +186,77 @@ describe('HelpCenterEditor', () => {
                     expect(toolbarButtons).toContain(buttonName)
                 })
             })
+        })
+    })
+
+    describe('attachment upload errors', () => {
+        const createFile = (name: string, size: number): File => {
+            const file = new File(['x'], name, { type: 'text/plain' })
+            Object.defineProperty(file, 'size', { value: size })
+
+            return file
+        }
+
+        it('shows a destructive toast when a file exceeds the size limit', async () => {
+            renderComponent()
+
+            const oversizedFile = createFile('huge.pdf', 21 * 1024 * 1024)
+
+            const result = capturedConfig.events['file.beforeUpload']([
+                oversizedFile,
+            ])
+
+            expect(result).toBe(false)
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: /larger than/i,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
+        })
+
+        it('shows a destructive toast when uploading a file attachment fails', async () => {
+            mockUploadAttachments.mockRejectedValue(
+                new Error('Upload failed for attachment'),
+            )
+
+            renderComponent()
+
+            const validFile = createFile('notes.pdf', 1024)
+
+            capturedConfig.events['file.beforeUpload']([validFile])
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: /Upload failed for attachment/i,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
+        })
+
+        it('shows a destructive toast when uploading an image fails', async () => {
+            mockUploadAttachments.mockRejectedValue(new Error('boom'))
+
+            renderComponent()
+
+            const imageFile = createFile('photo.png', 1024)
+
+            const result = capturedConfig.events['image.beforeUpload']([
+                imageFile,
+            ])
+
+            expect(result).toBe(false)
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: /Failed to upload the image/i,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
         })
     })
 })

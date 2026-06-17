@@ -1,11 +1,12 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
+import { toast } from '@gorgias/axiom'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -21,6 +22,8 @@ const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const mockedOnChange = jest.fn()
 const mockedOnCategoryChange = jest.fn()
+
+jest.mock('copy-to-clipboard', () => jest.fn())
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
@@ -91,6 +94,10 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
         )
     })
 
+    afterEach(() => {
+        toast.dismiss()
+    })
+
     it('should display the component correctly', () => {
         render(
             <Provider store={mockedStore(defaultState)}>
@@ -154,6 +161,26 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
             expect.objectContaining({
                 customer_visibility: 'UNLISTED',
             }),
+        )
+    })
+
+    it('should show a success toast when copying the article URL', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterEditAdvancedArticleForm {...props} />
+            </Provider>,
+        )
+
+        await user.click(screen.getByRole('button', { name: /copy url/i }))
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Link copied with success',
+                }),
+            ).toHaveAttribute('data-intent', 'success'),
         )
     })
 })

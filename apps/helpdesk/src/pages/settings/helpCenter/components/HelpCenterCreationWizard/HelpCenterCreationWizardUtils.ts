@@ -1,4 +1,7 @@
 import { reportError } from '@repo/logging'
+
+import { toast } from '@gorgias/axiom'
+
 import { chain, differenceBy, map, orderBy } from 'lodash'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
@@ -31,9 +34,6 @@ import {
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
 import type { Components } from 'rest_api/help_center_api/client.generated'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import type { StoreDispatch } from 'state/types'
 
 import { HelpCenterLayout } from '../../types/layout.enum'
 import { getHelpCenterLayout } from '../../utils/helpCenter.utils'
@@ -256,27 +256,13 @@ export const getUpdatedFields = (
     })
 }
 
-export const handleOnSuccess = (message: string, dispatch: StoreDispatch) => {
-    void dispatch(
-        notify({
-            status: NotificationStatus.Success,
-            message,
-        }),
-    )
+export const handleOnSuccess = (message: string) => {
+    toast.success(message)
 }
 
-export const handleOnError = (
-    error: unknown,
-    message: string,
-    dispatch: StoreDispatch,
-) => {
+export const handleOnError = (error: unknown, message: string) => {
     reportError(error)
-    void dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message,
-        }),
-    )
+    toast.error(message)
 }
 
 export const groupArticlesByCategory = (

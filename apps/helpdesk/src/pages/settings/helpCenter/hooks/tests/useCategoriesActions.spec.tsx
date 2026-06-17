@@ -1,9 +1,11 @@
 import type React from 'react'
 
 import { renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { toast } from '@gorgias/axiom'
 
 import { getHelpCenterClient } from 'rest_api/help_center_api/index'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
@@ -333,6 +335,10 @@ describe('useCategoriesActions', () => {
     })
 
     describe('updateCategoriesPositions()', () => {
+        afterEach(() => {
+            toast.dismiss()
+        })
+
         it('dispatches savePositions action', async () => {
             const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
@@ -345,6 +351,56 @@ describe('useCategoriesActions', () => {
             })
 
             expect(savePositions).toHaveBeenCalled()
+        })
+
+        it('shows a success toast when the reorder succeeds', async () => {
+            const { result } = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.updateCategoriesPositions({
+                categories: [1, 2, 3],
+                categoryId: 4,
+                defaultSiblingsPositions: [1, 2, 3],
+            })
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Categories reordered with success',
+                    }),
+                ).toHaveAttribute('data-intent', 'success'),
+            )
+        })
+
+        it('shows an error toast when the reorder fails', async () => {
+            const setSubCategoriesPositions =
+                useHelpCenterApi().client?.setSubCategoriesPositions
+            if (setSubCategoriesPositions) {
+                jest.mocked(setSubCategoriesPositions).mockRejectedValueOnce(
+                    new Error('reorder failed'),
+                )
+            }
+
+            const { result } = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await expect(
+                result.current.updateCategoriesPositions({
+                    categories: [1, 2, 3],
+                    categoryId: 4,
+                    defaultSiblingsPositions: [1, 2, 3],
+                }),
+            ).rejects.toThrow()
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to reorder categories',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
         })
     })
 

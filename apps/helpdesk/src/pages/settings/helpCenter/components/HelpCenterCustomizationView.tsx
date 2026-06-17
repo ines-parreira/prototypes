@@ -9,6 +9,7 @@ import isURL from 'validator/lib/isURL'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -22,8 +23,6 @@ import type {
 import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { CodeEditor } from '../../../common/components/CodeEditor/CodeEditor'
@@ -242,12 +241,7 @@ export const HelpCenterCustomizationView = () => {
     const handleSaveHyperlink = async () => {
         if (client && isLogoHyperlinkUpdated) {
             if (logoHyperlinkErrMessage) {
-                void dispatch(
-                    notify({
-                        message: 'URL is invalid',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('URL is invalid')
 
                 throw new Error('URL is invalid')
             }
@@ -288,21 +282,11 @@ export const HelpCenterCustomizationView = () => {
 
             setIsDirty(false)
 
-            void dispatch(
-                notify({
-                    message: 'Customizations saved with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Customizations saved with success')
         } catch (err) {
             // ?   These messages are not really meaningful because if one request fails,
             // ? we are saying we failed to save them.
-            void dispatch(
-                notify({
-                    message: 'Failed to save the customizations',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to save the customizations')
 
             reportError(err as Error)
         }

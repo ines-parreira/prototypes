@@ -8,7 +8,7 @@ import { FormGroup, FormText } from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -37,8 +37,6 @@ import type {
 } from 'rest_api/help_center_api/client.generated'
 import { hasNestedCategories } from 'state/entities/helpCenter/categories'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { FontSelectField } from '../../../common/FontSelectField/FontSelectField'
@@ -187,24 +185,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     }),
                 )
 
-                void dispatch(
-                    notify({
-                        message: 'Help Center updated with success',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Help Center updated with success')
             } catch (err) {
                 const errorMessage =
                     isAxiosError(err) && err.response?.status === 413
                         ? 'one or more files are larger than the size limit.'
                         : 'please try again later.'
 
-                void dispatch(
-                    notify({
-                        message: `Failed to update the Help Center: ${errorMessage}`,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(`Failed to update the Help Center: ${errorMessage}`)
 
                 reportError(err as Error)
             }
@@ -265,24 +253,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
                 discardAllFiles()
 
-                void dispatch(
-                    notify({
-                        message: 'Help Center updated with success',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Help Center updated with success')
             } catch (err) {
                 const errorMessage =
                     isAxiosError(err) && err.response?.status === 413
                         ? 'one or more files are larger than the size limit.'
                         : 'please try again later.'
 
-                void dispatch(
-                    notify({
-                        message: `Failed to update the Help Center: ${errorMessage}`,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(`Failed to update the Help Center: ${errorMessage}`)
 
                 reportError(err as Error)
             }

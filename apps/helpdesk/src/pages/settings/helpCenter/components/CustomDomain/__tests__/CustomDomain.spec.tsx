@@ -4,14 +4,18 @@ import { render } from '@repo/testing'
 import {
     fireEvent,
     screen,
+    waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -132,9 +136,29 @@ const ReduxProvider = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
 )
 
+const createDomainSuccess = () =>
+    Promise.resolve({
+        data: {
+            hostname: 'gorgias.help',
+            help_center_id: 1,
+            deleted_datetime: null,
+            created_datetime: '2021-07-29T09:28:30.741Z',
+            updated_datetime: '2021-07-29T09:28:30.741Z',
+            id: 21,
+            status: 'pending',
+        },
+    })
+
+const defaultHelpCenterApi = (useHelpCenterApi as jest.Mock)()
+
 describe('<CustomDomain />', () => {
     beforeEach(() => {
         store.clearActions()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
+        ;(useHelpCenterApi as jest.Mock).mockReturnValue(defaultHelpCenterApi)
     })
 
     it('has Add Domain button enabled if custom domain feature is enabled and input has value', () => {
@@ -220,5 +244,113 @@ describe('<CustomDomain />', () => {
         fireEvent.click(deleteDomain)
 
         await waitForElementToBeRemoved(connectionStatus)
+    })
+
+    it('shows an error toast when adding a domain fails', async () => {
+        ;(useHelpCenterApi as jest.Mock).mockReturnValue({
+            isReady: true,
+            client: {
+                createCustomDomain: () => Promise.reject(new Error('boom')),
+                listCustomDomains: () =>
+                    Promise.resolve({
+                        data: {
+                            object: 'list',
+                            data: [],
+                            meta: {},
+                        },
+                    }),
+            },
+        })
+
+        render(<CustomDomain />, { wrapper: ReduxProvider })
+
+        const input = screen.getByPlaceholderText('help.brand-name.com')
+
+        fireEvent.change(input, { target: { value: 'gorgias.help' } })
+        fireEvent.click(screen.getByText('Add Domain'))
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Could not add the domain. Please try again or contact support.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive'),
+        )
+    })
+
+    it('shows an error toast when checking domain status fails', async () => {
+        ;(useHelpCenterApi as jest.Mock).mockReturnValue({
+            isReady: true,
+            client: {
+                createCustomDomain: createDomainSuccess,
+                checkCustomDomainStatus: () =>
+                    Promise.reject(new Error('boom')),
+                listCustomDomains: () =>
+                    Promise.resolve({
+                        data: {
+                            object: 'list',
+                            data: [],
+                            meta: {},
+                        },
+                    }),
+            },
+        })
+
+        render(<CustomDomain />, { wrapper: ReduxProvider })
+
+        const input = screen.getByPlaceholderText('help.brand-name.com')
+
+        fireEvent.change(input, { target: { value: 'gorgias.help' } })
+        fireEvent.click(screen.getByText('Add Domain'))
+
+        await screen.findByText('Verification in progress')
+
+        fireEvent.click(screen.getByText('Check Status'))
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Could not check domain status',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive'),
+        )
+    })
+
+    it('shows an error toast when deleting a domain fails', async () => {
+        ;(useHelpCenterApi as jest.Mock).mockReturnValue({
+            isReady: true,
+            client: {
+                createCustomDomain: createDomainSuccess,
+                deleteCustomDomain: () => Promise.reject(new Error('boom')),
+                listCustomDomains: () =>
+                    Promise.resolve({
+                        data: {
+                            object: 'list',
+                            data: [],
+                            meta: {},
+                        },
+                    }),
+            },
+        })
+
+        render(<CustomDomain />, { wrapper: ReduxProvider })
+
+        const input = screen.getByPlaceholderText('help.brand-name.com')
+        const addDomainBtn = screen.getByText('Add Domain')
+
+        fireEvent.change(input, { target: { value: 'gorgias.help' } })
+        fireEvent.click(addDomainBtn)
+
+        await waitForElementToBeRemoved(addDomainBtn)
+
+        fireEvent.click(screen.getByText('delete'))
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to delete the domain',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive'),
+        )
     })
 })

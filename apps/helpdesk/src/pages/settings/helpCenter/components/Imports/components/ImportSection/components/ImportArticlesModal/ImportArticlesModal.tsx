@@ -6,11 +6,10 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { Loader } from 'pages/common/components/Loader/Loader'
 import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
@@ -18,8 +17,6 @@ import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { saveFileAsDownloaded } from 'utils/file'
 
 import type {
@@ -67,7 +64,6 @@ const ImportArticlesModal: React.FC<Props> = ({
 }) => {
     const history = useHistory()
 
-    const dispatch = useAppDispatch()
     const helpCenter = useCurrentHelpCenter()
     const { client } = useHelpCenterApi()
 
@@ -96,13 +92,9 @@ const ImportArticlesModal: React.FC<Props> = ({
                     onFileRemove()
 
                     if (error.response?.status === 413) {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                // in development, the limit is lower than 10MB (1MB) but it is not user-facing
-                                message:
-                                    'Failed to upload file because its size is bigger than 10MB. Try to split it into several smaller files.',
-                            }),
+                        // in development, the limit is lower than 10MB (1MB) but it is not user-facing
+                        toast.error(
+                            'Failed to upload file because its size is bigger than 10MB. Try to split it into several smaller files.',
                         )
                     } else {
                         const errorMessage = (
@@ -112,12 +104,7 @@ const ImportArticlesModal: React.FC<Props> = ({
                             'Failed to upload file. Please try again later.',
                         )
 
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message: errorMessage,
-                            }),
-                        )
+                        toast.error(String(errorMessage))
                     }
                 },
             )
@@ -137,12 +124,7 @@ const ImportArticlesModal: React.FC<Props> = ({
         if (file !== null && file.name.toLocaleLowerCase().endsWith('.csv')) {
             onFileSelect(file)
         } else {
-            void dispatch(
-                notify({
-                    message: 'The file you dropped is not in CSV format',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('The file you dropped is not in CSV format')
         }
     }
 

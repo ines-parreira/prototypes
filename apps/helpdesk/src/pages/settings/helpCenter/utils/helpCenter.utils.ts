@@ -1,5 +1,8 @@
 import { reportError } from '@repo/logging'
 import { isDevelopment } from '@repo/utils'
+
+import { toast } from '@gorgias/axiom'
+
 import copy from 'copy-to-clipboard'
 
 import type {
@@ -21,9 +24,6 @@ import {
     VisibilityStatusEnum,
 } from 'models/helpCenter/types'
 import type { StoreIntegration } from 'models/integration/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import type { StoreDispatch } from 'state/types'
 
 import {
     ARTICLE_HASH_PREFIX,
@@ -376,18 +376,11 @@ export const copyArticleLinkToClipboard = (props: {
     isUnlisted: boolean
     helpCenter: HelpCenter
     hasDefaultLayout: boolean
-    dispatch: StoreDispatch
 }) => {
-    const { article, isUnlisted, helpCenter, hasDefaultLayout, dispatch } =
-        props
+    const { article, isUnlisted, helpCenter, hasDefaultLayout } = props
 
     if (!article.translation) {
-        void dispatch(
-            notify({
-                message: 'Failed to copy the link',
-                status: NotificationStatus.Error,
-            }),
-        )
+        toast.error('Failed to copy the link')
         reportError(new Error('Help Center Article has no translation'), {
             extra: { article },
         })
@@ -418,19 +411,9 @@ export const copyArticleLinkToClipboard = (props: {
                   }),
         )
 
-        void dispatch(
-            notify({
-                message: 'Link copied with success',
-                status: NotificationStatus.Success,
-            }),
-        )
+        toast.success('Link copied with success')
     } catch (err) {
-        void dispatch(
-            notify({
-                message: 'Failed to copy the link',
-                status: NotificationStatus.Error,
-            }),
-        )
+        toast.error('Failed to copy the link')
         reportError(err as Error)
     }
 }

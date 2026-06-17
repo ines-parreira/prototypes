@@ -1,9 +1,10 @@
 import type { FC, ReactNode } from 'react'
 
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _keyBy from 'lodash/keyBy'
+import { toast } from '@gorgias/axiom'
 
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -125,6 +126,9 @@ const DefaultProviders: FC<{
     </HelpCenterTranslationProvider>
 )
 describe('<HelpCenterAppearanceView />', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
     it('should render the component', () => {
         const { container } = render(
             <DefaultProviders>
@@ -230,4 +234,50 @@ describe('<HelpCenterAppearanceView />', () => {
             })
         },
     )
+
+    it('shows a success toast when the appearance is saved', async () => {
+        mockedUpdateHelpCenter.mockResolvedValueOnce({
+            data: getSingleHelpCenterResponseFixture,
+        })
+        mockedUseCurrentHelpCenter.mockReturnValueOnce({
+            ...getSingleHelpCenterResponseFixture,
+            brand_logo_url: 'https://picsum.photos/200',
+        })
+
+        const { getByText, getByRole } = render(<HelpCenterAppearanceView />, {
+            path: route.path,
+            initialEntries: [route.route],
+            storeState: defaultState,
+        })
+
+        fireEvent.click(getByText('close'))
+        fireEvent.click(getByRole('button', { name: 'Save Changes' }))
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Help Center updated with success',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
+    })
+
+    it('shows an error toast when saving the appearance fails', async () => {
+        mockedUpdateHelpCenter.mockRejectedValueOnce(new Error('boom'))
+        mockedUseCurrentHelpCenter.mockReturnValueOnce({
+            ...getSingleHelpCenterResponseFixture,
+            brand_logo_url: 'https://picsum.photos/200',
+        })
+
+        const { getByText, getByRole } = render(<HelpCenterAppearanceView />, {
+            path: route.path,
+            initialEntries: [route.route],
+            storeState: defaultState,
+        })
+
+        fireEvent.click(getByText('close'))
+        fireEvent.click(getByRole('button', { name: 'Save Changes' }))
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to update the Help Center: please try again later.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+    })
 })

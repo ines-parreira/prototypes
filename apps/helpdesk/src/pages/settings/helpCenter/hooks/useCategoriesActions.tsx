@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { reportError } from '@repo/logging'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type {
@@ -22,8 +24,6 @@ import {
     updateCategoriesArticleCount,
     updateCategoryTranslation as updateCategoryTranslationAction,
 } from 'state/entities/helpCenter/categories'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import type { CategoriesPositionsType } from '../components/CategoriesTable'
@@ -339,12 +339,7 @@ export const useCategoriesActions = () => {
                 )
 
                 setIsLoading(false)
-                void dispatch(
-                    notify({
-                        message: 'Categories reordered with success',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Categories reordered with success')
 
                 return positions
             } catch (error) {
@@ -355,12 +350,7 @@ export const useCategoriesActions = () => {
                     }),
                 )
                 setIsLoading(false)
-                void dispatch(
-                    notify({
-                        message: 'Failed to reorder categories',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to reorder categories')
 
                 throw error
             }

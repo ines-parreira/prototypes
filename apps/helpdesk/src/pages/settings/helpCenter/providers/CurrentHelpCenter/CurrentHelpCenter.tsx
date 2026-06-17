@@ -10,6 +10,7 @@ import {
     useLocation,
     useRouteMatch,
 } from 'react-router-dom'
+import { toast } from '@gorgias/axiom'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -29,8 +30,6 @@ import {
     helpCentersFetched,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     changeHelpCenterId,
     changeViewLanguage,
@@ -83,12 +82,7 @@ const CurrentHelpCenter: React.FC = () => {
                             ? 'Help Center not found'
                             : 'Something went wrong'
 
-                    void dispatch(
-                        notify({
-                            message: errorMessage,
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error(errorMessage)
 
                     history.push(
                         location.pathname.split(helpCenterId.toString())[0],
