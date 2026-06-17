@@ -34,14 +34,18 @@ jest.mock('config/views', () => ({
                 return undefined
             }
 
-            return (visibility?: ViewVisibility) =>
+            return (
+                visibility?: ViewVisibility,
+                viewName?: string,
+                filters?: string,
+            ) =>
                 fromJS({
                     id: BASE_VIEW_ID,
                     type: 'ticket-list',
                     visibility,
-                    name: 'New view',
+                    name: viewName ?? 'New view',
                     slug: 'new-view',
-                    filters: '',
+                    filters: filters ?? '',
                     search: '',
                     fields: [
                         ViewField.Details,
@@ -1178,6 +1182,47 @@ describe('ViewPanelEntrypoint', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('isSettingsExpanded: true')).toBeInTheDocument()
+        expect(setViewActiveMock).not.toHaveBeenCalled()
+    })
+
+    it('should initialize a new public draft view route with route state name and filters', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/new/public',
+            state: {
+                viewName: 'Open tickets assigned to: Agent 1',
+                filters:
+                    'eq(ticket.assignee_user.id, 1) && eq(ticket.status, "open")',
+            },
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({ id: 999, type: 'ticket-list' }),
+            isEditMode: false,
+        })
+        getIsEditMode.mockImplementation(() =>
+            dispatchMock.mock.calls.some(
+                ([action]) => action === setViewEditModeAction,
+            ),
+        )
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(setViewEditModeMock).toHaveBeenCalled()
+        })
+
+        const draftView = getLastSetViewEditModeDraftView()
+        expect(draftView.get('id')).toBe(BASE_VIEW_ID)
+        expect(draftView.get('visibility')).toBe(ViewVisibility.Public)
+        expect(draftView.get('name')).toBe('Open tickets assigned to: Agent 1')
+        expect(draftView.get('filters')).toBe(
+            'eq(ticket.assignee_user.id, 1) && eq(ticket.status, "open")',
+        )
+        expect(screen.getByText('isDraftView: true')).toBeInTheDocument()
         expect(setViewActiveMock).not.toHaveBeenCalled()
     })
 
