@@ -4,8 +4,8 @@ import {
 } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/columns'
 
 describe('ORDER_MANAGEMENT_COLUMNS', () => {
-    it('has 5 entries', () => {
-        expect(ORDER_MANAGEMENT_COLUMNS).toHaveLength(5)
+    it('has 7 entries', () => {
+        expect(ORDER_MANAGEMENT_COLUMNS).toHaveLength(7)
     })
 
     it('has the correct accessorKeys in order', () => {
@@ -15,6 +15,8 @@ describe('ORDER_MANAGEMENT_COLUMNS', () => {
             'handoverInteractions',
             'costSaved',
             'timeSaved',
+            'decreaseInResolutionTime',
+            'decreaseInFirstResponseTime',
         ])
     })
 })

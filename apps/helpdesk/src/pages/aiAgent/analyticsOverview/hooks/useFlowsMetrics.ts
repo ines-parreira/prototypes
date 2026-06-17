@@ -32,6 +32,14 @@ import {
     useCostSavedPerFlows,
 } from 'pages/aiAgent/analyticsOverview/hooks/useCostSavedPerFlows'
 import {
+    fetchDecreaseInFirstResponseTimePerFlows,
+    useDecreaseInFirstResponseTimePerFlows,
+} from 'pages/aiAgent/analyticsOverview/hooks/useDecreaseInFirstResponseTimeBreakdowns'
+import {
+    fetchDecreaseInResolutionTimePerFlows,
+    useDecreaseInResolutionTimePerFlows,
+} from 'pages/aiAgent/analyticsOverview/hooks/useDecreaseInResolutionTimeBreakdowns'
+import {
     fetchHandoverInteractionsPerFlows,
     useHandoverInteractionsPerFlows,
 } from 'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFlows'
@@ -50,6 +58,8 @@ export type FlowsEntityMetrics = {
     handoverInteractions: number | null
     costSaved: number | null
     timeSaved: number | null
+    decreaseInResolutionTime: number | null
+    decreaseInFirstResponseTime: number | null
 }
 
 type FlowsMetricKeys =
@@ -58,6 +68,8 @@ type FlowsMetricKeys =
     | 'handoverInteractions'
     | 'costSaved'
     | 'timeSaved'
+    | 'decreaseInResolutionTime'
+    | 'decreaseInFirstResponseTime'
 
 const buildFlowsRow =
     (
@@ -73,6 +85,10 @@ const buildFlowsRow =
         handoverInteractions: entityData.handoverInteractions[entity] ?? null,
         costSaved: entityData.costSaved[entity] ?? null,
         timeSaved: entityData.timeSaved[entity] ?? null,
+        decreaseInResolutionTime:
+            entityData.decreaseInResolutionTime[entity] ?? null,
+        decreaseInFirstResponseTime:
+            entityData.decreaseInFirstResponseTime[entity] ?? null,
     })
 
 type Workflow = { id: string; name: string }
@@ -102,6 +118,14 @@ const FLOWS_METRICS_CONFIG: Record<FlowsMetricKeys, EntityMetricConfig> = {
     timeSaved: {
         use: useTimeSavedPerFlows,
         fetch: fetchTimeSavedPerFlows,
+    },
+    decreaseInResolutionTime: {
+        use: useDecreaseInResolutionTimePerFlows,
+        fetch: fetchDecreaseInResolutionTimePerFlows,
+    },
+    decreaseInFirstResponseTime: {
+        use: useDecreaseInFirstResponseTimePerFlows,
+        fetch: fetchDecreaseInFirstResponseTimePerFlows,
     },
 }
 
@@ -151,6 +175,10 @@ export const useFlowsMetrics = () => {
             handoverInteractions: entityLoadingStates.handoverInteractions,
             timeSaved: entityLoadingStates.timeSaved,
             costSaved: entityLoadingStates.costSaved,
+            decreaseInResolutionTime:
+                entityLoadingStates.decreaseInResolutionTime,
+            decreaseInFirstResponseTime:
+                entityLoadingStates.decreaseInFirstResponseTime,
         }),
         [entityLoadingStates],
     )

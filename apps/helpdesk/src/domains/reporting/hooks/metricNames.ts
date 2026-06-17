@@ -893,6 +893,18 @@ export const METRIC_NAMES = {
         'ai-agent-decrease-in-resolution-time-breakdown-per-store',
     AI_AGENT_DECREASE_IN_FRT_BREAKDOWN_PER_STORE:
         'ai-agent-decrease-in-first-response-time-breakdown-per-store',
+    AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_PER_FEATURE:
+        'ai-agent-overview-decrease-in-resolution-time-per-feature',
+    AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_PER_FLOWS:
+        'ai-agent-overview-decrease-in-resolution-time-per-flows',
+    AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_PER_ORDER_MANAGEMENT_TYPE:
+        'ai-agent-overview-decrease-in-resolution-time-per-order-management-type',
+    AI_AGENT_OVERVIEW_DECREASE_IN_FRT_PER_FEATURE:
+        'ai-agent-overview-decrease-in-frt-per-feature',
+    AI_AGENT_OVERVIEW_DECREASE_IN_FRT_PER_FLOWS:
+        'ai-agent-overview-decrease-in-frt-per-flows',
+    AI_AGENT_OVERVIEW_DECREASE_IN_FRT_PER_ORDER_MANAGEMENT_TYPE:
+        'ai-agent-overview-decrease-in-frt-per-order-management-type',
     FLOW_DATASET_HANDOVER_INTERACTIONS: 'flow-dataset-handover-interactions',
     AI_AGENT_HANDOVER_INTERACTIONS: 'ai-agent-handover-interactions',
     AI_AGENT_SALES_HANDOVER_INTERACTIONS:
@@ -1618,10 +1630,16 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.OverallDecreaseInResolutionTime]: [
         METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME,
         METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_PER_FEATURE,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_PER_FLOWS,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_PER_ORDER_MANAGEMENT_TYPE,
     ],
     [MetricScope.OverallDecreaseInFirstResponseTime]: [
         METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT,
         METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT_PER_FEATURE,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT_PER_FLOWS,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT_PER_ORDER_MANAGEMENT_TYPE,
     ],
     [MetricScope.AiAgentTimeSaved]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,

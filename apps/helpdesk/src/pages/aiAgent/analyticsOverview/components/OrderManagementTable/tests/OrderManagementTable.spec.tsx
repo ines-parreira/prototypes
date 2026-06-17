@@ -84,6 +84,8 @@ const defaultData: OrderManagementEntityMetrics[] = [
         handoverInteractions: 189,
         costSaved: 1200,
         timeSaved: 9900,
+        decreaseInResolutionTime: null,
+        decreaseInFirstResponseTime: null,
     },
     {
         entity: 'track_order',
@@ -92,6 +94,8 @@ const defaultData: OrderManagementEntityMetrics[] = [
         handoverInteractions: null,
         costSaved: 500,
         timeSaved: 4500,
+        decreaseInResolutionTime: null,
+        decreaseInFirstResponseTime: null,
     },
 ]
 

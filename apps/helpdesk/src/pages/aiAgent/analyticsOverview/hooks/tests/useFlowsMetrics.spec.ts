@@ -60,6 +60,20 @@ jest.mock('pages/aiAgent/analyticsOverview/hooks/useTimeSavedPerFlows', () => ({
     useTimeSavedPerFlows: jest.fn(),
     fetchTimeSavedPerFlows: jest.fn(),
 }))
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDecreaseInResolutionTimeBreakdowns',
+    () => ({
+        useDecreaseInResolutionTimePerFlows: jest.fn(),
+        fetchDecreaseInResolutionTimePerFlows: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDecreaseInFirstResponseTimeBreakdowns',
+    () => ({
+        useDecreaseInFirstResponseTimePerFlows: jest.fn(),
+        fetchDecreaseInFirstResponseTimePerFlows: jest.fn(),
+    }),
+)
 
 const mockUseAiAgentStatsFilters = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentStatsFilters',
@@ -149,6 +163,18 @@ const defaultEntityData = {
         'uuid-6': 1800,
         'uuid-9': 900,
     },
+    decreaseInResolutionTime: {
+        'uuid-10': 120,
+        'uuid-25': 60,
+        'uuid-6': 30,
+        'uuid-9': 15,
+    },
+    decreaseInFirstResponseTime: {
+        'uuid-10': 90,
+        'uuid-25': 45,
+        'uuid-6': 20,
+        'uuid-9': 10,
+    },
 }
 
 const defaultRows = [
@@ -159,6 +185,8 @@ const defaultRows = [
         handoverInteractions: 80,
         costSaved: 3720,
         timeSaved: 3600,
+        decreaseInResolutionTime: 120,
+        decreaseInFirstResponseTime: 90,
     },
     {
         entity: 'uuid-25',
@@ -167,6 +195,8 @@ const defaultRows = [
         handoverInteractions: 45,
         costSaved: 2480,
         timeSaved: 2400,
+        decreaseInResolutionTime: 60,
+        decreaseInFirstResponseTime: 45,
     },
     {
         entity: 'uuid-6',
@@ -175,6 +205,8 @@ const defaultRows = [
         handoverInteractions: 30,
         costSaved: 1550,
         timeSaved: 1800,
+        decreaseInResolutionTime: 30,
+        decreaseInFirstResponseTime: 20,
     },
     {
         entity: 'uuid-9',
@@ -183,6 +215,8 @@ const defaultRows = [
         handoverInteractions: 20,
         costSaved: 930,
         timeSaved: 900,
+        decreaseInResolutionTime: 15,
+        decreaseInFirstResponseTime: 10,
     },
 ]
 
@@ -207,6 +241,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
         mockAssembleEntityRows.mockReturnValue(defaultRows)
@@ -253,6 +289,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -272,6 +310,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -291,6 +331,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: true,
                 costSaved: false,
                 timeSaved: true,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -314,6 +356,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: true,
                 costSaved: true,
                 timeSaved: true,
+                decreaseInResolutionTime: true,
+                decreaseInFirstResponseTime: true,
             },
         })
         mockAssembleEntityRows.mockReturnValue([])
@@ -358,6 +402,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: true,
                 costSaved: true,
                 timeSaved: true,
+                decreaseInResolutionTime: true,
+                decreaseInFirstResponseTime: true,
             },
         })
 
@@ -396,6 +442,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: 80,
                 costSaved: 3720,
                 timeSaved: 3600,
+                decreaseInResolutionTime: 120,
+                decreaseInFirstResponseTime: 90,
             })
         })
 
@@ -410,6 +458,8 @@ describe('useFlowsMetrics', () => {
                 handoverInteractions: null,
                 costSaved: null,
                 timeSaved: null,
+                decreaseInResolutionTime: null,
+                decreaseInFirstResponseTime: null,
             })
         })
     })
@@ -422,6 +472,8 @@ describe('fetchFlowsMetrics', () => {
         handoverInteractions: { 'uuid-10': 80 },
         costSaved: { 'uuid-10': 3720 },
         timeSaved: { 'uuid-10': 3600 },
+        decreaseInResolutionTime: { 'uuid-10': 120 },
+        decreaseInFirstResponseTime: { 'uuid-10': 90 },
     }
 
     const mockRow = {
@@ -431,6 +483,8 @@ describe('fetchFlowsMetrics', () => {
         handoverInteractions: 80,
         costSaved: 3720,
         timeSaved: 3600,
+        decreaseInResolutionTime: 120,
+        decreaseInFirstResponseTime: 90,
     }
 
     beforeEach(() => {

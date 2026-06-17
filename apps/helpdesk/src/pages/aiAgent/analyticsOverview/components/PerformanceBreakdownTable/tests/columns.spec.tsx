@@ -1,12 +1,14 @@
-import { FLOWS_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
+import { PERFORMANCE_BREAKDOWN_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 
-describe('FLOWS_COLUMNS', () => {
+describe('PERFORMANCE_BREAKDOWN_COLUMNS', () => {
     it('has 7 entries', () => {
-        expect(FLOWS_COLUMNS).toHaveLength(7)
+        expect(PERFORMANCE_BREAKDOWN_COLUMNS).toHaveLength(7)
     })
 
     it('has the correct accessorKeys in order', () => {
-        expect(FLOWS_COLUMNS.map((col) => col.accessorKey)).toEqual([
+        expect(
+            PERFORMANCE_BREAKDOWN_COLUMNS.map((col) => col.accessorKey),
+        ).toEqual([
             'automationRate',
             'automatedInteractions',
             'handoverInteractions',

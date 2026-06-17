@@ -66,6 +66,8 @@ const defaultData: FlowsEntityMetrics[] = [
         handoverInteractions: 80,
         costSaved: 500,
         timeSaved: 3600,
+        decreaseInResolutionTime: null,
+        decreaseInFirstResponseTime: null,
     },
     {
         entity: 'flow-seed-9',
@@ -74,6 +76,8 @@ const defaultData: FlowsEntityMetrics[] = [
         handoverInteractions: 45,
         costSaved: 120,
         timeSaved: 900,
+        decreaseInResolutionTime: null,
+        decreaseInFirstResponseTime: null,
     },
 ]
 

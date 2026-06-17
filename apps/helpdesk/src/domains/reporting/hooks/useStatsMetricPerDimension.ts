@@ -250,3 +250,20 @@ export const fetchStatsMetricPerDimension = async <
             isError: true,
         }))
 }
+
+export function createMetricPerDimensionHooks(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryFactory: (ctx: any) => BuiltQuery<ScopeMeta>,
+    dimensions?: readonly string[],
+): EntityMetricConfig {
+    return {
+        use: (filters, timezone) =>
+            useStatsMetricPerDimension(
+                queryFactory({ filters, timezone, dimensions }),
+            ),
+        fetch: (filters, timezone) =>
+            fetchStatsMetricPerDimension(
+                queryFactory({ filters, timezone, dimensions }),
+            ),
+    }
+}
