@@ -67,6 +67,7 @@ type KnowledgeTrendCardProps = {
     dateRange: DateRange
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
+    isSkillScoped?: boolean
 }
 
 const KnowledgeTrendCard = ({
@@ -82,6 +83,7 @@ const KnowledgeTrendCard = ({
     dateRange,
     outcomeCustomFieldId,
     intentCustomFieldId,
+    isSkillScoped,
 }: KnowledgeTrendCardProps) => {
     const { openDrillDownModal, tooltipText } = useKnowledgeDrillDownTrigger({
         metricName,
@@ -92,6 +94,7 @@ const KnowledgeTrendCard = ({
         dateRange,
         outcomeCustomFieldId,
         intentCustomFieldId,
+        isSkillScoped,
     })
 
     const trend = useMemo(
@@ -227,6 +230,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
         prevValue: number | null,
         metricFormat: MetricTrendFormat,
         metricName: KnowledgeMetric,
+        isSkillScoped?: boolean,
     ) => {
         if (!dateRange) {
             return (
@@ -254,6 +258,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 dateRange={dateRange}
                 outcomeCustomFieldId={outcomeCustomFieldId}
                 intentCustomFieldId={intentCustomFieldId}
+                isSkillScoped={isSkillScoped}
             />
         )
     }
@@ -274,6 +279,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 metrics?.prevTickets ?? null,
                 'decimal',
                 KnowledgeMetric.Tickets,
+                true,
             )}
             {renderMetricCard(
                 'Handovers',
@@ -281,6 +287,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 metrics?.prevHandoverTickets ?? null,
                 'decimal',
                 KnowledgeMetric.HandoverTickets,
+                true,
             )}
             {renderMetricCard(
                 'CSAT',
@@ -288,6 +295,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 metrics?.prevCsat ?? null,
                 'decimal-precision-1',
                 KnowledgeMetric.CSAT,
+                true,
             )}
         </Box>
     )

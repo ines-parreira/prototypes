@@ -4621,3 +4621,107 @@ describe('createKnowledgeDailyMetricQuery', () => {
         expect(helperQuery).toEqual(legacyQuery)
     })
 })
+
+describe('createV1Query — ResourceIsSkill filter', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.clone().add(7, 'days')
+
+    const baseStatsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('should NOT include ResourceIsSkill filter by default (isSkillScoped omitted)', () => {
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            123,
+            456,
+            baseStatsFilters,
+            'UTC',
+            'TicketInsightsTask.ticketCount',
+        )
+        expect(query.filters).not.toContainEqual(
+            expect.objectContaining({
+                member: 'TicketInsightsTask.resourceIsSkill',
+            }),
+        )
+    })
+
+    it('should NOT include ResourceIsSkill filter when isSkillScoped is false', () => {
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            123,
+            456,
+            baseStatsFilters,
+            'UTC',
+            'TicketInsightsTask.ticketCount',
+            false,
+        )
+        expect(query.filters).not.toContainEqual(
+            expect.objectContaining({
+                member: 'TicketInsightsTask.resourceIsSkill',
+            }),
+        )
+    })
+
+    it('should include ResourceIsSkill = true filter when isSkillScoped is true', () => {
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            123,
+            456,
+            baseStatsFilters,
+            'UTC',
+            'TicketInsightsTask.ticketCount',
+            true,
+        )
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceIsSkill',
+            operator: 'equals',
+            values: ['true'],
+        })
+    })
+})
+
+describe('knowledgeTicketsDrillDownQueryFactory — ResourceIsSkill filter', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.clone().add(7, 'days')
+
+    const baseStatsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('should NOT include ResourceIsSkill filter by default (Knowledge Hub path)', () => {
+        const query = knowledgeTicketsDrillDownQueryFactory(
+            baseStatsFilters,
+            'UTC',
+            123,
+            456,
+        )
+        expect(query.filters).not.toContainEqual(
+            expect.objectContaining({
+                member: 'TicketInsightsTask.resourceIsSkill',
+            }),
+        )
+    })
+
+    it('should include ResourceIsSkill = true when isSkillScoped is true (Skills page path)', () => {
+        const query = knowledgeTicketsDrillDownQueryFactory(
+            baseStatsFilters,
+            'UTC',
+            123,
+            456,
+            undefined,
+            true,
+        )
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceIsSkill',
+            operator: 'equals',
+            values: ['true'],
+        })
+    })
+})

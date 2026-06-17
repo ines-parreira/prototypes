@@ -43,6 +43,7 @@ export const SuccessRateCell = ({
         outcomeCustomFieldId,
         intentCustomFieldId,
         title: 'Success rate',
+        isSkillScoped: true,
     })
 
     const percentage = Math.round(value * 100)

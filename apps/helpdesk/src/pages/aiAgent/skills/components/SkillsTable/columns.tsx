@@ -275,6 +275,7 @@ export const getColumns = ({
                             displayValue={displayValue}
                             title="Tickets"
                             showProgressBar={statsDisplayMode === 'percentage'}
+                            isSkillScoped={true}
                         />
                     )
                 }
@@ -347,6 +348,7 @@ export const getColumns = ({
                             displayValue={displayValue}
                             title="Handover tickets"
                             showProgressBar={statsDisplayMode === 'percentage'}
+                            isSkillScoped={true}
                         />
                     )
                 }
@@ -407,6 +409,7 @@ export const getColumns = ({
                             displayValue={formattedCsat}
                             title="CSAT"
                             showProgressBar={false}
+                            isSkillScoped={true}
                         />
                     )
                 }

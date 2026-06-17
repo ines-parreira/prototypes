@@ -2075,6 +2075,7 @@ describe('getDrillDownQuery', () => {
             123,
             456,
             undefined,
+            undefined,
         )
     })
 
@@ -2112,6 +2113,7 @@ describe('getDrillDownQuery', () => {
             123,
             456,
             ticketIds,
+            undefined,
         )
     })
 
@@ -2154,6 +2156,7 @@ describe('getDrillDownQuery', () => {
             timezone,
             123,
             456,
+            undefined,
         )
     })
 
@@ -2192,6 +2195,7 @@ describe('getDrillDownQuery', () => {
             timezone,
             123,
             456,
+            undefined,
         )
     })
 
@@ -2231,6 +2235,7 @@ describe('getDrillDownQuery', () => {
             123,
             456,
             undefined,
+            undefined,
         )
     })
 
@@ -2268,6 +2273,7 @@ describe('getDrillDownQuery', () => {
             123,
             456,
             ticketIds,
+            undefined,
         )
     })
 

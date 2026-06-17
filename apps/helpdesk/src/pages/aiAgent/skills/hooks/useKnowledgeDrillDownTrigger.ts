@@ -55,6 +55,7 @@ export const useKnowledgeDrillDownTrigger = ({
     outcomeCustomFieldId,
     intentCustomFieldId,
     ticketIds,
+    isSkillScoped,
     segmentEventName = SegmentEvent.AiAgentTicketDrilldownClicked,
 }: {
     metricName: KnowledgeMetric
@@ -66,6 +67,7 @@ export const useKnowledgeDrillDownTrigger = ({
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
     ticketIds?: string[]
+    isSkillScoped?: boolean
     segmentEventName?: SegmentEvent
 }) => {
     const dispatch = useAppDispatch()
@@ -82,6 +84,7 @@ export const useKnowledgeDrillDownTrigger = ({
             ...(outcomeCustomFieldId && { outcomeCustomFieldId }),
             ...(intentCustomFieldId && { intentCustomFieldId }),
             ...(ticketIds?.length && { ticketIds }),
+            ...(isSkillScoped && { isSkillScoped: true }),
         }),
         [
             tooltipText,
@@ -93,6 +96,7 @@ export const useKnowledgeDrillDownTrigger = ({
             outcomeCustomFieldId,
             intentCustomFieldId,
             ticketIds,
+            isSkillScoped,
         ],
     )
 

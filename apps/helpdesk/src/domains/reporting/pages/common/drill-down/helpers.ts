@@ -787,6 +787,7 @@ export const getDrillDownQuery = (
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
                     knowledgeMetricData.ticketIds,
+                    knowledgeMetricData.isSkillScoped,
                 )
             }
         }
@@ -828,6 +829,7 @@ export const getDrillDownQuery = (
                     timezone,
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
+                    knowledgeMetricData.isSkillScoped,
                 )
             }
         }
@@ -858,6 +860,7 @@ export const getDrillDownQuery = (
                     timezone,
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
+                    knowledgeMetricData.isSkillScoped,
                 )
             }
         }
@@ -893,6 +896,7 @@ export const getDrillDownQuery = (
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
                     knowledgeMetricData.ticketIds,
+                    knowledgeMetricData.isSkillScoped,
                 )
             }
         }
