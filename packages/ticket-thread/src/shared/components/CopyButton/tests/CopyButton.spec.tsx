@@ -1,8 +1,8 @@
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { render } from '../../../../tests/render.utils'
-import { CopyButton } from '../CopyButton'
+import { CopyButton } from '#shared/components/CopyButton/CopyButton'
+import { render } from '#tests/render.utils'
 
 describe('CopyButton', () => {
     it('renders copy icon initially', () => {

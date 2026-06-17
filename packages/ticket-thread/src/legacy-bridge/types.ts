@@ -7,7 +7,7 @@ import type {
     TicketThreadAiAgentHandoverMessageItem,
     TicketThreadAiAgentMessageItem,
     TicketThreadAiAgentTrialMessageItem,
-} from '../ticket-messages/types'
+} from '#ticket-messages/types'
 
 export type LegacyBridgeInfluencedOrder = {
     id: number

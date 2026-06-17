@@ -1,5 +1,5 @@
-import { contactReasonCustomFieldsSchema } from '../schemas'
-import type { ContactReasonCustomFields } from '../types'
+import { contactReasonCustomFieldsSchema } from '#suggestions/contact-reason-prediction/schemas'
+import type { ContactReasonCustomFields } from '#suggestions/contact-reason-prediction/types'
 
 export function getContactReasonSuggestionCount(input: unknown): number {
     const parsed = contactReasonCustomFieldsSchema.safeParse(input)

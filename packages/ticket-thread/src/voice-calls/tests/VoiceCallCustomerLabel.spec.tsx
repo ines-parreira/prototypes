@@ -3,9 +3,9 @@ import { HttpResponse } from 'msw'
 
 import { mockCustomer, mockGetCustomerHandler } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallCustomerLabel } from '../components/TicketThreadCallItem/components/VoiceCallCustomerLabel'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallCustomerLabel } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallCustomerLabel'
 
 describe('VoiceCallCustomerLabel', () => {
     describe('when customer has a name', () => {

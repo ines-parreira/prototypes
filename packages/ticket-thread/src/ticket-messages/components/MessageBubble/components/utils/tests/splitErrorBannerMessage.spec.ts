@@ -1,4 +1,4 @@
-import { splitErrorBannerMessage } from '../splitErrorBannerMessage'
+import { splitErrorBannerMessage } from '#ticket-messages/components/MessageBubble/components/utils/splitErrorBannerMessage'
 
 describe('splitErrorBannerMessage', () => {
     it('keeps short text as the title only', () => {

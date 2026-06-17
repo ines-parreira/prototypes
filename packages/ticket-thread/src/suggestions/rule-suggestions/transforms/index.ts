@@ -1,4 +1,4 @@
-import type { RuleSuggestionMeta } from '../types'
+import type { RuleSuggestionMeta } from '#suggestions/rule-suggestions/types'
 
 const RULE_SUGGESTION_REPLY_ACTION = 'replyToTicket'
 

@@ -1,6 +1,6 @@
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { InfluencedOrderSource } from '../constants'
-import { toTicketThreadInfluencedOrderItems } from '../transforms'
+import { InfluencedOrderSource } from '#shopping-assistant/constants'
+import { toTicketThreadInfluencedOrderItems } from '#shopping-assistant/transforms'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 describe('toTicketThreadInfluencedOrderItems', () => {
     const baseParams = {

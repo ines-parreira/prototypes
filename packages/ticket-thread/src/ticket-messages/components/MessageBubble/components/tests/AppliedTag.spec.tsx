@@ -6,9 +6,9 @@ import {
     mockListTicketTagsResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../../tests/render.utils'
-import { server } from '../../../../../tests/server'
-import { AppliedTag } from '../AppliedTag'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { AppliedTag } from '#ticket-messages/components/MessageBubble/components/AppliedTag'
 
 describe('AppliedTag', () => {
     it('renders the tag name', () => {

@@ -9,14 +9,14 @@ import {
 import { TicketStatus } from '@gorgias/helpdesk-queries'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { TicketThreadItemTag } from '../../thread/itemTags'
+import { useTicketThreadAiAgentPseudoEvents } from '#ai-agent/hooks/useTicketThreadAiAgentPseudoEvents'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 import type {
     TicketThreadAiAgentMessageItem,
     TicketThreadRegularMessageItem,
-} from '../../ticket-messages/types'
-import { useTicketThreadAiAgentPseudoEvents } from '../hooks/useTicketThreadAiAgentPseudoEvents'
+} from '#ticket-messages/types'
 
 function createAiAgentMessage(
     message: TicketMessage,

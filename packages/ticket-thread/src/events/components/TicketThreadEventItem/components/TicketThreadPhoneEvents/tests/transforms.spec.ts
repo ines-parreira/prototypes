@@ -6,8 +6,11 @@ import {
     getPhoneEventTicketId,
     hasPhoneEventDetails,
     resolvePhoneEventAgentName,
-} from '../transforms'
-import type { PhoneEventData, PhoneEventType } from '../transforms/types'
+} from '#events/components/TicketThreadEventItem/components/TicketThreadPhoneEvents/transforms'
+import type {
+    PhoneEventData,
+    PhoneEventType,
+} from '#events/components/TicketThreadEventItem/components/TicketThreadPhoneEvents/transforms/types'
 
 function createPhoneEvent(
     overrides: Partial<PhoneEventData> = {},

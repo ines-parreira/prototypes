@@ -6,7 +6,7 @@ import {
     TextVariant,
 } from '@gorgias/axiom'
 
-import { stripErrorMessage } from '../../../utils/stripErrorMessage'
+import { stripErrorMessage } from '#ticket-messages/utils/stripErrorMessage'
 import type { MessageErrorAction } from './utils/messageErrorActions'
 
 import css from './FailedActionsDisclosure.less'

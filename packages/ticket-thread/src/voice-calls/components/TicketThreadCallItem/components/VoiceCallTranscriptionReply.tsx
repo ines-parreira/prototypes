@@ -1,7 +1,7 @@
 import { Box, Text } from '@gorgias/axiom'
 import type { VoiceCallRecordingTranscriptionSpeakersItem } from '@gorgias/helpdesk-queries'
 
-import { getFormattedDurationTranscriptionStart } from '../../../models/utils'
+import { getFormattedDurationTranscriptionStart } from '#voice-calls/models/utils'
 import { VoiceCallAgentLabel } from './VoiceCallAgentLabel'
 import { VoiceCallCustomerLabel } from './VoiceCallCustomerLabel'
 

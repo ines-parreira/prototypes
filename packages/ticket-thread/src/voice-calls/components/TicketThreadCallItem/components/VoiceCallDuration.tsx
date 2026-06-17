@@ -10,7 +10,7 @@ import {
     getFormattedDurationOngoingCall,
     isFinalVoiceCallStatus,
     shouldShowDuration,
-} from '../../../models/utils'
+} from '#voice-calls/models/utils'
 
 type VoiceCallDurationProps = {
     voiceCall: VoiceCall

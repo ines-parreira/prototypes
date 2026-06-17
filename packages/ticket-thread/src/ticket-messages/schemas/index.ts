@@ -18,7 +18,7 @@ import {
     SOCIAL_MEDIA_TWITTER_DIRECT_MESSAGE_SOURCES,
     SOCIAL_MEDIA_TWITTER_TWEET_SOURCES,
     SOCIAL_MEDIA_WHATSAPP_SOURCES,
-} from '../constants'
+} from '#ticket-messages/constants'
 
 export const ticketMessageSchema = z.object({
     channel: z.union([

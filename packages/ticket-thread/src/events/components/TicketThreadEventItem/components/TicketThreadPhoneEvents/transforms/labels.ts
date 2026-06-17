@@ -1,4 +1,4 @@
-import { assertNever } from '../../../../../../shared/assertNever'
+import { assertNever } from '#shared/assertNever'
 import type { PhoneEventType } from './types'
 
 function getPhoneEventBaseLabel(type: PhoneEventType): string {

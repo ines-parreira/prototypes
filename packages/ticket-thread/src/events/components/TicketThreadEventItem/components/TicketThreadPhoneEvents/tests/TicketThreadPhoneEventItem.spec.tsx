@@ -8,12 +8,12 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../../../tests/render.utils'
-import { server } from '../../../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../../../thread/itemTags'
-import type { TicketThreadPhoneEventItem } from '../../../../../types'
-import { TicketThreadPhoneEventItem as TicketThreadPhoneEventItemComponent } from '../TicketThreadPhoneEventItem'
+import { TicketThreadPhoneEventItem as TicketThreadPhoneEventItemComponent } from '#events/components/TicketThreadEventItem/components/TicketThreadPhoneEvents/TicketThreadPhoneEventItem'
+import type { TicketThreadPhoneEventItem } from '#events/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function getUsersHandler(users: unknown[]) {
     return mockListUsersHandler(async () =>

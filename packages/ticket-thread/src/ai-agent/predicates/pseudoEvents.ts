@@ -1,12 +1,12 @@
 import { Duration } from '@gorgias/toolkit'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import type { TicketThreadItem } from '../../thread/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 import type {
     TicketThreadAiAgentInternalNoteItem,
     TicketThreadAiAgentMessageItem,
     TicketThreadMessageItem,
-} from '../../ticket-messages/types'
+} from '#ticket-messages/types'
 
 const LEGACY_AI_GROUPING_CHANNELS = new Set(['facebook-messenger', 'chat'])
 

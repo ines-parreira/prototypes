@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { useExpandedMessages } from '../useExpandedMessages'
+import { useExpandedMessages } from '#ticket-messages/context/ExpandedMessages/useExpandedMessages'
 
 describe('useExpandedMessages', () => {
     it('throws when used outside ExpandedMessagesProvider', () => {

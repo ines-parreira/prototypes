@@ -2,16 +2,16 @@ import { useCallback, useMemo } from 'react'
 
 import { TicketVia, useGetTicket } from '@gorgias/helpdesk-queries'
 
-import { useTicketThreadLegacyBridge } from '../../../legacy-bridge'
-import { getQueryOptions } from '../../../shared/queryOption'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { TicketThreadItem } from '../../../thread/types'
-import { useListTicketMessages } from '../../../ticket-messages/hooks/useListTicketMessages'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge'
+import { getQueryOptions } from '#shared/queryOption'
 import {
     isMessageMetaWithRuleSuggestionSlug,
     isRuleSuggestion,
-} from '../predicates'
-import { shouldRenderRuleSuggestion } from '../transforms'
+} from '#suggestions/rule-suggestions/predicates'
+import { shouldRenderRuleSuggestion } from '#suggestions/rule-suggestions/transforms'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
+import { useListTicketMessages } from '#ticket-messages/hooks/useListTicketMessages'
 
 const SINGLE_MESSAGE_TAGS = new Set<string>(
     Object.values(TicketThreadItemTag.Messages).filter(

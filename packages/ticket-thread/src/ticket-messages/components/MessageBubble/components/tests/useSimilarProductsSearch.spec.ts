@@ -1,4 +1,4 @@
-import { useSimilarProductsSearch } from '../useSimilarProductSearch'
+import { useSimilarProductsSearch } from '#ticket-messages/components/MessageBubble/components/useSimilarProductSearch'
 
 describe('useSimilarProductsSearch', () => {
     describe('shouldRender: false', () => {

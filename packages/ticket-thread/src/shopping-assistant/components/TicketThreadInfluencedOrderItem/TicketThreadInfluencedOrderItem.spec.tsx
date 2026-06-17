@@ -1,12 +1,12 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../tests/render.utils'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import { InfluencedOrderSource } from '../../constants'
+import { InfluencedOrderSource } from '#shopping-assistant/constants'
+import { render } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
 import { TicketThreadInfluencedOrderItem } from './TicketThreadInfluencedOrderItem'
 
 vi.mock(
-    '../../../events/components/TicketThreadEventItem/components/TicketThreadEventDateTime',
+    '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime',
     () => ({
         TicketThreadEventDateTime: ({ datetime }: { datetime: string }) => (
             <span>{`Datetime ${datetime}`}</span>

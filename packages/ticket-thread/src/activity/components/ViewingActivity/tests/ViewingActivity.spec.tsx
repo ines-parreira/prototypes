@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { render } from '../../../../tests/render.utils'
-import type { ActivityParticipant } from '../../../helpers/activityParticipants'
-import { ViewingActivity } from '../ViewingActivity'
+import { ViewingActivity } from '#activity/components/ViewingActivity/ViewingActivity'
+import type { ActivityParticipant } from '#activity/helpers/activityParticipants'
+import { render } from '#tests/render.utils'
 
 const animatedCollectionState = vi.hoisted(() => ({
     displayedItems: [] as ActivityParticipant[],
@@ -26,7 +26,7 @@ const activityOverflowListMock = vi.hoisted(() => vi.fn())
 const useAnimatedCollectionMock = vi.hoisted(() => vi.fn())
 const useRenderingBehaviourMock = vi.hoisted(() => vi.fn())
 
-vi.mock('../../ActivityOverflowList', () => ({
+vi.mock('#activity/components/ActivityOverflowList', () => ({
     ActivityOverflowList: (props: {
         participants: ActivityParticipant[]
         renderTrailingContent: (params?: {
@@ -48,11 +48,11 @@ vi.mock('../../ActivityOverflowList', () => ({
     },
 }))
 
-vi.mock('../../../hooks/useAnimatedCollection', () => ({
+vi.mock('#activity/hooks/useAnimatedCollection', () => ({
     useAnimatedCollection: useAnimatedCollectionMock,
 }))
 
-vi.mock('../useRenderingBehaviour', () => ({
+vi.mock('#activity/components/ViewingActivity/useRenderingBehaviour', () => ({
     useRenderingBehaviour: useRenderingBehaviourMock,
 }))
 

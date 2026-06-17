@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import type { DeliveryStatus } from '../DeliveryStatusIcon'
-import { DeliveryStatusIcon } from '../DeliveryStatusIcon'
+import type { DeliveryStatus } from '#ticket-messages/components/MessageBubble/components/DeliveryStatusIcon'
+import { DeliveryStatusIcon } from '#ticket-messages/components/MessageBubble/components/DeliveryStatusIcon'
 
 function renderIcon(status: DeliveryStatus) {
     return render(<DeliveryStatusIcon status={status} />)

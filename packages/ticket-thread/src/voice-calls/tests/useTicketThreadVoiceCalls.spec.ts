@@ -7,10 +7,10 @@ import {
     mockVoiceCall,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { useTicketThreadVoiceCalls } from '../hooks/useTicketThreadVoiceCalls'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { useTicketThreadVoiceCalls } from '#voice-calls/hooks/useTicketThreadVoiceCalls'
 
 describe('useTicketThreadVoiceCalls', () => {
     it('maps outbound and regular voice calls to dedicated tags', async () => {

@@ -1,4 +1,4 @@
-import type { TicketThreadItemTag } from '../thread/itemTags'
+import type { TicketThreadItemTag } from '#thread/itemTags'
 import type {
     EventBackedRespondedSatisfactionSurveyDataSchema,
     RespondedSatisfactionSurveySchema,

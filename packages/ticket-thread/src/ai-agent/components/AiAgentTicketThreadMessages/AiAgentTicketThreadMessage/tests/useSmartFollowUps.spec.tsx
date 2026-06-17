@@ -1,7 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
 
-import { renderHook } from '../../../../../tests/render.utils'
-import { useSmartFollowUps } from '../useSmartFollowUps'
+import { useSmartFollowUps } from '#ai-agent/components/AiAgentTicketThreadMessages/AiAgentTicketThreadMessage/useSmartFollowUps'
+import { renderHook } from '#tests/render.utils'
 
 vi.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {

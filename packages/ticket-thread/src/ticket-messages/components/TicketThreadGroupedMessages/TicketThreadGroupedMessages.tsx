@@ -5,8 +5,27 @@ import cn from 'classnames'
 
 import { Box } from '@gorgias/axiom'
 
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import { isActivePendingMessageItem } from '../../predicates'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { ViewOnInstagramLink } from '#ticket-messages/components/InstagramMediaMessage/ViewOnInstagramLink'
+import { MessageAppliedActions } from '#ticket-messages/components/MessageBubble/components/MessageAppliedActions'
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import { MessageErrors } from '#ticket-messages/components/MessageBubble/components/MessageErrors'
+import type { MessageFooterItem } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { getMessageChannelParticipants } from '#ticket-messages/components/MessageBubble/components/MessageHeader/getMessageChannelParticipants'
+import { getMessageCurrentPageUrl } from '#ticket-messages/components/MessageBubble/components/MessageHeader/getMessageCurrentPageUrl'
+import { MessageHeaderContainer } from '#ticket-messages/components/MessageBubble/components/MessageHeader/Layout'
+import { MessageAvatar } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar'
+import { MessageChannel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel'
+import { MessageDeliveryIcon } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageDeliveryIcon'
+import { MessageMeta } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageMeta'
+import { MessageSender } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
+import { MessageTimestamp } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
+import { PendingMessageBanner } from '#ticket-messages/components/MessageBubble/components/PendingMessageBanner'
+import { MessageBubble } from '#ticket-messages/components/MessageBubble/MessageBubble'
+import { useDisplayedTicketMessage } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { TicketMessageActions } from '#ticket-messages/components/TicketMessageActions/TicketMessageActions'
+import { isActivePendingMessageItem } from '#ticket-messages/predicates'
 import type {
     TicketThreadGroupedMessagesItem,
     TicketThreadRegularMessageItem,
@@ -16,26 +35,7 @@ import type {
     TicketThreadSocialMediaInstagramStoryMentionItem,
     TicketThreadSocialMediaInstagramStoryReplyItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
-} from '../../types'
-import { ViewOnInstagramLink } from '../InstagramMediaMessage/ViewOnInstagramLink'
-import { MessageAppliedActions } from '../MessageBubble/components/MessageAppliedActions'
-import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageErrors } from '../MessageBubble/components/MessageErrors'
-import type { MessageFooterItem } from '../MessageBubble/components/MessageFooter'
-import { MessageFooter } from '../MessageBubble/components/MessageFooter'
-import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
-import { getMessageCurrentPageUrl } from '../MessageBubble/components/MessageHeader/getMessageCurrentPageUrl'
-import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
-import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
-import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
-import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
-import { MessageMeta } from '../MessageBubble/components/MessageHeader/MessageMeta'
-import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
-import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
-import { PendingMessageBanner } from '../MessageBubble/components/PendingMessageBanner'
-import { MessageBubble } from '../MessageBubble/MessageBubble'
-import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
-import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
+} from '#ticket-messages/types'
 
 import css from './TicketThreadGroupedMessages.less'
 

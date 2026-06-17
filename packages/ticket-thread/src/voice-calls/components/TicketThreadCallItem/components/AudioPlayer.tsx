@@ -12,7 +12,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import { useAudioPlayer } from '../../../hooks/useAudioPlayer'
+import { useAudioPlayer } from '#voice-calls/hooks/useAudioPlayer'
 
 import css from './AudioPlayer.less'
 

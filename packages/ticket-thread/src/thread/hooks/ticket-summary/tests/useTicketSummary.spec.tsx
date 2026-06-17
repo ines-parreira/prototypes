@@ -3,8 +3,8 @@ import { HttpResponse } from 'msw'
 
 import { mockGenerateTicketSummaryHandler } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../../../tests/render.utils'
-import { server } from '../../../../tests/server'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -18,7 +18,7 @@ afterAll(() => {
     server.close()
 })
 
-import { useTicketSummary } from '../useTicketSummary'
+import { useTicketSummary } from '#thread/hooks/ticket-summary/useTicketSummary'
 
 const mockSummary = {
     content: 'Sample summary',

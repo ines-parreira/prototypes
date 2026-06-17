@@ -1,10 +1,10 @@
-import { ACTION_EXECUTED_EVENT_TYPE } from '../../events/constants'
-import type { TicketThreadActionExecutedEventItem } from '../../events/types'
-import { TicketThreadItemTag } from '../../thread/itemTags'
+import { ACTION_EXECUTED_EVENT_TYPE } from '#events/constants'
+import type { TicketThreadActionExecutedEventItem } from '#events/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
 import type {
     TicketThreadMessageItem,
     TicketThreadSingleMessageItem,
-} from '../types'
+} from '#ticket-messages/types'
 
 type MessageHttpAction = {
     name: string

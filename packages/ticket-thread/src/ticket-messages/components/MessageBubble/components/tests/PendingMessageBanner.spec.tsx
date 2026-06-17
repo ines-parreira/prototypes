@@ -2,9 +2,9 @@ import { screen } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import type { LegacyBridgeActions } from '../../../../../legacy-bridge'
-import { render } from '../../../../../tests/render.utils'
-import { PendingMessageBanner } from '../PendingMessageBanner'
+import type { LegacyBridgeActions } from '#legacy-bridge'
+import { render } from '#tests/render.utils'
+import { PendingMessageBanner } from '#ticket-messages/components/MessageBubble/components/PendingMessageBanner'
 
 function makeLegacyActions(): LegacyBridgeActions {
     return {

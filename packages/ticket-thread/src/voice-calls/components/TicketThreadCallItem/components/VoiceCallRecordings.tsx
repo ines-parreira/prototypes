@@ -1,7 +1,7 @@
 import { Box, Skeleton, Text } from '@gorgias/axiom'
 
-import { useVoiceCallRecordings } from '../../../hooks/useVoiceCallRecordings'
-import type { VoiceCallRecordingType } from '../../../models/types'
+import { useVoiceCallRecordings } from '#voice-calls/hooks/useVoiceCallRecordings'
+import type { VoiceCallRecordingType } from '#voice-calls/models/types'
 import { VoiceCallAudioPlayer } from './VoiceCallAudioPlayer'
 import { VoiceCallTranscription } from './VoiceCallTranscription'
 

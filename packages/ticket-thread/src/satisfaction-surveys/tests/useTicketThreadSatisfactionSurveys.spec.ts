@@ -14,11 +14,11 @@ import {
     mockTicketSatisfactionSurvey,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../constants'
-import { useTicketThreadSatisfactionSurveys } from '../hooks/useTicketThreadSatisfactionSurveys'
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '#satisfaction-surveys/constants'
+import { useTicketThreadSatisfactionSurveys } from '#satisfaction-surveys/hooks/useTicketThreadSatisfactionSurveys'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function createTicketWithSurvey(
     overrides?: Parameters<typeof mockTicket>[0],

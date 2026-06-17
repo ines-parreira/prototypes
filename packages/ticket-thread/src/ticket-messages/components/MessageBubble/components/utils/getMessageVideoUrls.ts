@@ -1,6 +1,6 @@
 import { extractGorgiasVideoDivFromHtmlContent } from '@repo/utils'
 
-import type { MessageBodyItem } from '../MessageBody'
+import type { MessageBodyItem } from '#ticket-messages/components/MessageBubble/components/MessageBody'
 import { getMessageContent } from './getMessageContent'
 
 export function getMessageVideoUrls(

@@ -14,10 +14,10 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../../../tests/render.utils'
-import { server } from '../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../thread/itemTags'
-import type { TicketThreadRegularMessageItem } from '../../../types'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadRegularMessageItem } from '#ticket-messages/types'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })

@@ -2,8 +2,6 @@ import type { Prettify } from '@repo/types'
 
 import type { Event } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import type { TicketThreadItem } from '../../thread/types'
 import type {
     ActionExecutedEventSchema,
     ActionNameEventSchema,
@@ -15,7 +13,7 @@ import type {
     SatisfactionSurveyRespondedEventSchema,
     SystemRuleEventSchema,
     TicketEventSchema,
-} from '../schemas'
+} from '#events/schemas'
 import {
     actionExecutedEventSchema,
     actionNameEventSchema,
@@ -29,8 +27,10 @@ import {
     satisfactionSurveyRespondedEventSchema,
     systemRuleEventSchema,
     ticketEventSchema,
-} from '../schemas'
-import type { TicketThreadSingleEventItem } from '../types'
+} from '#events/schemas'
+import type { TicketThreadSingleEventItem } from '#events/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 
 type EventWithSchema<TSchema> = TSchema extends unknown
     ? Omit<Event, 'type' | 'data'> & TSchema

@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { useRenderingBehaviour } from '../useRenderingBehaviour'
+import { useRenderingBehaviour } from '#activity/components/ViewingActivity/useRenderingBehaviour'
 
 type RenderingBehaviourHarnessProps = {
     hasAgents: boolean

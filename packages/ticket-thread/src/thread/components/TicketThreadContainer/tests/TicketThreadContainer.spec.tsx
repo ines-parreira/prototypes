@@ -3,9 +3,9 @@ import type * as ReactModule from 'react'
 import { render, screen } from '@testing-library/react'
 import type { VirtuosoProps } from 'react-virtuoso'
 
-import { TicketThreadItemTag } from '../../../itemTags'
-import type { TicketThreadItem } from '../../../types'
-import { TicketThreadContainer } from '../TicketThreadContainer'
+import { TicketThreadContainer } from '#thread/components/TicketThreadContainer/TicketThreadContainer'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 
 const { mockScrollToIndex } = vi.hoisted(() => ({
     mockScrollToIndex: vi.fn(),

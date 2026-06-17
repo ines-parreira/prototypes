@@ -1,10 +1,10 @@
 import { screen, within } from '@testing-library/react'
 
-import { useTicketThreadDateTimeFormat } from '../../../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { render } from '../../../../../tests/render.utils'
-import { MessageTimestamp } from '../MessageHeader/MessageTimestamp'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { render } from '#tests/render.utils'
+import { MessageTimestamp } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
 
-vi.mock('../../../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 

@@ -1,20 +1,23 @@
 import { useMemo } from 'react'
 
-import { useGetTicket } from '@repo/tickets/useGetTicket'
-import { useAllUsers } from '@repo/users'
 import {
     isAuditLogEvent,
     isNonRenderablePrivateReplyEvent,
     isSatisfactionSurveyRespondedEvent,
     isViaRuleEvent,
-} from '../predicates'
-import { shouldRenderTicketThreadEvent, toTaggedEvent } from '../transforms'
+} from '#events/predicates'
+import {
+    shouldRenderTicketThreadEvent,
+    toTaggedEvent,
+} from '#events/transforms'
 import type {
     TicketThreadAuditLogAttribution,
     TicketThreadAuditLogEvent,
     TicketThreadEventSource,
     TicketThreadSingleEventItem,
-} from '../types'
+} from '#events/types'
+import { useGetTicket } from '@repo/tickets/useGetTicket'
+import { useAllUsers } from '@repo/users'
 import { useListAllTicketEvents } from './useListAllEvents'
 
 type EventIdentifier = number | string

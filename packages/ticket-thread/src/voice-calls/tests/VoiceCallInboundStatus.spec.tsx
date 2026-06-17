@@ -19,10 +19,10 @@ import {
     VoiceCallTerminationStatus,
 } from '@gorgias/helpdesk-types'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallInboundStatus } from '../components/TicketThreadCallItem/components/VoiceCallInboundStatus'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallInboundStatus } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallInboundStatus'
 
 const agent = mockUser({ id: 5, name: 'Alice Agent' })
 

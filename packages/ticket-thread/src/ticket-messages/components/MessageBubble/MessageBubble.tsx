@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { Box } from '@gorgias/axiom'
 
-import type { TicketThreadPendingState } from '../../types'
+import type { TicketThreadPendingState } from '#ticket-messages/types'
 
 import css from './MessageBubble.less'
 

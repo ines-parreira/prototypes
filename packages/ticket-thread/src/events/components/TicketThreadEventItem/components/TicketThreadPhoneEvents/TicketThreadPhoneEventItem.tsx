@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import type { TicketThreadPhoneEventItem as TicketThreadPhoneEventItemType } from '../../../../types'
-import { TicketThreadAuditLogEventAttribution } from '../TicketThreadAuditLogEventAttribution'
-import { TicketThreadEventContainer } from '../TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../TicketThreadEventDateTime'
+import { TicketThreadAuditLogEventAttribution } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEventAttribution'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import type { TicketThreadPhoneEventItem as TicketThreadPhoneEventItemType } from '#events/types'
 import {
     getPhoneEventCustomerName,
     getPhoneEventDetailsEntries,

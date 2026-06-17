@@ -1,4 +1,4 @@
-import { assertNever } from '../../../../../../shared/assertNever'
+import { assertNever } from '#shared/assertNever'
 import type { ActionExecutedActionName } from './types'
 
 function getDefaultActionLabel(actionName: ActionExecutedActionName): string {

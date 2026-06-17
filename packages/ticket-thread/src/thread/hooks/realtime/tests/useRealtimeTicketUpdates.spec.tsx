@@ -6,12 +6,12 @@ import { toast } from '@gorgias/axiom'
 import type { DomainEvent, DomainEventWithType } from '@gorgias/events'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { renderHook } from '../../../../tests/render.utils'
-import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '../../../../ticket-messages/hooks/useListTicketMessages'
-import { useRealtimeTicketUpdates } from '../useRealtimeTicketUpdates'
-import { useTicketMessageCreatedSignalHandler } from '../useTicketMessageCreatedSignalHandler'
+import { renderHook } from '#tests/render.utils'
+import { useRealtimeTicketUpdates } from '#thread/hooks/realtime/useRealtimeTicketUpdates'
+import { useTicketMessageCreatedSignalHandler } from '#thread/hooks/realtime/useTicketMessageCreatedSignalHandler'
+import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '#ticket-messages/hooks/useListTicketMessages'
 
-vi.mock('../useTicketMessageCreatedSignalHandler', () => ({
+vi.mock('#thread/hooks/realtime/useTicketMessageCreatedSignalHandler', () => ({
     useTicketMessageCreatedSignalHandler: vi.fn(),
 }))
 

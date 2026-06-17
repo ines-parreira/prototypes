@@ -7,8 +7,8 @@ import {
     getInboundDisplayStatus,
     getOutboundDisplayStatus,
     getPrettyVoiceCallDisplayStatusName,
-} from '../models/statusMapping'
-import { VoiceCallDisplayStatus } from '../models/types'
+} from '#voice-calls/models/statusMapping'
+import { VoiceCallDisplayStatus } from '#voice-calls/models/types'
 
 describe('getInboundDisplayStatus', () => {
     it('returns Routing for Ringing status', () => {

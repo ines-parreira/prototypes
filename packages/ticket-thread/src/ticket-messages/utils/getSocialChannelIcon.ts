@@ -1,4 +1,4 @@
-import { TicketThreadItemTag } from '../../thread/itemTags'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 const SOCIAL_CHANNEL_ICONS: Record<string, string> = {
     [TicketThreadItemTag.Messages.SocialMediaFacebookComment]:

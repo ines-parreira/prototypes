@@ -9,11 +9,11 @@ import {
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { TicketThreadItem } from '../../../thread/types'
-import { useRuleSuggestion } from '../hooks/useRuleSuggestion'
+import { useRuleSuggestion } from '#suggestions/rule-suggestions/hooks/useRuleSuggestion'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 
 function getRuleSuggestionTicket() {
     return mockTicket({

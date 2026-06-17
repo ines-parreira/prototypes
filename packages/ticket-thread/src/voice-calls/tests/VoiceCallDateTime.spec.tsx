@@ -1,9 +1,9 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallDateTime } from '../components/TicketThreadCallItem/components/VoiceCallDateTime'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallDateTime } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallDateTime'
 
 beforeEach(() => {
     server.use(getCurrentUserHandler().handler)

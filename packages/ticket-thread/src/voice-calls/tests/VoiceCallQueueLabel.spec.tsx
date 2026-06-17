@@ -6,9 +6,9 @@ import {
     mockGetVoiceQueueResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallQueueLabel } from '../components/TicketThreadCallItem/components/VoiceCallQueueLabel'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallQueueLabel } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallQueueLabel'
 
 describe('VoiceCallQueueLabel', () => {
     describe('when queue has a name', () => {

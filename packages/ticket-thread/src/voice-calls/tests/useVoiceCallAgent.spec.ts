@@ -7,9 +7,9 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { useVoiceCallAgent } from '../hooks/useVoiceCallAgent'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { useVoiceCallAgent } from '#voice-calls/hooks/useVoiceCallAgent'
 
 const testAgent = mockUser({ id: 42, name: 'Test Agent' })
 

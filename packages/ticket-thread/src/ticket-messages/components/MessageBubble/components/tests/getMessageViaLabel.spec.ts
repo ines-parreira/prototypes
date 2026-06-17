@@ -1,4 +1,4 @@
-import { getMessageViaLabel } from '../MessageHeader/getMessageViaLabel'
+import { getMessageViaLabel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/getMessageViaLabel'
 
 describe('getMessageViaLabel', () => {
     it('returns null when channel is null', () => {

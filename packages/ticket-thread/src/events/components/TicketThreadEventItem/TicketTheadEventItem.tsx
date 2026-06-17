@@ -1,12 +1,12 @@
 import { Box } from '@gorgias/axiom'
 
-import { assertNever } from '../../../shared/assertNever'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
 import type {
     TicketThreadEventItem,
     TicketThreadGroupedEventsItem,
     TicketThreadSingleEventItem,
-} from '../../types'
+} from '#events/types'
+import { assertNever } from '#shared/assertNever'
+import { TicketThreadItemTag } from '#thread/itemTags'
 import { TicketThreadActionExecutedEventItem } from './components/TicketThreadActionExecutedEvents/TicketThreadActionExecutedEventItem'
 import { TicketThreadAuditLogEventItem } from './components/TicketThreadAuditLogEvents/TicketThreadAuditLogEventItem'
 import { TicketThreadPhoneEventItem } from './components/TicketThreadPhoneEvents/TicketThreadPhoneEventItem'

@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react'
 
-import { TranslationLimit } from '../TranslationLimit'
+import { TranslationLimit } from '#ticket-messages/components/MessageBubble/components/TranslationLimit'
 
 describe('TranslationLimit', () => {
     beforeEach(() => {

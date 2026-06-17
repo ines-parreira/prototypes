@@ -4,14 +4,14 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import type { TicketMessageSchema } from '../schemas'
-import { extractHttpActionsFromMessages } from '../transforms/httpActions'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketMessageSchema } from '#ticket-messages/schemas'
+import { extractHttpActionsFromMessages } from '#ticket-messages/transforms/httpActions'
 import type {
     TicketThreadMessageData,
     TicketThreadMessageItem,
     TicketThreadRegularMessageItem,
-} from '../types'
+} from '#ticket-messages/types'
 
 type CreateMessageOverrides = Omit<
     Partial<TicketMessage>,

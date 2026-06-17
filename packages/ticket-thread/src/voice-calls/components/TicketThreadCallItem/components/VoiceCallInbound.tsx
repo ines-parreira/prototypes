@@ -4,9 +4,9 @@ import type {
     VoiceCall,
 } from '@gorgias/helpdesk-queries'
 
-import { MessageSender } from '../../../../ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
-import { useVoiceCallCustomer } from '../../../hooks/useVoiceCallCustomer'
-import { isFinalVoiceCallStatus } from '../../../models/utils'
+import { MessageSender } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
+import { useVoiceCallCustomer } from '#voice-calls/hooks/useVoiceCallCustomer'
+import { isFinalVoiceCallStatus } from '#voice-calls/models/utils'
 import { VoiceCallContainer } from './VoiceCallContainer'
 import { VoiceCallInboundStatus } from './VoiceCallInboundStatus'
 

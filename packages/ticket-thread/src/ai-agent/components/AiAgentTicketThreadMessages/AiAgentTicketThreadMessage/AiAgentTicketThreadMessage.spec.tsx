@@ -5,11 +5,11 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { useTicketThreadDateTimeFormat } from '../../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { render } from '../../../../tests/render.utils'
-import { TicketThreadItemTag } from '../../../../thread/itemTags'
-import type { DisplayedTicketThreadMessageItem } from '../../../../ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
-import type { TicketThreadAiAgentMessageItem } from '../../../../ticket-messages/types'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { render } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { DisplayedTicketThreadMessageItem } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import type { TicketThreadAiAgentMessageItem } from '#ticket-messages/types'
 import { AiAgentTicketThreadMessage } from './AiAgentTicketThreadMessage'
 
 const messageBodySpy = vi.fn()
@@ -20,7 +20,7 @@ const mockUseTicketThreadDateTimeFormat = vi.mocked(
 )
 
 vi.mock(
-    '../../../../ticket-messages/components/MessageBubble/components/MessageBody',
+    '#ticket-messages/components/MessageBubble/components/MessageBody',
     () => ({
         MessageBody: ({
             item,
@@ -34,7 +34,7 @@ vi.mock(
 )
 
 vi.mock(
-    '../../../../ticket-messages/components/MessageBubble/components/MessageFooter',
+    '#ticket-messages/components/MessageBubble/components/MessageFooter',
     () => ({
         MessageFooter: ({
             item,
@@ -48,14 +48,14 @@ vi.mock(
 )
 
 vi.mock(
-    '../../../../ticket-messages/components/TicketMessageActions/TicketMessageActions',
+    '#ticket-messages/components/TicketMessageActions/TicketMessageActions',
     () => ({
         TicketMessageActions: () => <div>TicketMessageActions</div>,
     }),
 )
 
 vi.mock(
-    '../../../../ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage',
+    '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage',
     () => ({
         useDisplayedTicketMessage: (args: {
             item: TicketThreadAiAgentMessageItem
@@ -63,7 +63,7 @@ vi.mock(
     }),
 )
 
-vi.mock('../../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 

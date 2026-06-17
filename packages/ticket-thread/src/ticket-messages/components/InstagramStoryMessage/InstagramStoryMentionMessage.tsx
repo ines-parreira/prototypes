@@ -1,7 +1,7 @@
-import type { TicketThreadSocialMediaInstagramStoryMentionItem } from '../../types'
-import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
-import { ViewOnInstagramLink } from '../InstagramMediaMessage/ViewOnInstagramLink'
-import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import { ViewOnInstagramLink } from '#ticket-messages/components/InstagramMediaMessage/ViewOnInstagramLink'
+import { SocialMessageBubble } from '#ticket-messages/components/SocialMessageBubble/SocialMessageBubble'
+import type { TicketThreadSocialMediaInstagramStoryMentionItem } from '#ticket-messages/types'
+import { getSocialChannelIcon } from '#ticket-messages/utils/getSocialChannelIcon'
 
 type InstagramStoryMentionMessageProps = {
     item: TicketThreadSocialMediaInstagramStoryMentionItem

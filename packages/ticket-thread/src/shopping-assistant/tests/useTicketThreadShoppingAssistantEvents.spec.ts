@@ -1,7 +1,7 @@
-import { renderHook } from '../../tests/render.utils'
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { InfluencedOrderSource } from '../constants'
-import { useTicketThreadShoppingAssistantEvents } from '../hooks/useTicketThreadShoppingAssistantEvents'
+import { InfluencedOrderSource } from '#shopping-assistant/constants'
+import { useTicketThreadShoppingAssistantEvents } from '#shopping-assistant/hooks/useTicketThreadShoppingAssistantEvents'
+import { renderHook } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 describe('useTicketThreadShoppingAssistantEvents', () => {
     it('returns influenced order items from the legacy bridge for the current ticket', () => {

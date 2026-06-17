@@ -1,13 +1,13 @@
 import { render as renderPrimitive, screen } from '@testing-library/react'
 
-import { render, renderHook } from '../../tests/render.utils'
-import { TicketThreadLegacyBridgeProvider } from '../TicketThreadLegacyBridgeProvider'
+import { TicketThreadLegacyBridgeProvider } from '#legacy-bridge/TicketThreadLegacyBridgeProvider'
 import type {
     CurrentTicketShoppingAssistantData,
     LegacyBridgeActions,
     LegacyBridgeContextType,
-} from '../types'
-import { useTicketThreadLegacyBridge } from '../useTicketThreadLegacyBridge'
+} from '#legacy-bridge/types'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge/useTicketThreadLegacyBridge'
+import { render, renderHook } from '#tests/render.utils'
 
 const currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData = {
     influencedOrders: [

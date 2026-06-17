@@ -1,7 +1,7 @@
 import { Icon, Loader } from '@gorgias/axiom'
 
-import { isActivePendingMessageItem } from '../../../../predicates'
-import type { TicketThreadSingleMessageItem } from '../../../../types'
+import { isActivePendingMessageItem } from '#ticket-messages/predicates'
+import type { TicketThreadSingleMessageItem } from '#ticket-messages/types'
 
 type MessageDeliveryIconProps = {
     item: TicketThreadSingleMessageItem

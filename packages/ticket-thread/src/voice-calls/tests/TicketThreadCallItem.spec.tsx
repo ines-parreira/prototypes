@@ -14,15 +14,15 @@ import {
     mockVoiceCall,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { TicketThreadCallItem } from '../components/TicketThreadCallItem/TicketThreadCallIItem'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { TicketThreadCallItem } from '#voice-calls/components/TicketThreadCallItem/TicketThreadCallIItem'
 import type {
     TicketThreadOutboundVoiceCallItem,
     TicketThreadVoiceCallItem,
-} from '../types'
+} from '#voice-calls/types'
 
 const testCustomer = mockCustomer({
     id: 100,

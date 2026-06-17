@@ -1,5 +1,5 @@
-import { TicketThreadItemTag } from '../../../itemTags'
-import { getThreadItemKey } from '../utils'
+import { getThreadItemKey } from '#thread/components/TicketThreadContainer/utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 describe('TicketThreadContainer utils', () => {
     it('builds stable keys for grouped events, rule suggestions, datetime fallbacks, and generic fallbacks', () => {

@@ -6,21 +6,21 @@ import {
     mockTicketSatisfactionSurvey,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../tests/render.utils'
-import { server } from '../../../../tests/server'
-import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../../../constants'
+import { TicketThreadSatisfactionSurveyItem as TicketThreadSatisfactionSurveyItemComponent } from '#satisfaction-surveys/components/TicketThreadSatisfactionSurveyItem/TicketTheadSatisfactionSurveyItem'
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '#satisfaction-surveys/constants'
 import {
     isScheduledSatisfactionSurveyItem,
     isSentSatisfactionSurveyItem,
     isToBeSentSatisfactionSurveyItem,
-} from '../../../predicates'
+} from '#satisfaction-surveys/predicates'
 import {
     toSurveyItemFromEvent,
     toSurveyItemFromSurvey,
-} from '../../../transforms'
-import type { TicketThreadSatisfactionSurveyItem } from '../../../types'
-import { TicketThreadSatisfactionSurveyItem as TicketThreadSatisfactionSurveyItemComponent } from '../TicketTheadSatisfactionSurveyItem'
+} from '#satisfaction-surveys/transforms'
+import type { TicketThreadSatisfactionSurveyItem } from '#satisfaction-surveys/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
 
 const defaultAuthorLabel = 'Jane Customer'
 

@@ -1,8 +1,8 @@
 import { Text } from '@gorgias/axiom'
 
-import { formatPhoneNumberInternational } from '../../../models/phoneFormatting'
-import type { VoiceCallSubject } from '../../../models/types'
-import { VoiceCallSubjectType } from '../../../models/types'
+import { formatPhoneNumberInternational } from '#voice-calls/models/phoneFormatting'
+import type { VoiceCallSubject } from '#voice-calls/models/types'
+import { VoiceCallSubjectType } from '#voice-calls/models/types'
 import { VoiceCallAgentLabel } from './VoiceCallAgentLabel'
 import { VoiceCallCustomerLabel } from './VoiceCallCustomerLabel'
 import { VoiceCallQueueLabel } from './VoiceCallQueueLabel'

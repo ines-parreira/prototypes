@@ -1,18 +1,18 @@
 import type { Event } from '@gorgias/helpdesk-types'
 
-import { assertNever } from '../../shared/assertNever'
-import { TicketThreadItemTag } from '../../thread/itemTags'
 import {
     isRespondedSatisfactionSurveyItem,
     isScheduledSatisfactionSurveyItem,
     isSentSatisfactionSurveyItem,
     isToBeSentSatisfactionSurveyItem,
-} from '../predicates'
-import type { TicketSatisfactionSurveySchema } from '../schemas'
+} from '#satisfaction-surveys/predicates'
+import type { TicketSatisfactionSurveySchema } from '#satisfaction-surveys/schemas'
 import type {
     TicketThreadRespondedSatisfactionSurveyItem,
     TicketThreadSatisfactionSurveyItem,
-} from '../types'
+} from '#satisfaction-surveys/types'
+import { assertNever } from '#shared/assertNever'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 export function toSurveyItemFromEvent(
     event: Event & {

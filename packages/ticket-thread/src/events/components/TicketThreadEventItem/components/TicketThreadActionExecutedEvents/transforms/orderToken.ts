@@ -1,6 +1,6 @@
 import type { BaseIntegration } from '@gorgias/helpdesk-types'
 
-import { assertNever } from '../../../../../../shared/assertNever'
+import { assertNever } from '#shared/assertNever'
 import type {
     ActionExecutedOrderToken,
     ActionExecutedPayload,

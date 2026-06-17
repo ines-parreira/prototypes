@@ -4,14 +4,14 @@ import {
     sentSatisfactionSurveySchema,
     ticketSatisfactionSurveySchema,
     toBeSentSatisfactionSurveySchema,
-} from '../schemas'
+} from '#satisfaction-surveys/schemas'
 import type {
     RespondedSatisfactionSurveySchema,
     ScheduledSatisfactionSurveySchema,
     SentSatisfactionSurveySchema,
     TicketSatisfactionSurveySchema,
     ToBeSentSatisfactionSurveySchema,
-} from '../types'
+} from '#satisfaction-surveys/types'
 
 export function isTicketSatisfactionSurvey(
     input: unknown,

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
-import { useTicketThreadLegacyBridge } from '../../legacy-bridge'
-import { toTicketThreadInfluencedOrderItems } from '../transforms'
-import type { TicketThreadShoppingAssistantItem } from '../types'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge'
+import { toTicketThreadInfluencedOrderItems } from '#shopping-assistant/transforms'
+import type { TicketThreadShoppingAssistantItem } from '#shopping-assistant/types'
 
 type UseTicketThreadShoppingAssistantEventsParams = {
     ticketId: number

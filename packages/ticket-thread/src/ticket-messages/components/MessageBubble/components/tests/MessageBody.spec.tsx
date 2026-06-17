@@ -7,11 +7,11 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../../tests/render.utils'
-import { TicketThreadItemTag } from '../../../../../thread/itemTags'
-import type { TicketThreadRegularMessageItem } from '../../../../types'
-import type { DisplayedTicketThreadMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
-import { MessageBody } from '../MessageBody'
+import { render } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import type { DisplayedTicketThreadMessageItem } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import type { TicketThreadRegularMessageItem } from '#ticket-messages/types'
 
 vi.mock('@repo/utils', async (importOriginal) => {
     const actual = await importOriginal<typeof Utils>()

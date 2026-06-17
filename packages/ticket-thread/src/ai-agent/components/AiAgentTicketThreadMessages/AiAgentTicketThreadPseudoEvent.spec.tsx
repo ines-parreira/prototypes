@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../tests/render.utils'
-import { TicketThreadAiAgentPseudoEventAction } from '../../types'
+import { TicketThreadAiAgentPseudoEventAction } from '#ai-agent/types'
+import { render } from '#tests/render.utils'
 import { AiAgentTicketThreadPseudoEvent } from './AiAgentTicketThreadPseudoEvent'
 
 describe('AiAgentTicketThreadPseudoEvent', () => {

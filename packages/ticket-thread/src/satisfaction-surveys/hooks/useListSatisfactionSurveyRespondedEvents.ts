@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { isSatisfactionSurveyRespondedEvent } from '../../events/predicates'
+import { isSatisfactionSurveyRespondedEvent } from '#events/predicates'
 import { useListAllSatisfactionSurveyEvents } from './useListAllSatisfactionSurveyEvents'
 
 export function useListSatisfactionSurveyRespondedEvents(

@@ -5,10 +5,10 @@ import { act, screen, waitFor } from '@testing-library/react'
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
-import { render } from '../../../../../tests/render.utils'
-import { TicketThreadItemTag } from '../../../../../thread/itemTags'
-import type { TicketThreadRegularMessageItem } from '../../../../types'
-import { MessageAttachments } from '../MessageAttachments'
+import { render } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { MessageAttachments } from '#ticket-messages/components/MessageBubble/components/MessageAttachments'
+import type { TicketThreadRegularMessageItem } from '#ticket-messages/types'
 
 vi.mock('@repo/utils', async (importOriginal) => {
     const actual = await importOriginal<typeof Utils>()

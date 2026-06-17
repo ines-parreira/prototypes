@@ -16,15 +16,15 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { useTicketThreadDateTimeFormat } from '../../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { render } from '../../../../tests/render.utils'
-import { server } from '../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../thread/itemTags'
-import { TicketThreadPendingState } from '../../../types'
-import type { TicketThreadSocialMediaWhatsAppMessageItem } from '../../../types'
-import { WhatsAppMessage } from '../WhatsAppMessage'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { WhatsAppMessage } from '#ticket-messages/components/WhatsAppMessage/WhatsAppMessage'
+import { TicketThreadPendingState } from '#ticket-messages/types'
+import type { TicketThreadSocialMediaWhatsAppMessageItem } from '#ticket-messages/types'
 
-vi.mock('../../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 

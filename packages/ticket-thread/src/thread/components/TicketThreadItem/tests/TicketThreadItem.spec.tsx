@@ -23,18 +23,18 @@ import {
     mockVoiceCall,
 } from '@gorgias/helpdesk-mocks'
 
-import { PHONE_EVENTS } from '../../../../events/constants'
-import * as LegacyBridgeModule from '../../../../legacy-bridge'
-import { InfluencedOrderSource } from '../../../../shopping-assistant/constants'
-import { getCurrentUserHandler } from '../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../tests/render.utils'
-import { server } from '../../../../tests/server'
-import { TicketThreadItemTag } from '../../../itemTags'
-import type { TicketThreadItem } from '../../../types'
-import { TicketThreadItem as TicketThreadItemComponent } from '../TicketThreadItem'
+import { PHONE_EVENTS } from '#events/constants'
+import * as LegacyBridgeModule from '#legacy-bridge'
+import { InfluencedOrderSource } from '#shopping-assistant/constants'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItem as TicketThreadItemComponent } from '#thread/components/TicketThreadItem/TicketThreadItem'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 
 vi.mock(
-    '../../../../ticket-messages/components/MessageBubble/components/TranslationsDropdown',
+    '#ticket-messages/components/MessageBubble/components/TranslationsDropdown',
     () => ({
         TranslationsDropdown: () => null,
     }),

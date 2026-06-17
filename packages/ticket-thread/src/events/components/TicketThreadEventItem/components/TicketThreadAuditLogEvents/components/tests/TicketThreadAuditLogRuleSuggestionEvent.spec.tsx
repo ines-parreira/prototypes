@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react'
 
-import { getCurrentUserHandler } from '../../../../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../../../../tests/render.utils'
-import { server } from '../../../../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../../../../thread/itemTags'
-import type { TicketThreadAuditLogEventByType } from '../../../../../../types'
-import { TicketThreadAuditLogRuleSuggestionEvent } from '../TicketThreadAuditLogRuleSuggestionEvent'
+import { TicketThreadAuditLogRuleSuggestionEvent } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEvents/components/TicketThreadAuditLogRuleSuggestionEvent'
+import type { TicketThreadAuditLogEventByType } from '#events/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function buildRuleSuggestionItem(
     type: 'rule-executed' | 'rule-suggestion-suggested',

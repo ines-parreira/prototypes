@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { TicketThreadPendingState } from '../../types'
+import { TicketThreadPendingState } from '#ticket-messages/types'
 import { MessageBubble } from './MessageBubble'
 
 describe('MessageBubble', () => {

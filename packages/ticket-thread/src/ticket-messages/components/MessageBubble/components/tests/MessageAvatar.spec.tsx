@@ -5,7 +5,7 @@ import {
     mockTicketMessageUserOrCustomer,
 } from '@gorgias/helpdesk-mocks'
 
-import { server } from '../../../../../tests/server'
+import { server } from '#tests/server'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -19,14 +19,14 @@ afterAll(() => {
     server.close()
 })
 
-import { render } from '../../../../../tests/render.utils'
-import { MessageAvatar } from '../MessageHeader/MessageAvatar'
+import { render } from '#tests/render.utils'
+import { MessageAvatar } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar'
 
 vi.mock('@repo/customer/hooks', () => ({
     useGetCustomer: vi.fn(),
 }))
 
-vi.mock('../../../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(() => ({
         format: {
             relative: 'YYYY-MM-DD',

@@ -4,8 +4,8 @@ import { screen, waitFor } from '@testing-library/react'
 
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
-import { render } from '../../../../../tests/render.utils'
-import { ProductAttachment } from '../ProductAttachment'
+import { render } from '#tests/render.utils'
+import { ProductAttachment } from '#ticket-messages/components/MessageBubble/components/ProductAttachment'
 
 vi.mock('@repo/utils', async (importOriginal) => {
     const actual = await importOriginal<typeof Utils>()

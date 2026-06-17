@@ -2,7 +2,7 @@ import { formatDatetime } from '@repo/utils'
 
 import { Text, Tooltip } from '@gorgias/axiom'
 
-import { useTicketThreadDateTimeFormat } from '../../../../../shared/hooks/useTicketThreadDateTimeFormat'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
 import { DateTooltipContent } from './DateTooltipContent'
 
 export type MessageTimestampProps = {

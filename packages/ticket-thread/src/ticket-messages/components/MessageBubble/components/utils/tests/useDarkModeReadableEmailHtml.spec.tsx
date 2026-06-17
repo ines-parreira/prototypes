@@ -1,11 +1,11 @@
-import { renderHook } from '../../../../../../tests/render.utils'
+import { renderHook } from '#tests/render.utils'
 import {
     annotateDarkModeReadableEmailHtml,
     EMAIL_ELEMENT_WITH_AUTHORED_BACKGROUND_CLASS,
     EMAIL_ELEMENT_WITH_AUTHORED_DARK_BACKGROUND_CLASS,
     EMAIL_ELEMENT_WITH_AUTHORED_LIGHT_BACKGROUND_CLASS,
     useDarkModeReadableEmailHtml,
-} from '../useDarkModeReadableEmailHtml'
+} from '#ticket-messages/components/MessageBubble/components/utils/useDarkModeReadableEmailHtml'
 
 describe('annotateDarkModeReadableEmailHtml', () => {
     it('marks elements with inline painted background declarations', () => {

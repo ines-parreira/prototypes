@@ -2,8 +2,8 @@ import { screen } from '@testing-library/react'
 
 import type { VoiceCallSummariesItem } from '@gorgias/helpdesk-types'
 
-import { render } from '../../tests/render.utils'
-import { VoiceCallSummary } from '../components/TicketThreadCallItem/components/VoiceCallSummary'
+import { render } from '#tests/render.utils'
+import { VoiceCallSummary } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallSummary'
 
 const summary1: VoiceCallSummariesItem = {
     id: 1,

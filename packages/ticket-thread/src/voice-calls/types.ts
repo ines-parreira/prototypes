@@ -2,7 +2,7 @@ import type { Prettify } from '@repo/types'
 
 import type { VoiceCall } from '@gorgias/helpdesk-queries'
 
-import type { TicketThreadItemTag } from '../thread/itemTags'
+import type { TicketThreadItemTag } from '#thread/itemTags'
 import type { OutboundVoiceCallSchema } from './schemas'
 
 export type TicketThreadVoiceCallItem = {

@@ -4,8 +4,8 @@ import { act } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -19,7 +19,7 @@ afterAll(() => {
     server.close()
 })
 
-import { useAudioPlayer } from '../hooks/useAudioPlayer'
+import { useAudioPlayer } from '#voice-calls/hooks/useAudioPlayer'
 
 beforeAll(() => {
     window.HTMLMediaElement.prototype.play = vi

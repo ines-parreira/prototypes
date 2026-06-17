@@ -8,13 +8,13 @@ import {
     mockVoiceCallRecording,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
 import {
     VoiceCallRecordings,
     VoiceCallTranscriptions,
-} from '../components/TicketThreadCallItem/components/VoiceCallRecordings'
-import { VoiceCallRecordingType } from '../models/types'
+} from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallRecordings'
+import { VoiceCallRecordingType } from '#voice-calls/models/types'
 
 beforeAll(() => {
     window.HTMLMediaElement.prototype.play = vi

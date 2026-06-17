@@ -1,7 +1,7 @@
 import {
     getContactReasonSuggestionCount,
     isContactReasonSuggestion,
-} from '../predicates'
+} from '#suggestions/contact-reason-prediction/predicates'
 
 describe('contact reason suggestion predicate', () => {
     it('counts every field with prediction.display = true', () => {

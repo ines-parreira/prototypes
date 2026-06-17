@@ -1,6 +1,6 @@
 import { isProduction } from '@repo/utils'
 
-import { assertNever } from '../assertNever'
+import { assertNever } from '#shared/assertNever'
 
 vi.mock('@repo/utils', () => ({
     isProduction: vi.fn(),

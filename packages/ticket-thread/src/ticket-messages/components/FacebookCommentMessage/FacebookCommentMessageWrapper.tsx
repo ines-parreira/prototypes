@@ -1,9 +1,9 @@
 import { Box } from '@gorgias/axiom'
 
-import { useTicketThreadLegacyBridge } from '../../../legacy-bridge/useTicketThreadLegacyBridge'
-import { isSocialMediaHiddenComment } from '../../predicates'
-import type { TicketThreadSocialMediaFacebookCommentItem } from '../../types'
-import { RespondedByDMBubble } from '../SocialMessageBubble/RespondedByDMBubble'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge/useTicketThreadLegacyBridge'
+import { RespondedByDMBubble } from '#ticket-messages/components/SocialMessageBubble/RespondedByDMBubble'
+import { isSocialMediaHiddenComment } from '#ticket-messages/predicates'
+import type { TicketThreadSocialMediaFacebookCommentItem } from '#ticket-messages/types'
 import { FacebookCommentMessage } from './FacebookCommentMessage'
 import { FacebookCommentMessageActions } from './FacebookCommentMessageActions'
 import type { FacebookCommentMeta } from './types'

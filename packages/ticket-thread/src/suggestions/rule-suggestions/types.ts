@@ -1,6 +1,6 @@
 import type { Prettify } from '@repo/types'
 
-import type { TicketThreadItemTag } from '../../thread/itemTags'
+import type { TicketThreadItemTag } from '#thread/itemTags'
 import type { RuleSuggestionMetaSchema } from './schemas'
 
 export type TicketThreadRuleSuggestionItem = {

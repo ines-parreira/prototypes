@@ -8,10 +8,10 @@ import { HttpResponse } from 'msw'
 import { mockCustomer, mockGetCustomerHandler } from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { customerGetQueryOptions } from '../../shared/hooks/customerQueryOptions'
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { useVoiceCallCustomer } from '../hooks/useVoiceCallCustomer'
+import { customerGetQueryOptions } from '#shared/hooks/customerQueryOptions'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { useVoiceCallCustomer } from '#voice-calls/hooks/useVoiceCallCustomer'
 
 const testCustomer = mockCustomer({ id: 10, name: 'Jane Doe' })
 

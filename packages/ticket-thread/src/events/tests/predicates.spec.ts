@@ -1,4 +1,3 @@
-import { TicketThreadItemTag } from '../../thread/itemTags'
 import {
     isActionExecutedEvent,
     isAuditLogEvent,
@@ -8,8 +7,12 @@ import {
     isRuleExecutedType,
     isSystemRuleEvent,
     isViaRuleEvent,
-} from '../predicates'
-import { shouldRenderTicketThreadEvent, toTaggedEvent } from '../transforms'
+} from '#events/predicates'
+import {
+    shouldRenderTicketThreadEvent,
+    toTaggedEvent,
+} from '#events/transforms'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 describe('ticket thread event predicates', () => {
     const baseEvent = {

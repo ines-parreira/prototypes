@@ -1,6 +1,6 @@
 import { Skeleton } from '@gorgias/axiom'
 
-import { TicketThreadEventContainer } from '../TicketThreadEventContainer'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
 
 export function TicketThreadActionExecutedEventItemLoadingState() {
     return (

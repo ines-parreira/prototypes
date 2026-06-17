@@ -1,10 +1,10 @@
 import { Box } from '@gorgias/axiom'
 
-import { TicketThreadItemTag } from '../../../thread/itemTags'
 import type {
     TicketThreadEventItem,
     TicketThreadGroupedEventsItem,
-} from '../../types'
+} from '#events/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
 import { TicketThreadSingleEventItem } from './TicketTheadEventItem'
 
 type TicketThreadGroupedEventsItemProps = {

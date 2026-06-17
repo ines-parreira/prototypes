@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import { Box } from '@gorgias/axiom'
 
-import { assertNever } from '../../../shared/assertNever'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { TicketThreadContactReasonSuggestionItem } from '../../contact-reason-prediction/types'
-import type { TicketThreadRuleSuggestionItem } from '../../rule-suggestions/types'
+import { assertNever } from '#shared/assertNever'
+import type { TicketThreadContactReasonSuggestionItem } from '#suggestions/contact-reason-prediction/types'
+import type { TicketThreadRuleSuggestionItem } from '#suggestions/rule-suggestions/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 type TicketThreadSuggestionItemProps = {
     item:

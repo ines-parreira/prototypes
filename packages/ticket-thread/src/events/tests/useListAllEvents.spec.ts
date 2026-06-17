@@ -8,9 +8,9 @@ import {
     mockListEventsResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { useListAllTicketEvents } from '../hooks/useListAllEvents'
+import { useListAllTicketEvents } from '#events/hooks/useListAllEvents'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
 
 describe('useListAllTicketEvents', () => {
     it('fetches ticket events with expected request parameters', async () => {

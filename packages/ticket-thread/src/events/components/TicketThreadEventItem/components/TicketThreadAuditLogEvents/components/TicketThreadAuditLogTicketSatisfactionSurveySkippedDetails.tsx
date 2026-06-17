@@ -1,7 +1,7 @@
 import { Text } from '@gorgias/axiom'
 
-import type { TicketThreadAuditLogEventByType } from '../../../../../types'
-import { TicketThreadEventContainer } from '../../TicketThreadEventContainer'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import type { TicketThreadAuditLogEventByType } from '#events/types'
 
 type TicketThreadAuditLogTicketSatisfactionSurveySkippedDetailsProps = {
     item: TicketThreadAuditLogEventByType<'ticket-satisfaction-survey-skipped'>

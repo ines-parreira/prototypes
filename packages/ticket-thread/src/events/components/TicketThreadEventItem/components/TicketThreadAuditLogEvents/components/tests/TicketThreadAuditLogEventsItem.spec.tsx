@@ -13,16 +13,16 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../../../../tests/render.utils'
-import { server } from '../../../../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../../../../thread/itemTags'
+import { TicketThreadAuditLogEventItem } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEvents/TicketThreadAuditLogEventItem'
 import type {
     TicketThreadAuditLogAttribution,
     TicketThreadAuditLogEvent,
     TicketThreadAuditLogEventByType,
-} from '../../../../../../types'
-import { TicketThreadAuditLogEventItem } from '../../TicketThreadAuditLogEventItem'
+} from '#events/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function getUsersHandler(users: unknown[]) {
     return mockListUsersHandler(async () =>

@@ -1,6 +1,6 @@
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import type { TicketThreadItem } from '../../thread/types'
-import { groupConsecutiveEvents } from '../transforms'
+import { groupConsecutiveEvents } from '#events/transforms'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 
 describe('groupConsecutiveEvents', () => {
     const firstEvent = {

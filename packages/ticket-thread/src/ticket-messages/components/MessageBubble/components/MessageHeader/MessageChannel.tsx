@@ -1,10 +1,10 @@
 import { ticketMessageSourceToIconName } from '@repo/tickets'
 import { formatDatetime } from '@repo/utils'
 
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import type { TicketMessageChannel } from '#ticket-messages/schemas'
 import type { IconName } from '@gorgias/axiom'
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
-import { useTicketThreadDateTimeFormat } from '../../../../../shared/hooks/useTicketThreadDateTimeFormat'
-import type { TicketMessageChannel } from '../../../../schemas'
 import css from './MessageChannel.less'
 
 export type MessageChannelProps = {

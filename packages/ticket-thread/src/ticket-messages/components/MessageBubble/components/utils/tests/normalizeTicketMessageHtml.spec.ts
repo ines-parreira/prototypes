@@ -1,4 +1,4 @@
-import { normalizeTicketMessageHtml } from '../normalizeTicketMessageHtml'
+import { normalizeTicketMessageHtml } from '#ticket-messages/components/MessageBubble/components/utils/normalizeTicketMessageHtml'
 
 describe('normalizeTicketMessageHtml', () => {
     it('renders positioned Outlook fallback elements as image overlays', () => {

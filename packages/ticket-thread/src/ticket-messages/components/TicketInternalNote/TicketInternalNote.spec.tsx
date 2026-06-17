@@ -7,17 +7,17 @@ import {
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
-import { render } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadPendingState } from '../../types'
-import type { TicketThreadInternalNoteItem } from '../../types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadPendingState } from '#ticket-messages/types'
+import type { TicketThreadInternalNoteItem } from '#ticket-messages/types'
 import { TicketInternalNote } from './TicketInternalNote'
 
 const messageBubbleSpy = vi.fn()
 const messageErrorsSpy = vi.fn()
 
-vi.mock('../MessageBubble/MessageBubble', () => ({
+vi.mock('#ticket-messages/components/MessageBubble/MessageBubble', () => ({
     MessageBubble: ({
         children,
         pendingState,
@@ -31,55 +31,85 @@ vi.mock('../MessageBubble/MessageBubble', () => ({
     },
 }))
 
-vi.mock('../MessageBubble/components/MessageHeader/Layout', () => ({
-    MessageHeaderContainer: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-    ),
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageHeader/Layout',
+    () => ({
+        MessageHeaderContainer: ({ children }: { children: ReactNode }) => (
+            <div>{children}</div>
+        ),
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageHeader/MessageAvatar', () => ({
-    MessageAvatar: () => <div>MessageAvatar</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar',
+    () => ({
+        MessageAvatar: () => <div>MessageAvatar</div>,
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageHeader/MessageSender', () => ({
-    MessageSender: () => <div>MessageSender</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender',
+    () => ({
+        MessageSender: () => <div>MessageSender</div>,
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageHeader/MessageChannel', () => ({
-    MessageChannel: () => <div>MessageChannel</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel',
+    () => ({
+        MessageChannel: () => <div>MessageChannel</div>,
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageHeader/MessageTimestamp', () => ({
-    MessageTimestamp: () => <div>MessageTimestamp</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp',
+    () => ({
+        MessageTimestamp: () => <div>MessageTimestamp</div>,
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageBody', () => ({
-    MessageBody: () => <div>MessageBody</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageBody',
+    () => ({
+        MessageBody: () => <div>MessageBody</div>,
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageFooter', () => ({
-    MessageFooter: () => <div>MessageFooter</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageFooter',
+    () => ({
+        MessageFooter: () => <div>MessageFooter</div>,
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageErrors', () => ({
-    MessageErrors: (props: {
-        isPending?: boolean
-        message: TicketThreadInternalNoteItem['data']
-        ticketId: number
-    }) => {
-        messageErrorsSpy(props)
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageErrors',
+    () => ({
+        MessageErrors: (props: {
+            isPending?: boolean
+            message: TicketThreadInternalNoteItem['data']
+            ticketId: number
+        }) => {
+            messageErrorsSpy(props)
 
-        return <div>MessageErrors</div>
-    },
-}))
+            return <div>MessageErrors</div>
+        },
+    }),
+)
 
-vi.mock('../MessageBubble/components/MessageAppliedActions', () => ({
-    MessageAppliedActions: () => <div>MessageAppliedActions</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageAppliedActions',
+    () => ({
+        MessageAppliedActions: () => <div>MessageAppliedActions</div>,
+    }),
+)
 
-vi.mock('../TicketMessageActions/TicketMessageActions', () => ({
-    TicketMessageActions: () => <div>TicketMessageActions</div>,
-}))
+vi.mock(
+    '#ticket-messages/components/TicketMessageActions/TicketMessageActions',
+    () => ({
+        TicketMessageActions: () => <div>TicketMessageActions</div>,
+    }),
+)
 
 beforeEach(() => {
     messageBubbleSpy.mockClear()

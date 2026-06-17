@@ -1,7 +1,7 @@
 import { Box, Text } from '@gorgias/axiom'
 
-import { MessageTimestamp } from '../../../../ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
-import type { ProcessedEvent } from '../../../models/processEvents'
+import { MessageTimestamp } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
+import type { ProcessedEvent } from '#voice-calls/models/processEvents'
 import { VoiceCallSubjectLabel } from './VoiceCallSubjectLabel'
 import { VoiceCallTimelineItem } from './VoiceCallTimeline'
 

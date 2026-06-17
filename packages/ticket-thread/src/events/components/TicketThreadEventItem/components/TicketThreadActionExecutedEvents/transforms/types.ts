@@ -1,4 +1,4 @@
-import type { TicketThreadActionExecutedEventItem } from '../../../../../types'
+import type { TicketThreadActionExecutedEventItem } from '#events/types'
 
 export type ActionExecutedEventData =
     TicketThreadActionExecutedEventItem['data']['data']

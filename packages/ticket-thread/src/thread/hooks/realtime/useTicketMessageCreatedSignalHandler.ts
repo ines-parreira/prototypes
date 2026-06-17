@@ -9,7 +9,7 @@ import { getTicketMessage } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { ListMessages200 } from '@gorgias/helpdesk-types'
 
-import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '../../../ticket-messages/hooks/useListTicketMessages'
+import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '#ticket-messages/hooks/useListTicketMessages'
 
 type UseTicketMessageCreatedSignalHandlerParams = {
     ticketId?: number

@@ -14,10 +14,10 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallInbound } from '../components/TicketThreadCallItem/components/VoiceCallInbound'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallInbound } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallInbound'
 
 const customer = mockCustomer({
     id: 1,

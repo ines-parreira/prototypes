@@ -1,7 +1,7 @@
 import { Icon, Text } from '@gorgias/axiom'
 
-import { TicketThreadEventContainer } from '../../../events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
-import type { TicketThreadSatisfactionSurveyItemByStatus } from '../../types'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import type { TicketThreadSatisfactionSurveyItemByStatus } from '#satisfaction-surveys/types'
 
 type TicketThreadToBeSentSatisfactionSurveyProps = {
     item: TicketThreadSatisfactionSurveyItemByStatus<'to-be-sent'>

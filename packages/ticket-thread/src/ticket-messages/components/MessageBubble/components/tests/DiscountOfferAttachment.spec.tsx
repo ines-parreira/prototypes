@@ -2,8 +2,8 @@ import { screen } from '@testing-library/react'
 
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
-import { render } from '../../../../../tests/render.utils'
-import { DiscountOfferAttachment } from '../DiscountOfferAttachment'
+import { render } from '#tests/render.utils'
+import { DiscountOfferAttachment } from '#ticket-messages/components/MessageBubble/components/DiscountOfferAttachment'
 
 function makeAttachment(
     overrides: Partial<TicketMessageAttachment>,

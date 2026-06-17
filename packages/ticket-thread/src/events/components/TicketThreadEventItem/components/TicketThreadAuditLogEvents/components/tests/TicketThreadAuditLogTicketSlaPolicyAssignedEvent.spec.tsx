@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react'
 
-import { getCurrentUserHandler } from '../../../../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../../../../tests/render.utils'
-import { server } from '../../../../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../../../../thread/itemTags'
-import type { TicketThreadAuditLogEventByType } from '../../../../../../types'
-import { TicketThreadAuditLogTicketSlaPolicyAssignedEvent } from '../TicketThreadAuditLogTicketSlaPolicyAssignedEvent'
+import { TicketThreadAuditLogTicketSlaPolicyAssignedEvent } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEvents/components/TicketThreadAuditLogTicketSlaPolicyAssignedEvent'
+import type { TicketThreadAuditLogEventByType } from '#events/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function buildItem(
     eventData: TicketThreadAuditLogEventByType<'ticket-sla-policy-assigned'>['data']['data'],

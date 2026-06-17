@@ -8,7 +8,7 @@ import {
     mockUpdateTicketMessageResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { server } from '../../../../../tests/server'
+import { server } from '#tests/server'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -22,9 +22,9 @@ afterAll(() => {
     server.close()
 })
 
-import type { LegacyBridgeActions } from '../../../../../legacy-bridge'
-import { render } from '../../../../../tests/render.utils'
-import { MessageErrors } from '../MessageErrors'
+import type { LegacyBridgeActions } from '#legacy-bridge'
+import { render } from '#tests/render.utils'
+import { MessageErrors } from '#ticket-messages/components/MessageBubble/components/MessageErrors'
 
 function makeLegacyActions(): LegacyBridgeActions {
     return {

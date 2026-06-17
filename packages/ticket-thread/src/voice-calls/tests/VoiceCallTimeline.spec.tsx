@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../tests/render.utils'
+import { render } from '#tests/render.utils'
 import {
     VoiceCallTimeline,
     VoiceCallTimelineItem,
-} from '../components/TicketThreadCallItem/components/VoiceCallTimeline'
+} from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallTimeline'
 
 describe('VoiceCallTimeline', () => {
     it('renders children', () => {

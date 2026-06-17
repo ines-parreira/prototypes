@@ -14,10 +14,10 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallContainer } from '../components/TicketThreadCallItem/components/VoiceCallContainer'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallContainer } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallContainer'
 
 beforeAll(() => {
     window.HTMLMediaElement.prototype.play = vi

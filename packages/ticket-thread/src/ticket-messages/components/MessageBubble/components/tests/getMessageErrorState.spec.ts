@@ -1,6 +1,6 @@
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import { getMessageErrorState } from '../utils/getMessageErrorState'
+import { getMessageErrorState } from '#ticket-messages/components/MessageBubble/components/utils/getMessageErrorState'
 
 describe('getMessageErrorState', () => {
     it('returns the transformed Yotpo error state', () => {

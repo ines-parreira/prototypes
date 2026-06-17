@@ -8,8 +8,8 @@ import {
 } from '@gorgias/axiom'
 import type { VoiceCall } from '@gorgias/helpdesk-queries'
 
-import { getOutboundDisplayStatus } from '../../../models/statusMapping'
-import { VoiceCallDisplayStatus } from '../../../models/types'
+import { getOutboundDisplayStatus } from '#voice-calls/models/statusMapping'
+import { VoiceCallDisplayStatus } from '#voice-calls/models/types'
 import { VoiceCallCustomerLabel } from './VoiceCallCustomerLabel'
 import { VoiceCallDuration } from './VoiceCallDuration'
 import { VoiceCallEvents } from './VoiceCallEvents'

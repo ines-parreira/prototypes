@@ -18,7 +18,7 @@ import type {
     SocialMediaTwitterDirectMessageSchema,
     SocialMediaTwitterTweetSchema,
     SocialMediaWhatsAppMessageSchema,
-} from '../schemas'
+} from '#ticket-messages/schemas'
 import {
     activePendingMessageSchema,
     aiAgentDraftMessageSchema,
@@ -44,12 +44,12 @@ import {
     socialMediaTwitterTweetSchema,
     socialMediaWhatsAppMessageSchema,
     ticketMessageSchema,
-} from '../schemas'
-import { TicketThreadPendingState } from '../types'
+} from '#ticket-messages/schemas'
+import { TicketThreadPendingState } from '#ticket-messages/types'
 import type {
     TicketThreadMessageData,
     TicketThreadSingleMessageItem,
-} from '../types'
+} from '#ticket-messages/types'
 
 export function isTicketMessage(
     input: unknown,

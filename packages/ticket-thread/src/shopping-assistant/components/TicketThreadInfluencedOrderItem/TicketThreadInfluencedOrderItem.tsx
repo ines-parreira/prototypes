@@ -1,9 +1,9 @@
 import { Box, Icon, Text } from '@gorgias/axiom'
 
-import { TicketThreadEventContainer } from '../../../events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../../../events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
-import { InfluencedOrderSource } from '../../constants'
-import type { TicketThreadInfluencedOrderItem as TicketThreadInfluencedOrderItemType } from '../../types'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import { InfluencedOrderSource } from '#shopping-assistant/constants'
+import type { TicketThreadInfluencedOrderItem as TicketThreadInfluencedOrderItemType } from '#shopping-assistant/types'
 
 type TicketThreadInfluencedOrderItemProps = {
     item: TicketThreadInfluencedOrderItemType

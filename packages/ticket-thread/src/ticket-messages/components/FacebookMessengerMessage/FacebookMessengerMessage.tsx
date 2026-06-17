@@ -1,12 +1,12 @@
 import { Box } from '@gorgias/axiom'
 
-import type { TicketThreadSocialMediaFacebookMessageItem } from '../../types'
-import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageFooter } from '../MessageBubble/components/MessageFooter'
-import { OriginalCommentContext } from '../SocialMessageBubble/OriginalCommentContext'
-import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
-import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
-import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { OriginalCommentContext } from '#ticket-messages/components/SocialMessageBubble/OriginalCommentContext'
+import { SocialMessageBubble } from '#ticket-messages/components/SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { TicketMessageActions } from '#ticket-messages/components/TicketMessageActions/TicketMessageActions'
+import type { TicketThreadSocialMediaFacebookMessageItem } from '#ticket-messages/types'
 
 type FacebookMessengerMessageProps = {
     item: TicketThreadSocialMediaFacebookMessageItem

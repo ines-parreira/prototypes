@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../../tests/render.utils'
-import { TicketThreadWidthContext } from '../../../../../thread/context/TicketThreadWidth'
-import type { BubbleActionItem } from '../BubbleActions'
-import { BubbleActions } from '../BubbleActions'
+import { render } from '#tests/render.utils'
+import { TicketThreadWidthContext } from '#thread/context/TicketThreadWidth'
+import type { BubbleActionItem } from '#ticket-messages/components/MessageBubble/components/BubbleActions'
+import { BubbleActions } from '#ticket-messages/components/MessageBubble/components/BubbleActions'
 
 function makeItem(overrides: Partial<BubbleActionItem> = {}): BubbleActionItem {
     return {

@@ -1,11 +1,11 @@
 import { Box, Text } from '@gorgias/axiom'
 
-import type { TicketThreadSocialMediaInstagramStoryReplyItem } from '../../types'
-import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
-import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageFooter } from '../MessageBubble/components/MessageFooter'
-import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
-import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { SocialMessageBubble } from '#ticket-messages/components/SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import type { TicketThreadSocialMediaInstagramStoryReplyItem } from '#ticket-messages/types'
+import { getSocialChannelIcon } from '#ticket-messages/utils/getSocialChannelIcon'
 
 type InstagramStoryReplyMessageProps = {
     item: TicketThreadSocialMediaInstagramStoryReplyItem

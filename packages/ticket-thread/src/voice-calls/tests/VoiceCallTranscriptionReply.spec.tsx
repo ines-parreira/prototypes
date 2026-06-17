@@ -7,9 +7,9 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallTranscriptionReply } from '../components/TicketThreadCallItem/components/VoiceCallTranscriptionReply'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallTranscriptionReply } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallTranscriptionReply'
 
 const testAgent = mockUser({ id: 42, name: 'Agent Smith' })
 

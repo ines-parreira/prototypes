@@ -4,8 +4,8 @@ import { mockVoiceCall } from '@gorgias/helpdesk-mocks'
 import type { VoiceCall } from '@gorgias/helpdesk-queries'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { render } from '../../tests/render.utils'
-import { VoiceCallDuration } from '../components/TicketThreadCallItem/components/VoiceCallDuration'
+import { render } from '#tests/render.utils'
+import { VoiceCallDuration } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallDuration'
 
 describe('VoiceCallDuration', () => {
     it('renders "Duration Xm Ys" for a completed call with duration', () => {

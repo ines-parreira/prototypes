@@ -1,16 +1,16 @@
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { AI_AGENT_BOT_EMAILS } from '../../ticket-messages/constants'
+import {
+    isAiAgentPseudoEventMessageItem,
+    shouldGroupLegacyAiAgentMessages,
+} from '#ai-agent/predicates/pseudoEvents'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { AI_AGENT_BOT_EMAILS } from '#ticket-messages/constants'
 import type {
     TicketThreadAiAgentInternalNoteItem,
     TicketThreadAiAgentMessageItem,
     TicketThreadRegularMessageItem,
-} from '../../ticket-messages/types'
-import {
-    isAiAgentPseudoEventMessageItem,
-    shouldGroupLegacyAiAgentMessages,
-} from '../predicates/pseudoEvents'
+} from '#ticket-messages/types'
 
 function createAiAgentMessageItem(
     overrides: Partial<TicketThreadAiAgentMessageItem['data']> = {},

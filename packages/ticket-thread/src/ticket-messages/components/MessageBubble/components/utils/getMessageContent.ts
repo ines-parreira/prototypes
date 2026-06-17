@@ -5,7 +5,7 @@ import {
     sanitizeHtmlDefault,
 } from '@repo/utils'
 
-import type { MessageBodyItem } from '../MessageBody'
+import type { MessageBodyItem } from '#ticket-messages/components/MessageBubble/components/MessageBody'
 import { normalizeTicketMessageHtml } from './normalizeTicketMessageHtml'
 
 function normalizeContent(content: string): string {

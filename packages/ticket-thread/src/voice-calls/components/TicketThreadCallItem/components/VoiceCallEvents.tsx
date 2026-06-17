@@ -1,9 +1,12 @@
 import { Box, Skeleton, Text } from '@gorgias/axiom'
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-types'
 
-import { useVoiceCallEvents } from '../../../hooks/useVoiceCallEvents'
-import { hasFlowEndEvent, processEvents } from '../../../models/processEvents'
-import type { VoiceCallEvent } from '../../../models/types'
+import { useVoiceCallEvents } from '#voice-calls/hooks/useVoiceCallEvents'
+import {
+    hasFlowEndEvent,
+    processEvents,
+} from '#voice-calls/models/processEvents'
+import type { VoiceCallEvent } from '#voice-calls/models/types'
 import { VoiceCallEventItem } from './VoiceCallEventItem'
 import { VoiceCallTimeline } from './VoiceCallTimeline'
 

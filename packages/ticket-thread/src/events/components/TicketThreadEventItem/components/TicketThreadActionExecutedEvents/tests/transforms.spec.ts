@@ -4,19 +4,19 @@ import {
     getActionExecutedErrorMessage,
     getActionExecutedPayloadEntries,
     getHttpActionModalSections,
-} from '../transforms/details'
-import { resolveActionExecutedIntegration } from '../transforms/integration'
-import { getActionExecutedLabel } from '../transforms/labels'
-import { getActionExecutedOrderToken } from '../transforms/orderToken'
+} from '#events/components/TicketThreadEventItem/components/TicketThreadActionExecutedEvents/transforms/details'
+import { resolveActionExecutedIntegration } from '#events/components/TicketThreadEventItem/components/TicketThreadActionExecutedEvents/transforms/integration'
+import { getActionExecutedLabel } from '#events/components/TicketThreadEventItem/components/TicketThreadActionExecutedEvents/transforms/labels'
+import { getActionExecutedOrderToken } from '#events/components/TicketThreadEventItem/components/TicketThreadActionExecutedEvents/transforms/orderToken'
 import {
     getActionExecutedSourceFamily,
     getActionExecutedSourceIconName,
-} from '../transforms/source'
+} from '#events/components/TicketThreadEventItem/components/TicketThreadActionExecutedEvents/transforms/source'
 import type {
     ActionExecutedActionName,
     ActionExecutedPayload,
     ActionExecutedSourceFamily,
-} from '../transforms/types'
+} from '#events/components/TicketThreadEventItem/components/TicketThreadActionExecutedEvents/transforms/types'
 
 function createIntegration(
     overrides: Partial<BaseIntegration> = {},

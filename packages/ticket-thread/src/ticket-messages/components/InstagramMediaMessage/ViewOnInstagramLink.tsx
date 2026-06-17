@@ -1,6 +1,6 @@
 import { Box, Icon, Text } from '@gorgias/axiom'
 
-import { ViewOnSocialLink } from '../SocialMessageBubble/ViewOnSocialLink'
+import { ViewOnSocialLink } from '#ticket-messages/components/SocialMessageBubble/ViewOnSocialLink'
 
 import css from '../SocialMessageBubble/SocialMessageBubble.less'
 

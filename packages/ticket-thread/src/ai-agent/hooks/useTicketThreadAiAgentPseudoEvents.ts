@@ -2,18 +2,18 @@ import { useMemo } from 'react'
 
 import { useListTicketTags } from '@gorgias/helpdesk-queries'
 
-import { getQueryOptions } from '../../shared/queryOption'
-import type { TicketThreadItem } from '../../thread/types'
-import type { TicketThreadMessageItem } from '../../ticket-messages/types'
-import { isAiAgentPseudoEventMessageItem } from '../predicates/pseudoEvents'
+import { isAiAgentPseudoEventMessageItem } from '#ai-agent/predicates/pseudoEvents'
 import {
     decorateMessagesWithAiAgentPseudoEvents,
     getAiAgentPseudoEventFromMessage,
-} from '../transforms/pseudoEvents'
+} from '#ai-agent/transforms/pseudoEvents'
 import type {
     TicketThreadAiAgentPseudoEvent,
     TicketThreadAiAgentPseudoEventTag,
-} from '../types'
+} from '#ai-agent/types'
+import { getQueryOptions } from '#shared/queryOption'
+import type { TicketThreadItem } from '#thread/types'
+import type { TicketThreadMessageItem } from '#ticket-messages/types'
 
 type UseTicketThreadAiAgentPseudoEventsParams = {
     ticketId: number

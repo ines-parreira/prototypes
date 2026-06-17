@@ -1,15 +1,15 @@
 import { mockTicketSatisfactionSurvey } from '@gorgias/helpdesk-mocks'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
 import {
     isRespondedSatisfactionSurveyItem,
     isScheduledSatisfactionSurveyItem,
     isSentSatisfactionSurveyItem,
     isTicketSatisfactionSurvey,
     isToBeSentSatisfactionSurveyItem,
-} from '../predicates'
-import { ticketThreadSatisfactionSurveyItemSchema } from '../schemas'
-import type { TicketThreadSatisfactionSurveyItem } from '../types'
+} from '#satisfaction-surveys/predicates'
+import { ticketThreadSatisfactionSurveyItemSchema } from '#satisfaction-surveys/schemas'
+import type { TicketThreadSatisfactionSurveyItem } from '#satisfaction-surveys/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function createRawSurvey(
     overrides?: Parameters<typeof mockTicketSatisfactionSurvey>[0],

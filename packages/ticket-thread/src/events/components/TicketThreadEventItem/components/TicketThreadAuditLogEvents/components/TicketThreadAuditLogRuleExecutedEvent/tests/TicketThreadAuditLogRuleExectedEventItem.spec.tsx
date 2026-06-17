@@ -1,12 +1,12 @@
 import { screen, within } from '@testing-library/react'
 
-import { getCurrentUserHandler } from '../../../../../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../../../../../tests/render.utils'
-import { server } from '../../../../../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../../../../../thread/itemTags'
-import { SYSTEM_RULE_TYPE } from '../../../../../../../constants'
-import type { TicketThreadAuditLogEventByType } from '../../../../../../../types'
-import { TicketThreadAuditLogRuleExecutedEvent } from '../TicketThreadAuditLogRuleExecutedEvent'
+import { TicketThreadAuditLogRuleExecutedEvent } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEvents/components/TicketThreadAuditLogRuleExecutedEvent/TicketThreadAuditLogRuleExecutedEvent'
+import { SYSTEM_RULE_TYPE } from '#events/constants'
+import type { TicketThreadAuditLogEventByType } from '#events/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function buildItem(
     eventData: TicketThreadAuditLogEventByType<'rule-executed'>['data']['data'],

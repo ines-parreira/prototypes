@@ -3,10 +3,10 @@ import { HttpResponse } from 'msw'
 
 import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import { useContactReasonPrediction } from '../hooks/useContactReasonPrediction'
+import { useContactReasonPrediction } from '#suggestions/contact-reason-prediction/hooks/useContactReasonPrediction'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function createTicketWithCustomFields(ticketId: number, customFields: any) {
     const ticket = mockTicket({

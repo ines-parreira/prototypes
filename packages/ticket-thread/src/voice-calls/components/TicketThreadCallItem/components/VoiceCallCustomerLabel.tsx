@@ -1,7 +1,7 @@
 import { Text } from '@gorgias/axiom'
 
-import { useVoiceCallCustomer } from '../../../hooks/useVoiceCallCustomer'
-import { formatPhoneNumberInternational } from '../../../models/phoneFormatting'
+import { useVoiceCallCustomer } from '#voice-calls/hooks/useVoiceCallCustomer'
+import { formatPhoneNumberInternational } from '#voice-calls/models/phoneFormatting'
 
 type VoiceCallCustomerLabelProps = {
     customerId: number

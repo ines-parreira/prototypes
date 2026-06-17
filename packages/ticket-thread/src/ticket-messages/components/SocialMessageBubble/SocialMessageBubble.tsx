@@ -4,10 +4,19 @@ import cn from 'classnames'
 
 import { Box } from '@gorgias/axiom'
 
+import { MessageErrors } from '#ticket-messages/components/MessageBubble/components/MessageErrors'
+import { MessageHeaderContainer } from '#ticket-messages/components/MessageBubble/components/MessageHeader/Layout'
+import { MessageAvatar } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar'
+import { MessageChannel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel'
+import { MessageDeliveryIcon } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageDeliveryIcon'
+import { MessageSender } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
+import { MessageTimestamp } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
+import { PendingMessageBanner } from '#ticket-messages/components/MessageBubble/components/PendingMessageBanner'
+import { MessageBubble } from '#ticket-messages/components/MessageBubble/MessageBubble'
 import {
     isActivePendingMessageItem,
     isFailedPendingMessageItem,
-} from '../../predicates'
+} from '#ticket-messages/predicates'
 import type {
     TicketThreadSingleMessageItem,
     TicketThreadSocialMediaFacebookCommentItem,
@@ -21,19 +30,10 @@ import type {
     TicketThreadSocialMediaTwitterDirectMessageItem,
     TicketThreadSocialMediaTwitterTweetItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
-} from '../../types'
-import { TicketThreadPendingState } from '../../types'
-import type { GoToLink } from '../../utils/buildGoToLink'
-import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
-import { MessageErrors } from '../MessageBubble/components/MessageErrors'
-import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
-import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
-import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
-import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
-import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
-import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
-import { PendingMessageBanner } from '../MessageBubble/components/PendingMessageBanner'
-import { MessageBubble } from '../MessageBubble/MessageBubble'
+} from '#ticket-messages/types'
+import { TicketThreadPendingState } from '#ticket-messages/types'
+import type { GoToLink } from '#ticket-messages/utils/buildGoToLink'
+import { getSocialChannelIcon } from '#ticket-messages/utils/getSocialChannelIcon'
 import { GoToLinkFooter } from './GoToLinkFooter'
 
 import css from './SocialMessageBubble.less'
