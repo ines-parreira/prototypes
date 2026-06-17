@@ -9,6 +9,15 @@
         "./shopify/types": "./src/shopify/types/index.ts",
         "./shopify/utils": "./src/shopify/utils/index.ts"
     },
+    "imports": {
+        "#*": [
+            "./src/*",
+            "./src/*.ts",
+            "./src/*.tsx",
+            "./src/*/index.ts",
+            "./src/*/index.tsx"
+        ]
+    },
     "scripts": {
         "format:check": "oxfmt --check .",
         "format:fix": "oxfmt --write .",

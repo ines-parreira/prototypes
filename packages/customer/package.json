@@ -8,6 +8,15 @@
         "./hooks": "./src/hooks/index.ts",
         "./utils": "./src/components/ShopifyCustomer/utils/index.ts"
     },
+    "imports": {
+        "#*": [
+            "./src/*",
+            "./src/*.ts",
+            "./src/*.tsx",
+            "./src/*/index.ts",
+            "./src/*/index.tsx"
+        ]
+    },
     "scripts": {
         "format:check": "oxfmt --check .",
         "format:fix": "oxfmt --write .",

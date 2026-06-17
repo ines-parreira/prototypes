@@ -7,6 +7,15 @@
         ".": "./src/index.ts",
         "./gorgiasAppsAuth": "./src/gorgiasAppsAuth.ts"
     },
+    "imports": {
+        "#*": [
+            "./src/*",
+            "./src/*.ts",
+            "./src/*.tsx",
+            "./src/*/index.ts",
+            "./src/*/index.tsx"
+        ]
+    },
     "scripts": {
         "postinstall": "tsx scripts/generate-sdk-version-hash.ts",
         "format:check": "oxfmt --check .",
