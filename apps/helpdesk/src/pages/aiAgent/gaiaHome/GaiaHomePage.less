@@ -5,10 +5,10 @@
          * surface for every panel/overlay/card so nothing reads as a brighter
          * pure-white block on top of the off-white page.
          */
-        --home-page-bg: #eee9e2;
-        --home-panel-bg: #fbfaf8;
-        --home-surface-bg: #fbfaf8;
-        --home-border: rgba(31, 31, 31, 0.08);
+        --home-page-bg: var(--elevation-neutral-bg);
+        --home-panel-bg: var(--elevation-neutral-default);
+        --home-surface-bg: var(--elevation-neutral-default);
+        --home-border: var(--border-neutral-default);
         --home-shadow-soft: 0 24px 70px rgba(20, 20, 20, 0.12);
 
         position: relative;
@@ -54,7 +54,7 @@
     .hero {
         text-align: center;
         margin-top: 8vh;
-        margin-bottom: var(--spacing-xl, 48px);
+        margin-bottom: var(--spacing-lg);
     }
 
     .heroEyebrow {
@@ -76,54 +76,57 @@
     /* ---------------- Metrics + chart card ---------------- */
 
     /*
-     * By default this is a bare container — the metric row sits directly on
-     * the page canvas with no border/background. On hover it becomes the TOP
-     * of a single unified panel (rounded top corners, no bottom border) that
-     * connects seamlessly to the chart overlay below.
+     * Centered ~700px card holding just the metric cards by default. It also
+     * acts as the shared hover boundary: the detail panel below is an absolute
+     * child, so moving from a metric card into the panel stays inside this
+     * element and never closes it. Leaving this element closes the panel.
      */
-    .chartCard {
+    .analyticsCard {
         position: relative;
         width: 100%;
-        max-width: 960px;
-        padding: var(--spacing-md);
+        max-width: 700px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-lg);
+        /* Transparent border keeps size stable; it only becomes visible when
+           the panel opens — no layout shift on hover. */
+        border: 1px solid transparent;
+        border-radius: 16px 16px 0 0;
     }
 
-    .chartCardActive {
-        background-color: var(--home-surface-bg);
-        border: 1px solid var(--home-border);
-        border-bottom: none;
-        border-radius: 12px 12px 0 0;
-        box-shadow:
-            0 1px 3px rgba(0, 0, 0, 0.04),
-            0 8px 24px rgba(0, 0, 0, 0.05);
+    /* On hover the bare metrics become the TOP of the unified panel: border +
+       surface + rounded top corners, with a transparent bottom that connects
+       seamlessly into the detail panel below. */
+    .analyticsCardOpen {
+        border-color: var(--home-border);
+        border-bottom-color: transparent;
+        background-color: var(--elevation-neutral-default);
     }
 
     .metricsRow {
         display: flex;
-        justify-content: center;
-        gap: 48px;
+        justify-content: space-between;
+        gap: var(--spacing-lg);
     }
 
     /*
-     * The chart is hidden by default and revealed on hover as the BOTTOM of
-     * the same unified panel — it touches the metric area (top: 100%, shared
-     * background, no border between them, rounded bottom corners) so the two
-     * read as one cohesive analytics panel while still overlaying the content
-     * beneath without pushing the layout.
+     * Detail panel — hidden by default, revealed on metric hover as an absolute
+     * overlay below the metric cards so the page layout never jumps. Connects
+     * to the card above (no top border, rounded bottom only).
      */
-    .chartOverlay {
+    .detailPanel {
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
         z-index: 30;
-        padding: 0 var(--spacing-md) var(--spacing-md);
+        padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
         border: 1px solid var(--home-border);
         border-top: none;
-        border-radius: 0 0 12px 12px;
-        background-color: var(--home-surface-bg);
-        box-shadow: var(--home-shadow-soft);
-        animation: gaiaChartOverlayIn 0.16s ease;
+        border-radius: 0 0 16px 16px;
+        background-color: var(--elevation-neutral-default);
+        box-shadow: 0 24px 48px -16px rgba(20, 20, 20, 0.14);
     }
 
     .metricCard {
@@ -131,9 +134,10 @@
         display: flex;
         flex-direction: column;
         gap: var(--spacing-xxs);
-        padding: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
         border: 1px solid transparent;
         border-radius: var(--spacing-sm);
+        cursor: pointer;
         transition:
             border-color 0.12s ease,
             box-shadow 0.12s ease,
@@ -142,10 +146,8 @@
 
     .metricCardActive {
         border-color: var(--home-border);
-        background-color: var(--home-surface-bg);
-        box-shadow:
-            0 1px 3px rgba(0, 0, 0, 0.06),
-            0 6px 18px rgba(0, 0, 0, 0.08);
+        background-color: var(--surface-neutral-secondary);
+        box-shadow: var(--effects-inner-shadow);
     }
 
     .metricCardHeader {
@@ -252,25 +254,21 @@
         background-color: var(--surface-neutral-secondary);
     }
 
+    .metricOptionLabel {
+        flex: 1;
+    }
+
+    .metricOptionSelected {
+        background-color: var(--surface-accent-default);
+        color: var(--content-selected-accent);
+    }
+
     .chartHeader {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
         gap: var(--spacing-md);
-        margin-bottom: var(--spacing-sm);
-    }
-
-    .chartHeaderLeft {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-xxs);
-    }
-
-    .chartTitleRow {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-xs);
-        color: var(--content-neutral-secondary);
+        margin-bottom: var(--spacing-lg);
     }
 
     .chartTitle {
@@ -279,10 +277,17 @@
         color: var(--content-neutral-default);
     }
 
-    /* currentColor drives the recharts stroke/gradient (purple accent). */
+    /* Consistent spacing between the two Axiom Select filters. */
+    .chartHeaderControls {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    /* currentColor drives the recharts stroke/gradient (dataviz purple). */
     .chart {
         width: 100%;
-        color: var(--content-accent-default);
+        color: var(--dataviz-purple, var(--content-accent-default));
     }
 
     .metricLabel {
@@ -302,6 +307,11 @@
         color: var(--content-neutral-default);
     }
 
+    /* Smaller value on the metric summary cards (not the chart header). */
+    .metricCard .metricValue {
+        font-size: 16px;
+    }
+
     .metricDelta {
         display: inline-flex;
         align-items: center;
@@ -311,8 +321,27 @@
         color: var(--content-success-default);
     }
 
+    .metricDeltaDown {
+        color: var(--content-error-default);
+    }
+
     .sparkline {
         color: var(--content-accent-default);
+    }
+
+    /* Conversation starters under the chart — Axiom tertiary buttons,
+       left-aligned in a column. Regular weight so they read as prompts. */
+    .suggestions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        margin-top: var(--spacing-md);
+    }
+
+    /* Regular weight so the starters read as prompts, not bold buttons. */
+    .suggestions button {
+        font-weight: 400 !important;
     }
 
     /* ---------------- Opportunities ---------------- */
@@ -320,11 +349,28 @@
     .opportunities {
         width: 100%;
         max-width: 960px;
-        margin-top: 56px;
+        margin-top: 96px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: var(--spacing-lg);
+        gap: var(--spacing-md);
+    }
+
+    .opportunitiesHeader {
+        width: 100%;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .opportunitiesHeaderTitle {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .opportunitiesHeaderSubtitle {
+        margin-top: var(--spacing-xxxs);
+        font-size: 14px;
+        color: var(--content-neutral-secondary);
     }
 
     .opportunityGrid {
@@ -338,11 +384,25 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: var(--spacing-xs);
+        gap: var(--spacing-xxxs);
         padding: var(--spacing-md);
         border: 1px solid var(--home-border);
         border-radius: var(--spacing-sm);
-        background-color: var(--home-surface-bg);
+        /* Raised above the panel surface — standard Axiom card elevation. */
+        background-color: var(--elevation-neutral-high);
+        box-shadow: var(--effects-shadow-container);
+    }
+
+    .opportunityTags {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+    }
+
+    /* Neutral "Critical" pill with only the chevron icon in red. */
+    .criticalIcon {
+        display: inline-flex;
+        color: var(--content-error-default);
     }
 
     .opportunityTitle {
@@ -352,32 +412,33 @@
         color: var(--content-neutral-default);
     }
 
-    .opportunitySubtitle {
+    .opportunityFinding {
         font-size: 14px;
-        font-weight: 600;
         color: var(--content-neutral-secondary);
     }
 
-    .opportunityImpact {
-        margin-bottom: var(--spacing-xs);
-        font-size: 14px;
-        color: var(--content-neutral-tertiary);
+    .opportunityAutomation {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        margin-bottom: var(--spacing-sm);
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--content-success-default);
     }
 
-    .viewMore {
-        border: none;
-        background: none;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--content-neutral-default);
+    .opportunityActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
     }
+
 
     /* ---------------- Ask section: input + chips (in normal flow) ---------------- */
 
     .askSection {
         width: 100%;
-        margin-top: 56px;
+        margin-top: var(--spacing-sm);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -608,6 +669,34 @@
         color: var(--content-neutral-default);
         white-space: pre-wrap;
         word-break: break-word;
+    }
+
+    /* Quick follow-up prompts under Gaia's proactive opener. */
+    .chatSuggestions {
+        align-self: flex-start;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+
+    .chatSuggestionChip {
+        padding: var(--spacing-xs) var(--spacing-md);
+        border: 1px solid var(--home-border);
+        border-radius: 999px;
+        background-color: var(--home-surface-bg);
+        color: var(--content-neutral-default);
+        font-size: 14px;
+        text-align: left;
+        cursor: pointer;
+        transition:
+            background-color 0.12s ease,
+            border-color 0.12s ease;
+    }
+
+    .chatSuggestionChip:hover {
+        border-color: var(--content-accent-default);
+        color: var(--content-accent-default);
     }
 
     .chatComposer {

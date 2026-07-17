@@ -1,0 +1,175 @@
+:local {
+    .page {
+        /* Shared surface tokens mapped to Axiom semantic tokens so they adapt
+           to light/dark mode. */
+        --home-page-bg: var(--elevation-neutral-bg);
+        --home-surface-bg: var(--elevation-neutral-default);
+        --home-border: var(--border-neutral-default);
+
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        /* Match the product layout: the sidebar resize handle provides the
+           left gap, so only pad the other edges (same as GaiaHomePage). */
+        padding: var(--layout-spacing-xs);
+        padding-left: 0;
+        overflow: hidden;
+        background-color: var(--home-page-bg);
+        color: var(--content-neutral-default);
+    }
+
+    .surface {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--home-surface-bg);
+        border: 1px solid var(--home-border);
+        border-radius: 12px;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .headerActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .newBtn {
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: var(--spacing-sm);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--home-surface-bg) !important;
+        background-color: var(--content-neutral-default);
+    }
+
+    .closeBtn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+        width: 32px;
+        border-radius: var(--spacing-xs);
+        text-decoration: none;
+        color: var(--content-neutral-secondary);
+    }
+
+    .closeBtn:hover {
+        background-color: var(--home-page-bg);
+        color: var(--content-neutral-default);
+    }
+
+    .scroll {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .body {
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl, 48px);
+    }
+
+    .searchRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+        border: 1px solid var(--home-border);
+        border-radius: var(--spacing-sm);
+        background-color: var(--home-surface-bg);
+        color: var(--content-neutral-secondary);
+    }
+
+    .searchInput {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 15px;
+        color: var(--content-neutral-default);
+    }
+
+    .searchInput::placeholder {
+        color: var(--content-neutral-secondary);
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* List-item styled row: title + secondary summary on the left, timestamp
+       and hover-revealed actions button on the right. */
+    .row {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-xs);
+        border-bottom: 1px solid var(--home-border);
+    }
+
+    .rowMain {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+        min-width: 0;
+        flex: 1;
+    }
+
+    .rowTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .rowSummary {
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .rowTrailing {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .rowTime {
+        flex-shrink: 0;
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+        white-space: nowrap;
+    }
+
+    /* Actions button reserves its space (opacity, not display) so the row
+       never shifts; revealed on hover or while its menu is open (focus). */
+    .kebab {
+        display: inline-flex;
+        opacity: 0;
+        transition: opacity 0.1s ease;
+    }
+
+    .row:hover .kebab,
+    .kebab:focus-within {
+        opacity: 1;
+    }
+}

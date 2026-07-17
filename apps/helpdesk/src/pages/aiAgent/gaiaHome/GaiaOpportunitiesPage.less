@@ -1,0 +1,813 @@
+:local {
+    .page {
+        /* Shared surface tokens mapped to Axiom semantic tokens so they adapt
+           to light/dark mode. */
+        --home-page-bg: var(--elevation-neutral-bg);
+        --home-surface-bg: var(--elevation-neutral-default);
+        --home-border: var(--border-neutral-default);
+
+        position: relative;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        /* Match the product layout: the sidebar resize handle provides the
+           left gap, so only pad the other edges (same as GaiaHomePage). */
+        padding: var(--layout-spacing-xs);
+        padding-left: 0;
+        overflow: hidden;
+        background-color: var(--home-page-bg);
+        color: var(--content-neutral-default);
+    }
+
+    /* Rounded page-layout surface, matching the other prototype pages. */
+    .surface {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--home-surface-bg);
+        border: 1px solid var(--home-border);
+        border-radius: 12px;
+    }
+
+    .iconButton {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+        width: 32px;
+        border: none;
+        border-radius: var(--spacing-xs);
+        background: none;
+        cursor: pointer;
+        color: var(--content-neutral-secondary);
+    }
+
+    .iconButton:hover {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
+    }
+
+    /* Standard PageHeader, minus the legacy global bottom divider. */
+    /* No divider, and match the Conversations header's size + spacing. */
+    .pageHeader {
+        border-bottom: none !important;
+        min-height: auto !important;
+        max-height: none !important;
+        padding: var(--spacing-md) var(--spacing-lg) !important;
+    }
+
+    .pageHeader h1 {
+        font-size: 22px !important;
+        line-height: 1.2 !important;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .content {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        width: 100%;
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    /* ---------------- Impact strip ---------------- */
+
+    .impact {
+        display: flex;
+        flex-direction: column;
+        /* More room between the "This week's impact" header and the cards. */
+        gap: var(--spacing-lg);
+        /* Extra breathing room before the filters/opportunities below. */
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .impactHeader {
+        display: flex;
+        flex-direction: column;
+        color: var(--content-neutral-secondary);
+    }
+
+    .impactTitle {
+        display: block;
+        font-size: 16px;
+        color: var(--content-neutral-default);
+    }
+
+    .impactSubtitle {
+        font-size: 14px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .tiles {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .tile {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+        min-height: 145px;
+        padding: var(--spacing-lg);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+    }
+
+    .tileLabel {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        font-size: 14px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .tileValue {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+        color: var(--content-neutral-default);
+    }
+
+    .tileValueFlash {
+        align-self: flex-start;
+        padding: 0 var(--spacing-xxs);
+        border-radius: var(--spacing-xxs);
+        background-color: var(--surface-success-secondary);
+        animation: gaiaImpactFlash 1.4s ease;
+    }
+
+    /* Segmented streak progress bar. */
+    .progressTrack {
+        display: flex;
+        gap: var(--spacing-xxxs);
+        margin-top: auto;
+    }
+
+    .progressSeg {
+        flex: 1;
+        height: 3px;
+        border-radius: 999px;
+        background-color: var(--surface-additional-purple);
+    }
+
+    .progressSegOn {
+        background-color: var(--surface-accent-primary);
+    }
+
+    .tileCaption {
+        margin-top: var(--spacing-xs);
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .tileCaption strong {
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    /* Sparkline chart anchored to the bottom of the card. currentColor drives
+       the recharts stroke/gradient. */
+    .sparkline {
+        margin-top: auto;
+        width: 100%;
+        color: var(--dataviz-purple, var(--content-accent-default));
+    }
+
+    /* ---------------- Controls: filters + view toggle ---------------- */
+
+    .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        /* More separation from the card stage below. */
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .filters {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        padding: var(--spacing-xxs) var(--spacing-sm);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 999px;
+        background-color: var(--elevation-neutral-default);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--content-neutral-default);
+    }
+
+    .chipActive {
+        border-color: var(--content-neutral-default);
+        background-color: var(--content-neutral-default);
+        color: var(--elevation-neutral-high);
+    }
+
+    .chipCount {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 18px;
+        padding: 0 var(--spacing-xxxs);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-secondary);
+    }
+
+    .chipActive .chipCount {
+        background-color: var(--elevation-neutral-high);
+        color: var(--content-neutral-default);
+    }
+
+    .viewToggle {
+        display: inline-flex;
+        gap: var(--spacing-xxxs);
+        padding: var(--spacing-xxxs);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .viewButton {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        width: 32px;
+        border: none;
+        border-radius: var(--spacing-xxs);
+        background: none;
+        cursor: pointer;
+        color: var(--content-neutral-secondary);
+    }
+
+    .viewButtonActive {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
+    }
+
+    /* ---------------- Card view ---------------- */
+
+    .stageRow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-sm);
+    }
+
+    .navArrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        height: 36px;
+        width: 36px;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 50%;
+        background-color: var(--elevation-neutral-default);
+        cursor: pointer;
+        color: var(--content-neutral-default);
+    }
+
+    .navArrow:disabled {
+        opacity: 0.4;
+        cursor: default;
+    }
+
+    .stage {
+        display: flex;
+        gap: var(--spacing-md);
+        width: 100%;
+        max-width: 760px;
+    }
+
+    .stageSplit {
+        max-width: 1040px;
+    }
+
+    .cardWrap {
+        flex: 1;
+        min-width: 0;
+        position: relative;
+    }
+
+    /* faux stacked-cards edge behind the top card */
+    .cardWrap::before,
+    .cardWrap::after {
+        content: '';
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        top: 8px;
+        bottom: -8px;
+        z-index: 0;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 16px;
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .cardWrap::after {
+        left: 24px;
+        right: 24px;
+        top: 16px;
+        bottom: -16px;
+        opacity: 0.6;
+    }
+
+    .card {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-lg);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 16px;
+        background-color: var(--elevation-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+        cursor: grab;
+    }
+
+    .card:active {
+        cursor: grabbing;
+    }
+
+    .dragHint {
+        position: absolute;
+        top: var(--spacing-md);
+        padding: var(--spacing-xxs) var(--spacing-sm);
+        border-radius: var(--spacing-xs);
+        font-size: 13px;
+        font-weight: 600;
+        pointer-events: none;
+    }
+
+    .dragApprove {
+        right: var(--spacing-md);
+        color: var(--content-success-default);
+        background-color: var(--surface-success-secondary);
+    }
+
+    .dragDismiss {
+        left: var(--spacing-md);
+        color: var(--content-error-default);
+        background-color: var(--surface-error-secondary);
+    }
+
+    .cardTags {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+    }
+
+    .cardEyebrow {
+        margin-top: var(--spacing-xs);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--content-neutral-tertiary);
+    }
+
+    .cardTitle {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .cardFinding {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--content-neutral-secondary);
+    }
+
+    /* Green estimated-impact line, matching the daily digest cards. */
+    .cardImpact {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        margin-top: var(--spacing-sm);
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--content-success-default);
+    }
+
+    .cardActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        margin-top: var(--spacing-md);
+    }
+
+    .actionGhost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        width: 36px;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+        cursor: pointer;
+        color: var(--content-neutral-default);
+    }
+
+    .actionApprove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        width: 36px;
+        border: none;
+        border-radius: var(--spacing-sm);
+        background-color: var(--content-neutral-default);
+        cursor: pointer;
+        color: var(--elevation-neutral-high);
+    }
+
+    .actionGaia {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        height: 36px;
+        padding: 0 var(--spacing-md);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--content-neutral-default);
+    }
+
+    /* ---------------- Gaia side panel ---------------- */
+
+    .gaiaPanel {
+        flex: 0 0 46%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 16px;
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .gaiaHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .gaiaHeaderTitle {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .gaiaBody {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+
+    .gaiaBubble {
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 14px;
+        border-bottom-left-radius: 4px;
+        background-color: var(--surface-neutral-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--content-neutral-default);
+    }
+
+    .gaiaSuggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-xs);
+    }
+
+    .suggestionChip {
+        padding: var(--spacing-xxs) var(--spacing-sm);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 999px;
+        background-color: var(--elevation-neutral-default);
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--content-neutral-default);
+    }
+
+    .suggestionChip:hover {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .gaiaComposer {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin: 0 var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        color: var(--content-neutral-secondary);
+    }
+
+    .gaiaInput {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        color: var(--content-neutral-default);
+    }
+
+    .gaiaActions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md);
+    }
+
+    .approveBtn {
+        padding: var(--spacing-xs) var(--spacing-md);
+        border: none;
+        border-radius: var(--spacing-sm);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--elevation-neutral-high);
+        background-color: var(--content-neutral-default);
+    }
+
+    /* ---------------- Priority icon + dot colors ---------------- */
+
+    .iconCritical {
+        color: var(--content-error-default);
+    }
+
+    .iconHigh {
+        color: var(--content-warning-default);
+    }
+
+    .iconLow {
+        color: var(--content-neutral-secondary);
+    }
+
+    /* Urgency dots — clear, vivid colors: Critical=red, High=orange, Low=grey. */
+    .dotCritical {
+        color: var(--dataviz-red);
+    }
+
+    .dotHigh {
+        color: var(--dataviz-orange);
+    }
+
+    .dotLow {
+        color: var(--dataviz-grey);
+    }
+
+    .iconCritical,
+    .iconHigh,
+    .iconLow {
+        display: inline-flex;
+    }
+
+    .dotCritical,
+    .dotHigh,
+    .dotLow {
+        flex-shrink: 0;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background-color: currentColor;
+    }
+
+    /* ---------------- List view ---------------- */
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        overflow: hidden;
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .listRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .listRow:last-child {
+        border-bottom: none;
+    }
+
+    .listMain {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .listTitle {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .listSubtitle {
+        font-size: 14px;
+        color: var(--content-neutral-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Matches the card view's estimated-impact line: green, regular weight. */
+    .listImpact {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--content-success-default);
+    }
+
+    .listActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .listState {
+        font-size: 13px;
+        text-transform: capitalize;
+        color: var(--content-neutral-tertiary);
+    }
+
+    /* ---------------- Footer counter + picker ---------------- */
+
+    .footer {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
+    }
+
+    .segments {
+        display: flex;
+        gap: 3px;
+        width: 240px;
+    }
+
+    .segment {
+        flex: 1;
+        height: 4px;
+        border-radius: 999px;
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .segment_approved {
+        background-color: var(--content-success-default);
+    }
+
+    .segment_dismissed {
+        background-color: var(--content-neutral-tertiary);
+    }
+
+    .counter {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--content-neutral-default);
+    }
+
+    .picker {
+        position: absolute;
+        bottom: calc(100% + var(--spacing-xs));
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 20;
+        width: 460px;
+        max-width: 90vw;
+        max-height: 320px;
+        overflow-y: auto;
+        padding: var(--spacing-xxs);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+    }
+
+    .pickerItem {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        width: 100%;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border: none;
+        border-radius: var(--spacing-xxs);
+        background: none;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    .pickerItem:hover {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .pickerState {
+        flex-shrink: 0;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        border: 1.5px solid var(--content-neutral-tertiary);
+    }
+
+    .pickerState_approved {
+        border-color: var(--content-success-default);
+        background-color: var(--content-success-default);
+    }
+
+    .pickerState_dismissed {
+        border-color: var(--content-neutral-tertiary);
+        background-color: var(--content-neutral-tertiary);
+    }
+
+    .pickerTitle {
+        flex: 1;
+        min-width: 0;
+        font-size: 14px;
+        color: var(--content-neutral-default);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .pickerImpact {
+        flex-shrink: 0;
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .emptyState {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-xl, 48px);
+    }
+}
+
+:global {
+    @keyframes gaiaImpactFlash {
+        0% {
+            transform: scale(1);
+        }
+        30% {
+            transform: scale(1.12);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+}

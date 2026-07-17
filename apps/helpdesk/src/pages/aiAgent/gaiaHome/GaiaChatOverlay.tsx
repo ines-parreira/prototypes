@@ -6,6 +6,10 @@ import css from './GaiaHomePage.less'
 
 type Props = {
     onClose: () => void
+    // Optional proactive opener shown as Gaia's first message (e.g. the
+    // explanation for a specific opportunity), plus quick follow-up prompts.
+    // When omitted, the panel opens to the normal empty Gaia state.
+    intro?: { message: string; suggestions?: string[] }
 }
 
 type ChatMessage = {
@@ -39,7 +43,7 @@ function getMessageText(content: unknown): string {
  * from the shared copilot agent and renders it in the homepage's visual
  * language: stacked bubbles in a centered column with the same composer.
  */
-export function GaiaChatOverlay({ onClose }: Props) {
+export function GaiaChatOverlay({ onClose, intro }: Props) {
     const { agent, sendPrompt } = useCopilot()
     const [, forceRender] = useReducer((value: number) => value + 1, 0)
     const [draft, setDraft] = useState('')
@@ -106,6 +110,27 @@ export function GaiaChatOverlay({ onClose }: Props) {
 
             <div ref={scrollRef} className={css.chatScroll}>
                 <div className={css.chatThread}>
+                    {intro && (
+                        <div className={css.bubbleAssistant}>
+                            {intro.message}
+                        </div>
+                    )}
+
+                    {intro?.suggestions && messages.length === 0 && (
+                        <div className={css.chatSuggestions}>
+                            {intro.suggestions.map((suggestion) => (
+                                <button
+                                    key={suggestion}
+                                    type="button"
+                                    className={css.chatSuggestionChip}
+                                    onClick={() => sendPrompt(suggestion)}
+                                >
+                                    {suggestion}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
                     {messages.map((message) => (
                         <div
                             key={message.id}

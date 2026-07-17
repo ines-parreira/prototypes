@@ -7,14 +7,14 @@ import {
     XAxis,
     YAxis,
 } from 'recharts'
-import { Button, Icon } from '@gorgias/axiom'
+import { Button, Icon, ListItem, Select } from '@gorgias/axiom'
 
 import css from './GaiaHomePage.less'
 
 type IconName = 'trending-up' | 'chart-bar-vertical'
 
 const METRIC_OPTIONS: { name: string; icon: IconName }[] = [
-    { name: 'Automation rate', icon: 'trending-up' },
+    { name: 'Overall automation rate', icon: 'trending-up' },
     { name: 'Customer satisfaction', icon: 'chart-bar-vertical' },
     { name: 'Resolution time', icon: 'chart-bar-vertical' },
     { name: 'Ticket volume', icon: 'chart-bar-vertical' },
@@ -33,29 +33,58 @@ const CHART_DATA = [
 ]
 
 const INITIAL_CARDS = [
-    { id: 0, label: 'Metric name', value: '0$', delta: '8%' },
-    { id: 1, label: 'Metric name', value: '0$', delta: '8%' },
-    { id: 2, label: 'Metric name', value: '0$', delta: '8%' },
+    {
+        id: 0,
+        label: 'Overall automation rate',
+        value: '36%',
+        delta: '5%',
+        direction: 'up' as const,
+    },
+    {
+        id: 1,
+        label: 'Cost saved',
+        value: '$1,923.30',
+        delta: '10%',
+        direction: 'up' as const,
+    },
+    {
+        id: 2,
+        label: 'Average CSAT',
+        value: '4.1',
+        delta: '2%',
+        direction: 'down' as const,
+    },
+]
+
+const RANGE_OPTIONS = [
+    { id: '7', label: 'Last 7 days' },
+    { id: '30', label: 'Last 30 days' },
+    { id: '60', label: 'Last 60 days' },
+    { id: '90', label: 'Last 90 days' },
+]
+
+const DIMENSION_OPTIONS = [
+    { id: 'overall', label: 'Overall' },
+    { id: 'channel', label: 'Channel' },
+    { id: 'store', label: 'Store' },
+    { id: 'feature', label: 'Feature' },
+]
+
+const SUGGESTIONS = [
+    "What's holding automation rate back from 50%?",
+    'Why did cost saved dip after Jun 5?',
+    'Is the CSAT dip tied to a specific skill or intent?',
 ]
 
 export function MetricsChartCard() {
     const [cards, setCards] = useState(INITIAL_CARDS)
-    // Which card is hovered — drives the chart overlay + active styling.
-    const [activeId, setActiveId] = useState<number | null>(null)
-    // Which card's metric picker is open — driven by hovering its pencil icon.
+    const [activeId, setActiveId] = useState(0)
+    // Detail panel is closed on load; hovering a metric card opens it.
+    const [isDetailOpen, setIsDetailOpen] = useState(false)
     const [pickerId, setPickerId] = useState<number | null>(null)
     const [search, setSearch] = useState('')
-
-    const close = () => {
-        setActiveId(null)
-        setPickerId(null)
-        setSearch('')
-    }
-
-    const openPicker = (id: number) => {
-        setSearch('')
-        setPickerId(id)
-    }
+    const [range, setRange] = useState(RANGE_OPTIONS[0])
+    const [dimension, setDimension] = useState(DIMENSION_OPTIONS[0])
 
     const selectMetric = (cardId: number, name: string) => {
         setCards((current) =>
@@ -67,20 +96,30 @@ export function MetricsChartCard() {
         setSearch('')
     }
 
-    const activeCard = cards.find((card) => card.id === activeId)
+    const activeCard = cards.find((card) => card.id === activeId) ?? cards[0]
 
     const filteredOptions = METRIC_OPTIONS.filter((option) =>
         option.name.toLowerCase().includes(search.trim().toLowerCase()),
     )
 
     return (
+        // Shared hover boundary: wraps the metric cards AND the detail panel,
+        // so moving the cursor from a card into the panel never closes it.
+        // Leaving this whole element closes the panel (and any open picker).
         <div
-            className={`${css.chartCard} ${activeCard ? css.chartCardActive : ''}`}
-            onMouseLeave={close}
+            className={`${css.analyticsCard} ${
+                isDetailOpen ? css.analyticsCardOpen : ''
+            }`}
+            onMouseLeave={() => {
+                setIsDetailOpen(false)
+                setPickerId(null)
+            }}
         >
             <div className={css.metricsRow}>
                 {cards.map((card) => {
-                    const isActive = activeId === card.id
+                    // Pressed styling only while the panel is open — never in
+                    // the default (closed) state.
+                    const isActive = isDetailOpen && activeId === card.id
                     const isPickerOpen = pickerId === card.id
                     return (
                         <div
@@ -88,16 +127,28 @@ export function MetricsChartCard() {
                             className={`${css.metricCard} ${
                                 isActive ? css.metricCardActive : ''
                             }`}
-                            onMouseEnter={() => setActiveId(card.id)}
-                            onMouseLeave={() => setPickerId(null)}
+                            onMouseEnter={() => {
+                                setActiveId(card.id)
+                                setIsDetailOpen(true)
+                            }}
+                            onClick={() => setActiveId(card.id)}
                         >
                             <div className={css.metricCardHeader}>
                                 <span className={css.metricLabel}>
                                     {card.label}
                                 </span>
+                                {/* Picker opens only on a deliberate click of
+                                    the pencil — never from hovering the metric. */}
                                 <span
                                     className={css.metricEdit}
-                                    onMouseEnter={() => openPicker(card.id)}
+                                    onClick={(event) => {
+                                        event.stopPropagation()
+                                        setActiveId(card.id)
+                                        setPickerId(
+                                            isPickerOpen ? null : card.id,
+                                        )
+                                        setSearch('')
+                                    }}
                                 >
                                     <Icon name="edit-pencil" size="xs" />
                                 </span>
@@ -107,8 +158,21 @@ export function MetricsChartCard() {
                                 <span className={css.metricValue}>
                                     {card.value}
                                 </span>
-                                <span className={css.metricDelta}>
-                                    <Icon name="trending-up" size="xs" />
+                                <span
+                                    className={`${css.metricDelta} ${
+                                        card.direction === 'down'
+                                            ? css.metricDeltaDown
+                                            : ''
+                                    }`}
+                                >
+                                    <Icon
+                                        name={
+                                            card.direction === 'down'
+                                                ? 'trending-down'
+                                                : 'trending-up'
+                                        }
+                                        size="xs"
+                                    />
                                     {card.delta}
                                 </span>
                             </div>
@@ -130,25 +194,45 @@ export function MetricsChartCard() {
                                         />
                                     </div>
                                     <div className={css.metricOptionList}>
-                                        {filteredOptions.map((option) => (
-                                            <button
-                                                key={option.name}
-                                                type="button"
-                                                className={css.metricOption}
-                                                onClick={() =>
-                                                    selectMetric(
-                                                        card.id,
-                                                        option.name,
-                                                    )
-                                                }
-                                            >
-                                                <Icon
-                                                    name={option.icon}
-                                                    size="sm"
-                                                />
-                                                {option.name}
-                                            </button>
-                                        ))}
+                                        {filteredOptions.map((option) => {
+                                            const selected =
+                                                option.name === card.label
+                                            return (
+                                                <button
+                                                    key={option.name}
+                                                    type="button"
+                                                    className={`${css.metricOption} ${
+                                                        selected
+                                                            ? css.metricOptionSelected
+                                                            : ''
+                                                    }`}
+                                                    onClick={() =>
+                                                        selectMetric(
+                                                            card.id,
+                                                            option.name,
+                                                        )
+                                                    }
+                                                >
+                                                    <Icon
+                                                        name={option.icon}
+                                                        size="sm"
+                                                    />
+                                                    <span
+                                                        className={
+                                                            css.metricOptionLabel
+                                                        }
+                                                    >
+                                                        {option.name}
+                                                    </span>
+                                                    {selected && (
+                                                        <Icon
+                                                            name="check"
+                                                            size="sm"
+                                                        />
+                                                    )}
+                                                </button>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             )}
@@ -157,43 +241,80 @@ export function MetricsChartCard() {
                 })}
             </div>
 
-            {activeCard && (
-                <div className={css.chartOverlay}>
+            {isDetailOpen && (
+                <div className={css.detailPanel}>
                     <div className={css.chartHeader}>
-                        <div className={css.chartHeaderLeft}>
-                            <div className={css.chartTitleRow}>
-                                <span className={css.chartTitle}>
-                                    {activeCard.label}
-                                </span>
-                                <Icon name="dots-kebab-vertical" size="sm" />
-                            </div>
-                            <div className={css.metricValueRow}>
-                                <span className={css.metricValue}>0</span>
-                                <span className={css.metricDelta}>
-                                    <Icon name="trending-up" size="xs" />
-                                    2%
-                                </span>
-                            </div>
+                        <span className={css.chartTitle}>
+                            {activeCard.label}
+                        </span>
+                        <div className={css.chartHeaderControls}>
+                            <Select
+                                aria-label="Time range"
+                                size="sm"
+                                items={RANGE_OPTIONS}
+                                selectedItem={range}
+                                onSelect={setRange}
+                                trigger={() => (
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        trailingSlot={
+                                            <Icon
+                                                name="arrow-chevron-down"
+                                                size="xs"
+                                            />
+                                        }
+                                    >
+                                        {range.label}
+                                    </Button>
+                                )}
+                            >
+                                {(option) => (
+                                    <ListItem
+                                        textValue={option.label}
+                                        label={option.label}
+                                    />
+                                )}
+                            </Select>
+                            <Select
+                                aria-label="Breakdown"
+                                size="sm"
+                                items={DIMENSION_OPTIONS}
+                                selectedItem={dimension}
+                                onSelect={setDimension}
+                                trigger={() => (
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        trailingSlot={
+                                            <Icon
+                                                name="arrow-chevron-down"
+                                                size="xs"
+                                            />
+                                        }
+                                    >
+                                        {dimension.label}
+                                    </Button>
+                                )}
+                            >
+                                {(option) => (
+                                    <ListItem
+                                        textValue={option.label}
+                                        label={option.label}
+                                    />
+                                )}
+                            </Select>
                         </div>
-                        <Button
-                            intent="secondary"
-                            size="sm"
-                            trailingSlot={
-                                <Icon name="arrow-chevron-down" size="sm" />
-                            }
-                        >
-                            Overall
-                        </Button>
                     </div>
 
                     <div className={css.chart}>
-                        <ResponsiveContainer width="100%" height={280}>
+                        <ResponsiveContainer width="100%" height={240}>
                             <AreaChart
                                 data={CHART_DATA}
                                 margin={{
                                     top: 8,
                                     right: 8,
-                                    bottom: 0,
+                                    bottom: 8,
                                     left: 0,
                                 }}
                             >
@@ -208,7 +329,7 @@ export function MetricsChartCard() {
                                         <stop
                                             offset="0%"
                                             stopColor="currentColor"
-                                            stopOpacity={0.18}
+                                            stopOpacity={0.16}
                                         />
                                         <stop
                                             offset="100%"
@@ -220,28 +341,24 @@ export function MetricsChartCard() {
                                 <CartesianGrid
                                     strokeDasharray="3 3"
                                     vertical={false}
-                                    stroke="#E6E6E6"
+                                    stroke="#E6E1DB"
                                 />
                                 <XAxis
                                     dataKey="date"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{
-                                        fontSize: 12,
-                                        fill: '#8A8A8A',
-                                    }}
+                                    tickMargin={12}
+                                    tick={{ fontSize: 12, fill: '#8A8580' }}
                                 />
                                 <YAxis
                                     domain={[0, 50]}
                                     ticks={[0, 10, 20, 30, 40, 50]}
                                     axisLine={false}
                                     tickLine={false}
+                                    tickMargin={8}
                                     tickFormatter={(value) => `${value}%`}
-                                    tick={{
-                                        fontSize: 12,
-                                        fill: '#8A8A8A',
-                                    }}
-                                    width={44}
+                                    tick={{ fontSize: 12, fill: '#8A8580' }}
+                                    width={40}
                                 />
                                 <Area
                                     type="monotone"
@@ -252,6 +369,24 @@ export function MetricsChartCard() {
                                 />
                             </AreaChart>
                         </ResponsiveContainer>
+                    </div>
+
+                    <div className={css.suggestions}>
+                        {SUGGESTIONS.map((suggestion) => (
+                            <Button
+                                key={suggestion}
+                                variant="tertiary"
+                                size="sm"
+                                leadingSlot={
+                                    <Icon
+                                        name="arrow-sub-down-right"
+                                        size="sm"
+                                    />
+                                }
+                            >
+                                {suggestion}
+                            </Button>
+                        ))}
                     </div>
                 </div>
             )}

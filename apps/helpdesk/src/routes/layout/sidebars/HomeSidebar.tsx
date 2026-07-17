@@ -1,12 +1,13 @@
 import {
     NavigationSection,
     NavigationSectionGroup,
+    NavigationSectionItem,
     useSidebar,
 } from '@repo/navigation'
 
 import { useLocation } from 'react-router-dom'
 
-import { Box, Icon, Tag } from '@gorgias/axiom'
+import { Box, Quantity, Tag } from '@gorgias/axiom'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
@@ -15,8 +16,6 @@ import { Product, productMetadata } from 'routes/layout/productMetadata'
 import { CollapsedHomeSidebar } from 'routes/layout/sidebars/CollapsedHomeSidebar'
 import { useNavigationProducts } from 'routes/layout/useNavigationProducts'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
-
-import css from './HomeSidebar.less'
 
 type ProductNavigationSectionProps = {
     product: ProductMetadata
@@ -49,15 +48,10 @@ function ProductNavigationSection({
     )
 }
 
-const GAIA_NAV_ITEMS = [
-    { id: 'digest', label: 'Daily digest', icon: 'menu-alt-2', active: true },
-    { id: 'opportunities', label: 'Opportunities', icon: 'inbox', badge: '20' },
-    { id: 'conversations', label: 'Conversations', icon: 'chat-circle' },
-] as const
-
 /**
- * Prototype-only sidebar for the Gaia homepage (`/app/gaia-home`). Kept
- * separate from the real Home product navigation so `/app/home` is unaffected.
+ * Prototype-only sidebar for the Gaia pages (`/app/gaia-*`). Kept separate
+ * from the real Home product navigation so `/app/home` is unaffected. Uses the
+ * standard NavigationSection so only the active route is highlighted.
  */
 function GaiaHomePrototypeSidebar() {
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
@@ -73,25 +67,38 @@ function GaiaHomePrototypeSidebar() {
                 />
             )}
 
-            <div className={css.navList}>
-                {GAIA_NAV_ITEMS.map((item) => (
-                    <button
-                        key={item.id}
-                        type="button"
-                        className={`${css.navItem} ${
-                            'active' in item && item.active
-                                ? css.navItemActive
-                                : ''
-                        }`}
-                    >
-                        <Icon name={item.icon} size="sm" />
-                        <span className={css.navLabel}>{item.label}</span>
-                        {'badge' in item && item.badge && (
-                            <span className={css.navBadge}>{item.badge}</span>
-                        )}
-                    </button>
-                ))}
-            </div>
+            <NavigationSectionGroup
+                storageKey="gaia-home"
+                defaultExpandedKeys={[]}
+            >
+                <NavigationSectionItem
+                    id="gaia-digest"
+                    to="/app/gaia-home"
+                    exact
+                    label="Daily digest"
+                    leadingSlot="menu-alt-2"
+                />
+                <NavigationSectionItem
+                    id="gaia-opportunities"
+                    to="/app/gaia-opportunities"
+                    exact
+                    leadingSlot="inbox"
+                    label="Opportunities"
+                    trailingSlot={({ isActive }) => (
+                        <Quantity
+                            quantity={20}
+                            color={isActive ? 'purple' : undefined}
+                        />
+                    )}
+                />
+                <NavigationSectionItem
+                    id="gaia-conversations"
+                    to="/app/gaia-conversations"
+                    exact
+                    label="Gaia conversations"
+                    leadingSlot="chat-circle"
+                />
+            </NavigationSectionGroup>
         </Box>
     )
 }
@@ -110,7 +117,7 @@ export function HomeSidebar() {
         return <CollapsedHomeSidebar />
     }
 
-    if (pathname.includes('/gaia-home')) {
+    if (pathname.includes('/gaia-')) {
         return <GaiaHomePrototypeSidebar />
     }
 

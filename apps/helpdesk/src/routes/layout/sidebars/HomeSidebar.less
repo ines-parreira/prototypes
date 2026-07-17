@@ -1,43 +1,16 @@
 :local {
-    .navList {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        padding-top: var(--spacing-xs);
-    }
-
-    .navItem {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-xs);
-        width: 100%;
-        padding: var(--spacing-xs) var(--spacing-sm);
-        border: none;
-        background: none;
-        cursor: pointer;
-        text-align: left;
-        border-radius: var(--spacing-xs);
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--content-neutral-default);
-    }
-
-    .navItem:hover {
-        background-color: var(--surface-neutral-secondary);
-    }
-
-    .navItemActive,
-    .navItemActive:hover {
-        background-color: var(--surface-accent-secondary);
-        color: var(--content-accent-default);
-    }
-
-    .navLabel {
-        flex: 1;
-    }
-
+    /* Quantity pill shown next to "Opportunities" in the prototype nav. */
     .navBadge {
-        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
         color: var(--content-neutral-secondary);
+        background-color: var(--surface-neutral-secondary);
     }
 }

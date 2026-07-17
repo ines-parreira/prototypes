@@ -17,7 +17,6 @@ import { CompatRoute } from 'react-router-dom-v5-compat'
 
 import { AiJourneyRoutes } from 'AIJourney/routes'
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { GaiaHomePage } from 'pages/aiAgent/gaiaHome/GaiaHomePage'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { CampaignStatsOrPaywallPage as RevenueCampaignsStats } from 'domains/reporting/pages/convert/pages/CampaignsStats'
@@ -31,6 +30,9 @@ import {
     useActionCentralizedLibraryEnabled,
 } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import { useCopilotShopContext } from 'main/app/hooks/useCopilotShopContext'
+import { GaiaConversationsPage } from 'pages/aiAgent/gaiaHome/GaiaConversationsPage'
+import { GaiaHomePage } from 'pages/aiAgent/gaiaHome/GaiaHomePage'
+import { GaiaOpportunitiesPage } from 'pages/aiAgent/gaiaHome/GaiaOpportunitiesPage'
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
 //
@@ -200,6 +202,12 @@ export function AppRoutes() {
             <Route path={`${path}/ai-agent`} render={AiAgentBaseRoutes} />
             <Route path={`${path}/gaia-home`} exact>
                 <GaiaHomePage />
+            </Route>
+            <Route path={`${path}/gaia-opportunities`} exact>
+                <GaiaOpportunitiesPage />
+            </Route>
+            <Route path={`${path}/gaia-conversations`} exact>
+                <GaiaConversationsPage />
             </Route>
             <Route path={`${path}/ai-journey`} render={AiJourneyRoutes} />
             <Route path={`${path}/convert`}>

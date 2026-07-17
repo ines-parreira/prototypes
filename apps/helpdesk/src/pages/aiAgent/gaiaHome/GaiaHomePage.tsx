@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Button, Icon, Tag } from '@gorgias/axiom'
 import { useCopilot } from '@gorgias/copilot'
 
@@ -10,13 +11,13 @@ import css from './GaiaHomePage.less'
 const OPPORTUNITIES = [
     {
         title: 'Two skills give shoppers different return windows',
-        action: 'Configure Loop order return action',
-        body: '"Returns" says 30 days, "Holiday policy" says 14. It affected 218 conversations this contradiction last month.',
+        finding: '218 conversations affected last month',
+        automationDelta: '8%',
     },
     {
         title: '"Order tracking" resolves below your average',
-        action: 'Improve existing skill',
-        body: 'High volume (1,020 convos) but 41% success. Gaia suggests adding carrier-specific instructions.',
+        finding: 'High volume (1,020 conversations) but 21% success',
+        automationDelta: '13%',
     },
 ]
 
@@ -104,32 +105,83 @@ export function GaiaHomePage() {
                     </div>
 
                     <section className={css.opportunities}>
+                        <div className={css.opportunitiesHeader}>
+                            <div className={css.opportunitiesHeaderTitle}>
+                                For you today
+                            </div>
+                            <div className={css.opportunitiesHeaderSubtitle}>
+                                Gaia found a few gaps that require your
+                                attention
+                            </div>
+                        </div>
+
                         <div className={css.opportunityGrid}>
                             {OPPORTUNITIES.map((opportunity, index) => (
                                 <div
                                     key={index}
                                     className={css.opportunityCard}
                                 >
-                                    <Tag size="sm">Label</Tag>
+                                    <div className={css.opportunityTags}>
+                                        <Tag
+                                            size="sm"
+                                            leadingSlot={
+                                                <span
+                                                    className={css.criticalIcon}
+                                                >
+                                                    <Icon
+                                                        name="arrow-chevron-up-duo"
+                                                        size="xs"
+                                                    />
+                                                </span>
+                                            }
+                                        >
+                                            Critical
+                                        </Tag>
+                                        <Tag size="sm">AI Agent</Tag>
+                                    </div>
                                     <div className={css.opportunityTitle}>
                                         {opportunity.title}
                                     </div>
-                                    <div className={css.opportunitySubtitle}>
-                                        {opportunity.action}
+                                    <div className={css.opportunityFinding}>
+                                        {opportunity.finding}
                                     </div>
-                                    <div className={css.opportunityImpact}>
-                                        {opportunity.body}
+                                    <div className={css.opportunityAutomation}>
+                                        <Icon name="trending-up" size="xs" />
+                                        {opportunity.automationDelta} increase
+                                        on automation rate
                                     </div>
-                                    <Button intent="secondary" size="sm">
-                                        Review
-                                    </Button>
+                                    <div className={css.opportunityActions}>
+                                        <Button intent="primary" size="sm">
+                                            Approve
+                                        </Button>
+                                        <Button intent="secondary" size="sm">
+                                            Dismiss
+                                        </Button>
+                                        <Button
+                                            intent="tertiary"
+                                            size="sm"
+                                            leadingSlot={
+                                                <Icon
+                                                    name="chat-circle"
+                                                    size="sm"
+                                                />
+                                            }
+                                        >
+                                            Ask Gaia
+                                        </Button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
 
-                        <button type="button" className={css.viewMore}>
-                            View more opportunities
-                        </button>
+                        <Button
+                            as={Link}
+                            to="/app/gaia-opportunities"
+                            intent="tertiary"
+                            size="sm"
+                        >
+                            View all opportunities
+                        </Button>
                     </section>
                 </div>
             </div>
