@@ -127,6 +127,8 @@ export function MetricsChartCard() {
                             className={`${css.metricCard} ${
                                 isActive ? css.metricCardActive : ''
                             }`}
+                            data-gaia-selectable
+                            data-gaia-label={`${card.label} (${card.value})`}
                             onMouseEnter={() => {
                                 setActiveId(card.id)
                                 setIsDetailOpen(true)

@@ -222,44 +222,6 @@ export function ScheduledRunsPage() {
         toast.success('Scheduled run deleted.')
     }
 
-    const retryRun = (automationId: number, runId: number) => {
-        setAutomations((list) =>
-            list.map((a) =>
-                a.id === automationId
-                    ? {
-                          ...a,
-                          runs: a.runs?.map((r) =>
-                              r.id === runId
-                                  ? { ...r, status: 'loading' as RunStatus }
-                                  : r,
-                          ),
-                      }
-                    : a,
-            ),
-        )
-        window.setTimeout(() => {
-            setAutomations((list) =>
-                list.map((a) =>
-                    a.id === automationId
-                        ? {
-                              ...a,
-                              failure: undefined,
-                              runs: a.runs?.map((r) =>
-                                  r.id === runId
-                                      ? {
-                                            ...r,
-                                            status: 'delivered' as RunStatus,
-                                        }
-                                      : r,
-                              ),
-                          }
-                        : a,
-                ),
-            )
-            toast.success('Report delivered.')
-        }, 1200)
-    }
-
     const submitAutomation = (values: FormValues, editingId?: number) => {
         if (editingId) {
             setAutomations((list) =>
@@ -373,12 +335,6 @@ export function ScheduledRunsPage() {
                                                         automation.id,
                                                     )
                                                 }
-                                                onRetry={(runId) =>
-                                                    retryRun(
-                                                        automation.id,
-                                                        runId,
-                                                    )
-                                                }
                                                 onPause={() =>
                                                     pauseAutomation(
                                                         automation.id,
@@ -438,14 +394,12 @@ function AutomationCard({
     onToggle,
     onEdit,
     onDelete,
-    onRetry,
     onPause,
 }: {
     automation: Automation
     onToggle: () => void
     onEdit: () => void
     onDelete: () => void
-    onRetry: (runId: number) => void
     onPause: () => void
 }) {
     const [expanded, setExpanded] = useState(false)
@@ -512,11 +466,7 @@ function AutomationCard({
 
             {automation.failure && (
                 <div className={css.failed}>
-                    <button
-                        type="button"
-                        className={css.failedHeader}
-                        onClick={() => setExpanded((v) => !v)}
-                    >
+                    <div className={css.failedHeader}>
                         <span className={css.failedIcon}>
                             <Icon name="error-octagon" size="sm" />
                         </span>
@@ -526,44 +476,29 @@ function AutomationCard({
                             </strong>{' '}
                             {automation.failure.split('. ').slice(1).join('. ')}
                         </span>
-                        <Icon
-                            name={
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            leadingSlot={<Icon name="add-plus" size="sm" />}
+                            onClick={onEdit}
+                        >
+                            Add a new Slack channel
+                        </Button>
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            icon={
                                 expanded
                                     ? 'arrow-chevron-up'
                                     : 'arrow-chevron-down'
                             }
-                            size="sm"
+                            aria-label="Toggle run history"
+                            onClick={() => setExpanded((v) => !v)}
                         />
-                    </button>
+                    </div>
 
                     {expanded && (
                         <div className={css.runHistory}>
-                            <div className={css.failedActions}>
-                                <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    leadingSlot={
-                                        <Icon name="add-plus" size="sm" />
-                                    }
-                                    onClick={onEdit}
-                                >
-                                    Add a new Slack channel
-                                </Button>
-                                <Button
-                                    variant="tertiary"
-                                    size="sm"
-                                    leadingSlot={
-                                        <Icon
-                                            name="media-pause-circle"
-                                            size="sm"
-                                        />
-                                    }
-                                    onClick={onPause}
-                                >
-                                    Pause run
-                                </Button>
-                            </div>
-
                             <div className={css.runHistoryLabel}>
                                 Run history
                             </div>
@@ -587,12 +522,15 @@ function AutomationCard({
                                             <Button
                                                 variant="tertiary"
                                                 size="sm"
-                                                isLoading={
-                                                    run.status === 'loading'
+                                                leadingSlot={
+                                                    <Icon
+                                                        name="media-pause-circle"
+                                                        size="sm"
+                                                    />
                                                 }
-                                                onClick={() => onRetry(run.id)}
+                                                onClick={onPause}
                                             >
-                                                Retry
+                                                Pause run
                                             </Button>
                                         )}
                                     </span>

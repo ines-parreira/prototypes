@@ -568,8 +568,45 @@
         background: radial-gradient(circle at 35% 30%, #ff8a73, #f4583b);
     }
 
+    /* Chips + text input share one row inside the pill and wrap together. */
+    .inputMain {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--spacing-xxs);
+    }
+
+    /* Overlay placeholder we can animate (native ::placeholder can't fade). */
+    .inputPlaceholder {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        font-size: 16px;
+        color: var(--content-neutral-secondary);
+        white-space: nowrap;
+        animation: gaiaPlaceholderSwap 0.45s ease;
+    }
+
+    @keyframes gaiaPlaceholderSwap {
+        from {
+            opacity: 0;
+            top: 38%;
+        }
+
+        to {
+            opacity: 1;
+            top: 50%;
+        }
+    }
+
     .inputField {
         flex: 1;
+        min-width: 120px;
         border: none;
         outline: none;
         background: transparent;
@@ -586,6 +623,155 @@
         align-items: center;
         gap: var(--spacing-xs);
         color: var(--content-neutral-secondary);
+    }
+
+    /* ---------------- Composer: "+" context (Pointer / Mention) ------------ */
+
+    .composer {
+        position: relative;
+        width: 100%;
+        max-width: 640px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .attachments {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-xxs);
+        padding: 0 var(--spacing-sm);
+    }
+
+    .attachChip {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        padding: var(--spacing-xxxs) var(--spacing-xs);
+        border: 1px solid var(--home-border);
+        border-radius: 999px;
+        background-color: var(--home-surface-bg);
+        font-size: 13px;
+        color: var(--content-neutral-default);
+    }
+
+    .attachRemove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: var(--spacing-xxxs);
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: var(--content-neutral-secondary);
+    }
+
+    /* Mention popover: categories → search → results. */
+    .mentionPicker {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        right: 0;
+        z-index: 50;
+        width: 420px;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+        border: 1px solid var(--home-border);
+        border-radius: 12px;
+        background-color: var(--home-surface-bg);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+    }
+
+    .mentionCats {
+        display: flex;
+    }
+
+    .mentionSearch {
+        width: 100%;
+    }
+
+    .mentionList {
+        display: flex;
+        flex-direction: column;
+        max-height: 240px;
+        overflow-y: auto;
+    }
+
+    .mentionItem {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        width: 100%;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border: none;
+        border-radius: var(--spacing-xxs);
+        background: none;
+        cursor: pointer;
+        text-align: left;
+        color: var(--content-neutral-default);
+    }
+
+    .mentionItem:hover {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .mentionItemLabel {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .mentionItemSub {
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .mentionEmpty {
+        padding: var(--spacing-sm);
+        font-size: 14px;
+        color: var(--content-neutral-secondary);
+    }
+
+    /* Pointer selection mode: crosshair + highlight selectable components. */
+    .pointerMode,
+    .pointerMode * {
+        cursor: crosshair !important;
+    }
+
+    .pointerMode [data-gaia-selectable] {
+        transition: box-shadow 0.1s ease;
+    }
+
+    .pointerMode [data-gaia-selectable]:hover {
+        box-shadow: 0 0 0 2px var(--border-accent-default);
+        border-radius: var(--spacing-sm);
+    }
+
+    .pointerHint {
+        position: fixed;
+        top: var(--spacing-lg);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 60;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: 999px;
+        background-color: var(--surface-inverted-default);
+        color: var(--content-inverted-default);
+        font-size: 14px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .pointerHintKey {
+        margin-left: var(--spacing-xxs);
+        padding: 2px var(--spacing-xxs);
+        border-radius: var(--spacing-xxxs);
+        background-color: rgba(255, 255, 255, 0.16);
+        font-size: 12px;
     }
 
     /* ---------------- Full-screen Gaia chat overlay ---------------- */
@@ -744,6 +930,74 @@
 
     .chatOverlayClose:hover {
         background-color: var(--surface-neutral-tertiary, var(--surface-neutral-secondary));
+    }
+
+    /* ---------------- Create workflow modal ---------------- */
+    /* Mirrors the Scheduled runs dialog structure. */
+
+    .dialog {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+        /* Fill the modal container. */
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .dialogHeader {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+    }
+
+    .dialogTitle {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .dialogSubtitle {
+        margin-top: var(--spacing-xxxs);
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--content-neutral-secondary);
+    }
+
+    .dialogBody {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+    }
+
+    .fieldLabel {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .fieldRequired {
+        margin-left: 2px;
+        color: var(--content-error-default);
+    }
+
+    .fieldError {
+        font-size: 12px;
+        color: var(--content-error-default);
+    }
+
+    .dialogFooter {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--spacing-sm);
     }
 }
 
