@@ -42,6 +42,7 @@ export const productMetadata: Record<Product, ProductMetadata> = {
             'gaia-home',
             'gaia-opportunities',
             'gaia-conversations',
+            'gaia-scheduled-runs',
         ],
         icon: 'nav-home',
         defaultPath: '/app/home',

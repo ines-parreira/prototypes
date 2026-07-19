@@ -33,6 +33,7 @@ import { useCopilotShopContext } from 'main/app/hooks/useCopilotShopContext'
 import { GaiaConversationsPage } from 'pages/aiAgent/gaiaHome/GaiaConversationsPage'
 import { GaiaHomePage } from 'pages/aiAgent/gaiaHome/GaiaHomePage'
 import { GaiaOpportunitiesPage } from 'pages/aiAgent/gaiaHome/GaiaOpportunitiesPage'
+import { ScheduledRunsPage } from 'pages/aiAgent/gaiaHome/ScheduledRunsPage'
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
 //
@@ -208,6 +209,9 @@ export function AppRoutes() {
             </Route>
             <Route path={`${path}/gaia-conversations`} exact>
                 <GaiaConversationsPage />
+            </Route>
+            <Route path={`${path}/gaia-scheduled-runs`} exact>
+                <ScheduledRunsPage />
             </Route>
             <Route path={`${path}/ai-journey`} render={AiJourneyRoutes} />
             <Route path={`${path}/convert`}>

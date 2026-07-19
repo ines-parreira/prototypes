@@ -92,6 +92,13 @@ function GaiaHomePrototypeSidebar() {
                     )}
                 />
                 <NavigationSectionItem
+                    id="gaia-scheduled-runs"
+                    to="/app/gaia-scheduled-runs"
+                    exact
+                    label="Scheduled runs"
+                    leadingSlot="calendar"
+                />
+                <NavigationSectionItem
                     id="gaia-conversations"
                     to="/app/gaia-conversations"
                     exact

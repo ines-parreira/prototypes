@@ -1,0 +1,367 @@
+:local {
+    .page {
+        /* Shared surface tokens mapped to Axiom semantic tokens so they adapt
+           to light/dark mode. */
+        --home-page-bg: var(--elevation-neutral-bg);
+        --home-surface-bg: var(--elevation-neutral-default);
+        --home-border: var(--border-neutral-default);
+
+        position: relative;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        /* Match the product layout: the sidebar resize handle provides the
+           left gap, so only pad the other edges (same as GaiaHomePage). */
+        padding: var(--layout-spacing-xs);
+        padding-left: 0;
+        overflow: hidden;
+        background-color: var(--home-page-bg);
+        color: var(--content-neutral-default);
+    }
+
+    .surface {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--home-surface-bg);
+        border: 1px solid var(--home-border);
+        border-radius: 12px;
+    }
+
+    /* No divider under the header (matches the other prototype pages). */
+    .pageHeader {
+        border-bottom: none !important;
+        min-height: auto !important;
+        max-height: none !important;
+        padding: var(--spacing-md) var(--spacing-lg) !important;
+    }
+
+    .pageHeader h1 {
+        font-size: 22px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Full-width tab bar that stays pinned above the scrolling content.
+       The Tabs component provides its own full-width divider. */
+    .tabsBar {
+        flex-shrink: 0;
+        /* No horizontal padding: the divider spans full width edge-to-edge,
+           and each tab's own 8px + 16px padding lands the label at 24px —
+           aligned with the PageHeader title. The Tabs component only draws
+           the active indicator, so this hairline border is the single
+           divider (0.5px to match the design system's thin borders). */
+        border-bottom: 0.5px solid
+            color-mix(in srgb, var(--home-border) 55%, transparent);
+        background-color: var(--home-surface-bg);
+    }
+
+    .scroll {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .content {
+        width: 100%;
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    /* ---------------- My automations ---------------- */
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+    }
+
+    .cardBody {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        padding: var(--spacing-lg);
+    }
+
+    .cardMain {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xxs);
+        min-width: 0;
+    }
+
+    .cardTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .cardMeta {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        font-size: 14px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .metaDot {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .cardDest {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+    }
+
+    .cardActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        flex-shrink: 0;
+    }
+
+    /* ---------------- Failed run + run history ---------------- */
+
+    .failed {
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    /* Soft surface-error strip: error-red icon, neutral text. */
+    .failedHeader {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        width: 100%;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        background-color: var(--surface-error-default);
+        color: var(--content-neutral-secondary);
+    }
+
+    .failedIcon {
+        display: inline-flex;
+        color: var(--content-error-default);
+    }
+
+    .failedText {
+        flex: 1;
+        font-size: 14px;
+        color: var(--content-neutral-default);
+    }
+
+    .runHistory {
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-md);
+    }
+
+    /* Remediation actions for a failed run. */
+    .failedActions {
+        display: flex;
+        gap: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+    }
+
+    .runHistoryLabel {
+        padding: var(--spacing-sm) 0;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--content-neutral-secondary);
+    }
+
+    .runRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) 0;
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .runDate {
+        flex: 1;
+        font-size: 14px;
+        color: var(--content-neutral-default);
+    }
+
+    /* Fixed-width columns so the status tags and actions line up down the
+       list and stay vertically centered. */
+    .runStatus {
+        flex: 0 0 110px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .runAction {
+        flex: 0 0 96px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    /* ---------------- Library ---------------- */
+
+    .librarySearch {
+        max-width: 360px;
+    }
+
+    .libraryGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    .libraryCard {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-lg);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+    }
+
+    .libraryTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .libraryDescription {
+        flex: 1;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--content-neutral-secondary);
+    }
+
+    .libraryFooter {
+        margin-top: var(--spacing-xxs);
+    }
+
+    /* ---------------- Empty state ---------------- */
+
+    .empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-xxxl) var(--spacing-lg);
+        text-align: center;
+        color: var(--content-neutral-secondary);
+    }
+
+    .emptyTitle {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .emptyText {
+        max-width: 380px;
+        font-size: 14px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .emptyActions {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-sm);
+    }
+
+    /* ---------------- Dialog ---------------- */
+
+    .dialog {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg);
+        /* Fill the modal container. */
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .dialogHeader {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+    }
+
+    .dialogTitle {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .dialogSubtitle {
+        margin-top: var(--spacing-xxxs);
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--content-neutral-secondary);
+    }
+
+    .dialogBody {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+    }
+
+    .fieldRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .fieldLabel {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .fieldError {
+        font-size: 12px;
+        color: var(--content-error-default);
+    }
+
+    /* Repeatable recipient rows in the Email delivery option. */
+    .emailRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .emailInput {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .dialogFooter {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--spacing-sm);
+    }
+}
