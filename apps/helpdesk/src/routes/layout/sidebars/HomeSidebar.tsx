@@ -9,13 +9,10 @@ import { useLocation } from 'react-router-dom'
 
 import { Box, Quantity, Tag } from '@gorgias/axiom'
 
-import { useAppSelector } from 'hooks/useAppSelector'
-import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
 import type { ProductMetadata } from 'routes/layout/productMetadata'
 import { Product, productMetadata } from 'routes/layout/productMetadata'
 import { CollapsedHomeSidebar } from 'routes/layout/sidebars/CollapsedHomeSidebar'
 import { useNavigationProducts } from 'routes/layout/useNavigationProducts'
-import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 type ProductNavigationSectionProps = {
     product: ProductMetadata
@@ -54,19 +51,8 @@ function ProductNavigationSection({
  * standard NavigationSection so only the active route is highlighted.
  */
 function GaiaHomePrototypeSidebar() {
-    const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
-
     return (
         <Box flexDirection="column" height="100%" gap="sm">
-            {storeIntegrations.length > 0 && (
-                <StoreSelector
-                    integrations={storeIntegrations}
-                    selected={storeIntegrations[0]}
-                    onChange={() => {}}
-                    fullWidth
-                />
-            )}
-
             <NavigationSectionGroup
                 storageKey="gaia-home"
                 defaultExpandedKeys={[]}
@@ -83,10 +69,10 @@ function GaiaHomePrototypeSidebar() {
                     to="/app/gaia-opportunities"
                     exact
                     leadingSlot="inbox"
-                    label="Opportunities"
+                    label="Spotlight"
                     trailingSlot={({ isActive }) => (
                         <Quantity
-                            quantity={20}
+                            quantity={9}
                             color={isActive ? 'purple' : undefined}
                         />
                     )}
@@ -102,7 +88,7 @@ function GaiaHomePrototypeSidebar() {
                     id="gaia-conversations"
                     to="/app/gaia-conversations"
                     exact
-                    label="Gaia conversations"
+                    label="Chats"
                     leadingSlot="chat-circle"
                 />
             </NavigationSectionGroup>

@@ -53,7 +53,7 @@ export function CopilotWorkspaceContainer() {
             ref={wrapperRef}
             className={cn(css.wrapper, isOpen && css.wrapperOpen)}
         >
-            <CopilotPanel />
+            <CopilotPanel conversationLabel="New chat" />
         </div>
     )
 }

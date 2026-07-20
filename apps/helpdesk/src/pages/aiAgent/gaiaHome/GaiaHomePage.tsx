@@ -439,10 +439,7 @@ export function GaiaHomePage() {
                                             intent="tertiary"
                                             size="sm"
                                             leadingSlot={
-                                                <Icon
-                                                    name="chat-circle"
-                                                    size="sm"
-                                                />
+                                                <Icon name="ai" size="sm" />
                                             }
                                         >
                                             Ask Gaia

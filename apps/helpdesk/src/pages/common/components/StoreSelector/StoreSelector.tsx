@@ -91,7 +91,7 @@ export function StoreSelector({
         selected === undefined
             ? 'Select a store'
             : selected === null
-              ? 'All Stores'
+              ? 'All stores'
               : selected?.name || ''
 
     const isInlineTruncated = useIsTruncated(
@@ -137,7 +137,7 @@ export function StoreSelector({
                 items: [
                     {
                         id: 'all-stores',
-                        name: 'All Stores',
+                        name: 'All stores',
                         type: null,
                         isAllOption: true,
                     },
@@ -158,7 +158,7 @@ export function StoreSelector({
         if (selected === null) {
             return {
                 id: 'all-stores',
-                name: 'All Stores',
+                name: 'All stores',
                 type: null,
                 isAllOption: true,
             }

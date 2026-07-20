@@ -17,7 +17,10 @@ import {
     useCopilot,
     useCopilotPanel,
 } from '@gorgias/copilot'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { PageHeader } from 'pages/common/components/PageHeader'
+import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import css from './GaiaOpportunitiesPage.less'
 
@@ -219,6 +222,14 @@ const PROPOSALS: Proposal[] = [
 
 const FILTERS: ('All' | Source)[] = ['All', 'AI Agent', 'Helpdesk']
 
+// Display labels for the source filter (data keeps its original source names).
+const FILTER_LABELS: Record<'All' | Source, string> = {
+    All: 'All',
+    'AI Agent': 'AI Agent',
+    Helpdesk: 'Inbox',
+    Knowledge: 'Knowledge',
+}
+
 const STREAK_TOTAL = 8
 
 // Wavy sample data for the small sparkline charts on the impact cards.
@@ -232,6 +243,13 @@ export function GaiaOpportunitiesPage() {
         Object.fromEntries(PROPOSALS.map((p) => [p.id, 'pending'])),
     )
     const [filter, setFilter] = useState<'All' | Source>('All')
+    const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
+    // null = "All stores" (the default).
+    const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
+    const selectedStore =
+        selectedStoreId === null
+            ? null
+            : (storeIntegrations.find((s) => s.id === selectedStoreId) ?? null)
     const [view, setView] = useState<'card' | 'list'>(
         () =>
             (sessionStorage.getItem(VIEW_STORAGE_KEY) as 'card' | 'list') ||
@@ -307,7 +325,7 @@ export function GaiaOpportunitiesPage() {
     return (
         <div className={css.page}>
             <div className={css.surface}>
-                <PageHeader title="Opportunities" className={css.pageHeader}>
+                <PageHeader title="Spotlight" className={css.pageHeader}>
                     <Button
                         variant="tertiary"
                         icon="history"
@@ -316,6 +334,18 @@ export function GaiaOpportunitiesPage() {
                 </PageHeader>
 
                 <div className={css.content}>
+                    {storeIntegrations.length > 0 && (
+                        <div className={css.storeFilter}>
+                            <StoreSelector
+                                withAllOption
+                                withSearch
+                                integrations={storeIntegrations}
+                                selected={selectedStore}
+                                onChange={setSelectedStoreId}
+                            />
+                        </div>
+                    )}
+
                     <ImpactStrip
                         bump={impactBump}
                         reviewedCount={reviewedCount}
@@ -337,7 +367,7 @@ export function GaiaOpportunitiesPage() {
                                         <Quantity quantity={counts[f]} />
                                     }
                                 >
-                                    {f}
+                                    {FILTER_LABELS[f]}
                                 </ButtonGroupItem>
                             ))}
                         </ButtonGroup>
@@ -641,7 +671,7 @@ function CardView({
                             >
                                 {priority.label}
                             </Tag>
-                            <Tag size="sm">{current.source}</Tag>
+                            <Tag size="sm">{FILTER_LABELS[current.source]}</Tag>
                         </div>
 
                         <div className={css.cardEyebrow}>
@@ -673,9 +703,7 @@ function CardView({
                             <Button
                                 variant="tertiary"
                                 size="md"
-                                leadingSlot={
-                                    <Icon name="chat-circle" size="sm" />
-                                }
+                                leadingSlot={<Icon name="ai" size="sm" />}
                                 onClick={onAskGaia}
                             >
                                 Ask Gaia
@@ -723,7 +751,7 @@ function ListView({
                             <div className={css.listTitle}>{p.title}</div>
                             <div className={css.listSubtitle}>{p.finding}</div>
                         </div>
-                        <Tag size="sm">{p.source}</Tag>
+                        <Tag size="sm">{FILTER_LABELS[p.source]}</Tag>
                         <span className={css.listImpact}>
                             <Icon name="trending-up" size="xs" />
                             Estimated {p.impact}
@@ -747,9 +775,7 @@ function ListView({
                                 <Button
                                     variant="tertiary"
                                     size="sm"
-                                    leadingSlot={
-                                        <Icon name="chat-circle" size="sm" />
-                                    }
+                                    leadingSlot={<Icon name="ai" size="sm" />}
                                     onClick={() => onAskGaia(p.id)}
                                 >
                                     Ask Gaia

@@ -482,7 +482,7 @@ function AutomationCard({
                             leadingSlot={<Icon name="add-plus" size="sm" />}
                             onClick={onEdit}
                         >
-                            Add a new Slack channel
+                            Add a new channel
                         </Button>
                         <Button
                             variant="tertiary"
@@ -720,7 +720,7 @@ function AutomationDialog({
 }) {
     const source = editing ?? template
     const [values, setValues] = useState<FormValues>({
-        title: source?.title ?? 'New scheduled report',
+        title: source?.title ?? 'New scheduled run',
         description: source?.description ?? '',
         category: (source?.category as Category) ?? 'Automation',
         frequency: 'weekly',
@@ -997,7 +997,7 @@ function AutomationDialog({
                         isDisabled={!isValid}
                         onClick={handleSubmit}
                     >
-                        {editing ? 'Save changes' : 'Create automation'}
+                        {editing ? 'Save changes' : 'Create run'}
                     </Button>
                 </div>
             </div>

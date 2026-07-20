@@ -98,7 +98,7 @@ describe('StoreSelector', () => {
             ).toBeInTheDocument()
         })
 
-        it('renders "All Stores" when selected is null', () => {
+        it('renders "All stores" when selected is null', () => {
             render(
                 <StoreSelector
                     integrations={mockIntegrations}
@@ -110,7 +110,7 @@ describe('StoreSelector', () => {
 
             expect(screen.getByRole('button')).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /All Stores/i }),
+                screen.getByRole('button', { name: /All stores/i }),
             ).toBeInTheDocument()
         })
 
@@ -220,7 +220,7 @@ describe('StoreSelector', () => {
     })
 
     describe('with all option', () => {
-        it('displays "All Stores" option when withAllOption is true', async () => {
+        it('displays "All stores" option when withAllOption is true', async () => {
             const user = userEvent.setup()
 
             render(
@@ -238,11 +238,11 @@ describe('StoreSelector', () => {
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
                 expect(options).toHaveLength(3)
-                expect(options[0]).toHaveTextContent('All Stores')
+                expect(options[0]).toHaveTextContent('All stores')
             })
         })
 
-        it('calls onChange with null when "All Stores" is selected', async () => {
+        it('calls onChange with null when "All stores" is selected', async () => {
             const user = userEvent.setup()
 
             render(
@@ -260,7 +260,7 @@ describe('StoreSelector', () => {
 
             const options = screen.getAllByRole('option')
             const allStoresOption = options.find((option) =>
-                option.textContent?.includes('All Stores'),
+                option.textContent?.includes('All stores'),
             )
 
             await user.click(allStoresOption!)
@@ -269,7 +269,7 @@ describe('StoreSelector', () => {
             })
         })
 
-        it('does not display "All Stores" option when withAllOption is false', async () => {
+        it('does not display "All stores" option when withAllOption is false', async () => {
             const user = userEvent.setup()
 
             render(
@@ -289,7 +289,7 @@ describe('StoreSelector', () => {
                 expect(options).toHaveLength(2)
 
                 const hasAllStoresOption = options.some((option) =>
-                    option.textContent?.includes('All Stores'),
+                    option.textContent?.includes('All stores'),
                 )
                 expect(hasAllStoresOption).toBe(false)
             })
@@ -610,7 +610,7 @@ describe('StoreSelector', () => {
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
                 expect(options).toHaveLength(2)
-                expect(options[0]).toHaveTextContent('All Stores')
+                expect(options[0]).toHaveTextContent('All stores')
                 expect(options[1]).toHaveTextContent('BigCommerce Store')
 
                 const hasShopifyOption = options.some((option) =>
@@ -897,7 +897,7 @@ describe('StoreSelector', () => {
                 expect(getSelectFieldTrigger()).toHaveValue('Shopify Store')
             })
 
-            it('displays "All Stores" in the trigger when selected is null and withAllOption is true', () => {
+            it('displays "All stores" in the trigger when selected is null and withAllOption is true', () => {
                 render(
                     <StoreSelector
                         integrations={mockIntegrations}
@@ -907,7 +907,7 @@ describe('StoreSelector', () => {
                     />,
                 )
 
-                expect(getSelectFieldTrigger()).toHaveValue('All Stores')
+                expect(getSelectFieldTrigger()).toHaveValue('All stores')
             })
         })
 
@@ -959,7 +959,7 @@ describe('StoreSelector', () => {
         })
 
         describe('with all option', () => {
-            it('displays "All Stores" option in dropdown when withAllOption is true', async () => {
+            it('displays "All stores" option in dropdown when withAllOption is true', async () => {
                 const user = userEvent.setup()
 
                 render(
@@ -976,11 +976,11 @@ describe('StoreSelector', () => {
                 await waitFor(() => {
                     const options = screen.getAllByRole('option')
                     expect(options).toHaveLength(3)
-                    expect(options[0]).toHaveTextContent('All Stores')
+                    expect(options[0]).toHaveTextContent('All stores')
                 })
             })
 
-            it('calls onChange with null when "All Stores" is selected', async () => {
+            it('calls onChange with null when "All stores" is selected', async () => {
                 const user = userEvent.setup()
 
                 render(
@@ -996,7 +996,7 @@ describe('StoreSelector', () => {
 
                 const options = await screen.findAllByRole('option')
                 const allStoresOption = options.find((option) =>
-                    option.textContent?.includes('All Stores'),
+                    option.textContent?.includes('All stores'),
                 )
                 await user.click(allStoresOption!)
 

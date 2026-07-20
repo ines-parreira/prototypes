@@ -35,7 +35,7 @@ export type ProductMetadata = {
 export const productMetadata: Record<Product, ProductMetadata> = {
     [Product.Home]: {
         id: Product.Home,
-        name: 'Home',
+        name: 'Gaia',
         productType: 'secondary',
         urlPatterns: [
             'home',

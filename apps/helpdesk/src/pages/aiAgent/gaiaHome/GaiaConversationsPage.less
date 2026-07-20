@@ -82,9 +82,32 @@
 
     .body {
         width: 100%;
-        max-width: 960px;
-        margin: 0 auto;
-        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl, 48px);
+        max-width: 600px;
+        padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xl, 48px);
+    }
+
+    /* The list sits flat on the page — no container background, border, or
+       shadow of its own. */
+    .body :global([role='listbox']) {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    /* Keep the flat divider between each chat, like the previous rows. */
+    .body :global([role='option']) {
+        border-bottom: 1px solid var(--home-border);
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    /* Highlight the searched keyword in matching results. */
+    .highlight {
+        padding: 0 1px;
+        border-radius: 2px;
+        background-color: var(--surface-accent-secondary, #ece7fb);
+        color: var(--content-accent-default);
     }
 
     .searchRow {
@@ -147,6 +170,10 @@
         color: var(--content-neutral-secondary);
     }
 
+    .searchField {
+        margin-bottom: var(--spacing-lg);
+    }
+
     .rowTrailing {
         display: flex;
         align-items: center;
@@ -160,15 +187,15 @@
         white-space: nowrap;
     }
 
-    /* Actions button reserves its space (opacity, not display) so the row
-       never shifts; revealed on hover or while its menu is open (focus). */
+    /* Kebab reserves its space (opacity, not display) so the row never
+       shifts; revealed only on row hover or while its menu is open. */
     .kebab {
         display: inline-flex;
         opacity: 0;
         transition: opacity 0.1s ease;
     }
 
-    .row:hover .kebab,
+    .body :global([role='option']:hover) .kebab,
     .kebab:focus-within {
         opacity: 1;
     }
