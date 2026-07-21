@@ -15,6 +15,7 @@ import {
 
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { BASE_STATS_PATH } from 'routes/constants'
+import { GaiaProductIconBox } from 'routes/layout/GaiaProductIconBox'
 import type { ProductConfig } from 'routes/layout/productConfig'
 import { Product, productConfig } from 'routes/layout/productConfig'
 import { SidebarProductHeaderMenuItem } from 'routes/layout/SidebarProductHeaderMenuItem'
@@ -43,7 +44,9 @@ export function SidebarProductHeader({
         isModuleRestrictedToCurrentUser(BASE_STATS_PATH)
 
     const icon =
-        selectedItem.icon != null ? (
+        selectedItem.id === Product.Home ? (
+            <GaiaProductIconBox variant="primary" />
+        ) : selectedItem.icon != null ? (
             <IconBox
                 icon={selectedItem.icon}
                 color={

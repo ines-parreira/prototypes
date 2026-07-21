@@ -661,11 +661,20 @@
     }
 
     /* Matches the card view's estimated-impact line: green, regular weight. */
+    /* Fixed-width trailing columns so the type tags line up in one column. */
+    .listTag {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        width: 96px;
+    }
+
     .listImpact {
         flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         gap: var(--spacing-xxxs);
+        width: 190px;
         font-size: 12px;
         font-weight: 400;
         color: var(--content-success-default);
@@ -674,10 +683,16 @@
     .listActions {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: var(--spacing-xs);
+        width: 280px;
+        flex-shrink: 0;
     }
 
     .listState {
+        width: 280px;
+        flex-shrink: 0;
+        text-align: right;
         font-size: 13px;
         text-transform: capitalize;
         color: var(--content-neutral-tertiary);

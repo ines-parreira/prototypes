@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom'
 import {
     Button,
     Icon,
-    List,
-    ListItem,
-    ListSection,
     Menu,
     MenuItem,
     SearchField,
+    SubMenu,
+    Text,
 } from '@gorgias/axiom'
 
 import css from './GaiaConversationsPage.less'
@@ -23,7 +22,7 @@ type Conversation = {
     group: ChatGroup
 }
 
-// A mix of knowledge- and analytics-related Gaia chats, grouped by recency.
+// A mix of knowledge- and analytics-related Gaia conversations.
 const CONVERSATIONS: Conversation[] = [
     {
         id: 0,
@@ -46,7 +45,7 @@ const CONVERSATIONS: Conversation[] = [
         title: 'Top intents by volume this month',
         summary:
             'Broke down the highest-volume intents and their resolution rates.',
-        time: '4:30 PM',
+        time: 'Yesterday',
         group: 'Yesterday',
     },
     {
@@ -54,7 +53,7 @@ const CONVERSATIONS: Conversation[] = [
         title: 'Draft a shipping-delay macro',
         summary:
             'Turned repeated shipping-delay replies into a reusable macro.',
-        time: '10:15 AM',
+        time: 'Yesterday',
         group: 'Yesterday',
     },
     {
@@ -117,9 +116,8 @@ const GROUP_ORDER: ChatGroup[] = [
     'Last month',
 ]
 
-// Wrap every occurrence of the search term in a highlight span so matches
-// stand out in the results. Case-insensitive; returns the plain string when
-// there's nothing to highlight.
+// Wrap each occurrence of the search term in a highlight span so matches
+// stand out. Case-insensitive; returns the plain string when there's no query.
 function highlight(text: string, query: string) {
     if (!query) return text
     const parts = text.split(new RegExp(`(${escapeRegExp(query)})`, 'ig'))
@@ -138,40 +136,36 @@ function escapeRegExp(value: string) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-type MenuAction = {
-    id: string
-    label: string
-    icon: string
-    intent?: 'destructive'
-}
-
-const MENU_ACTIONS: MenuAction[] = [
-    { id: 'copy', label: 'Copy chat ID', icon: 'copy' },
-    { id: 'rename', label: 'Rename', icon: 'edit-pencil' },
-    {
-        id: 'delete',
-        label: 'Delete',
-        icon: 'trash-empty',
-        intent: 'destructive',
-    },
+// Folders a chat can be moved into (mirrors the Folders section in the nav).
+const CHAT_FOLDERS = [
+    { id: 'knowledge', label: 'Knowledge' },
+    { id: 'reporting', label: 'Reporting' },
 ]
+
+// Thumbtack "pin" icon — Axiom has no push-pin, so this is a small custom SVG
+// that inherits the menu item's text color.
+function PinIcon() {
+    return (
+        <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+        >
+            <path d="M12 17v5" />
+            <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+        </svg>
+    )
+}
 
 export function GaiaConversationsPage() {
     const [search, setSearch] = useState('')
-
     const query = search.trim().toLowerCase()
-    const filtered = CONVERSATIONS.filter(
-        (chat) =>
-            !query ||
-            `${chat.title} ${chat.summary}`.toLowerCase().includes(query),
-    )
-
-    // Group into date sections, keeping only non-empty ones in a fixed order.
-    const sections = GROUP_ORDER.map((group) => ({
-        id: group,
-        name: group,
-        items: filtered.filter((chat) => chat.group === group),
-    })).filter((section) => section.items.length > 0)
 
     return (
         <div className={css.page}>
@@ -194,34 +188,65 @@ export function GaiaConversationsPage() {
                             <SearchField
                                 aria-label="Search chats"
                                 placeholder="Search..."
+                                size="md"
                                 value={search}
                                 onChange={setSearch}
                             />
                         </div>
 
-                        <List aria-label="Chats" items={sections}>
-                            {(section) => (
-                                <ListSection
-                                    id={section.id}
-                                    name={section.name}
-                                    items={section.items}
-                                >
-                                    {(chat) => (
-                                        <ListItem
-                                            id={chat.id}
-                                            label={highlight(chat.title, query)}
-                                            caption={highlight(
-                                                chat.summary,
-                                                query,
-                                            )}
-                                            trailingSlot={
+                        <div className={css.list}>
+                            {GROUP_ORDER.map((group) => {
+                                const items = CONVERSATIONS.filter(
+                                    (conversation) =>
+                                        conversation.group === group &&
+                                        (!query ||
+                                            `${conversation.title} ${conversation.summary}`
+                                                .toLowerCase()
+                                                .includes(query)),
+                                )
+                                if (items.length === 0) return null
+
+                                return (
+                                    <div key={group} className={css.group}>
+                                        <div className={css.groupHeader}>
+                                            {group}
+                                        </div>
+                                        {items.map((conversation) => (
+                                            <div
+                                                key={conversation.id}
+                                                className={css.row}
+                                            >
+                                                <div className={css.rowMain}>
+                                                    <Text
+                                                        variant="medium"
+                                                        overflow="ellipsis"
+                                                        className={css.rowTitle}
+                                                    >
+                                                        {highlight(
+                                                            conversation.title,
+                                                            query,
+                                                        )}
+                                                    </Text>
+                                                    <Text
+                                                        overflow="ellipsis"
+                                                        className={
+                                                            css.rowSummary
+                                                        }
+                                                    >
+                                                        {highlight(
+                                                            conversation.summary,
+                                                            query,
+                                                        )}
+                                                    </Text>
+                                                </div>
+
                                                 <div
                                                     className={css.rowTrailing}
                                                 >
                                                     <span
                                                         className={css.rowTime}
                                                     >
-                                                        {chat.time}
+                                                        {conversation.time}
                                                     </span>
                                                     <span className={css.kebab}>
                                                         <Menu
@@ -229,39 +254,65 @@ export function GaiaConversationsPage() {
                                                             placement="bottom right"
                                                             trigger={
                                                                 <Button
-                                                                    variant="tertiary"
+                                                                    variant="secondary"
                                                                     size="sm"
                                                                     icon="dots-kebab-vertical"
                                                                     aria-label="Chat actions"
                                                                 />
                                                             }
-                                                            items={MENU_ACTIONS}
                                                         >
-                                                            {(action) => (
+                                                            <SubMenu
+                                                                leadingSlot="folder"
+                                                                label="Move to a folder"
+                                                            >
+                                                                {CHAT_FOLDERS.map(
+                                                                    (
+                                                                        folder,
+                                                                    ) => (
+                                                                        <MenuItem
+                                                                            key={
+                                                                                folder.id
+                                                                            }
+                                                                            id={`move-${folder.id}`}
+                                                                            label={
+                                                                                folder.label
+                                                                            }
+                                                                        />
+                                                                    ),
+                                                                )}
                                                                 <MenuItem
-                                                                    id={
-                                                                        action.id
-                                                                    }
-                                                                    leadingSlot={
-                                                                        action.icon
-                                                                    }
-                                                                    label={
-                                                                        action.label
-                                                                    }
-                                                                    intent={
-                                                                        action.intent
-                                                                    }
+                                                                    id="new-folder"
+                                                                    leadingSlot="add-plus"
+                                                                    label="Create new folder"
                                                                 />
-                                                            )}
+                                                            </SubMenu>
+                                                            <MenuItem
+                                                                id="pin"
+                                                                leadingSlot={
+                                                                    <PinIcon />
+                                                                }
+                                                                label="Pin chat"
+                                                            />
+                                                            <MenuItem
+                                                                id="rename"
+                                                                leadingSlot="edit-pencil"
+                                                                label="Rename"
+                                                            />
+                                                            <MenuItem
+                                                                id="delete"
+                                                                leadingSlot="trash-empty"
+                                                                label="Delete"
+                                                                intent="destructive"
+                                                            />
                                                         </Menu>
                                                     </span>
                                                 </div>
-                                            }
-                                        />
-                                    )}
-                                </ListSection>
-                            )}
-                        </List>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>

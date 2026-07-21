@@ -751,7 +751,9 @@ function ListView({
                             <div className={css.listTitle}>{p.title}</div>
                             <div className={css.listSubtitle}>{p.finding}</div>
                         </div>
-                        <Tag size="sm">{FILTER_LABELS[p.source]}</Tag>
+                        <div className={css.listTag}>
+                            <Tag size="sm">{FILTER_LABELS[p.source]}</Tag>
+                        </div>
                         <span className={css.listImpact}>
                             <Icon name="trending-up" size="xs" />
                             Estimated {p.impact}

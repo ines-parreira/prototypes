@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom'
 
 import { Box, IconBox, MenuItem, Tag } from '@gorgias/axiom'
 
+import { GaiaProductIconBox } from 'routes/layout/GaiaProductIconBox'
 import type { ProductConfig } from 'routes/layout/productConfig'
+import { Product } from 'routes/layout/productConfig'
 
 type SidebarProductHeaderMenuItemProps = {
     item: ProductConfig
@@ -32,13 +34,20 @@ export function SidebarProductHeaderMenuItem({
                     )}
                 </Box>
             }
-            leadingSlot={({ isSelected }) => (
-                <IconBox
-                    icon={item.icon}
-                    color={isSelected ? 'accent' : 'grey'}
-                    variant="secondary"
-                />
-            )}
+            leadingSlot={({ isSelected }) =>
+                item.id === Product.Home ? (
+                    <GaiaProductIconBox
+                        variant="secondary"
+                        isSelected={isSelected}
+                    />
+                ) : (
+                    <IconBox
+                        icon={item.icon}
+                        color={isSelected ? 'accent' : 'grey'}
+                        variant="secondary"
+                    />
+                )
+            }
         />
     )
 }

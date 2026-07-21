@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Icon, Menu, MenuItem, SubMenu, Tag } from '@gorgias/axiom'
-import { useCopilot } from '@gorgias/copilot'
+import { useCopilot, useCopilotPanel } from '@gorgias/copilot'
 
 import { CategoryLauncher } from './CategoryLauncher'
 import { CreateWorkflowModal } from './CreateWorkflowModal'
@@ -13,6 +13,7 @@ import {
     type Attachment,
     type Workflow,
 } from './gaiaComposer'
+import { gaiaComposerOrbUrl } from './gaiaComposerOrb'
 import { MetricsChartCard } from './MetricsChartCard'
 import css from './GaiaHomePage.less'
 
@@ -45,6 +46,9 @@ export function GaiaHomePage() {
     const [createWorkflowOpen, setCreateWorkflowOpen] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
     const { sendPrompt, newThread, abort } = useCopilot()
+    // When the docked Gaia side panel is open, gracefully hide the homepage
+    // composer instead of competing with it.
+    const { isOpen: isPanelOpen } = useCopilotPanel()
 
     const addAttachment = (attachment: Attachment) =>
         setAttachments((list) => [...list, attachment])
@@ -155,10 +159,18 @@ export function GaiaHomePage() {
                         </h1>
                     </div>
 
-                    <div className={css.askSection}>
+                    <div
+                        className={`${css.askSection} ${
+                            isPanelOpen ? css.askSectionHidden : ''
+                        }`}
+                    >
                         <div className={css.composer}>
                             <div className={css.inputBar}>
-                                <span className={css.inputOrb} />
+                                <img
+                                    className={css.inputOrb}
+                                    src={gaiaComposerOrbUrl}
+                                    alt=""
+                                />
                                 <div className={css.inputMain}>
                                     {attachments.map((a) => (
                                         <span

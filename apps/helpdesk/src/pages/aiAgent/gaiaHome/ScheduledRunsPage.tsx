@@ -297,7 +297,7 @@ export function ScheduledRunsPage() {
                         onSelectionChange={(k) => setTab(String(k))}
                     >
                         <TabList>
-                            <TabItem id="my" label="My automations" />
+                            <TabItem id="my" label="My runs" />
                             <TabItem id="library" label="Library" />
                         </TabList>
                     </Tabs>
