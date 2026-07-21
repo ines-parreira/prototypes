@@ -112,3 +112,85 @@ export const MENTION_CATEGORIES: MentionCategory[] = [
 
 let attachmentSeq = 0
 export const nextAttachmentId = () => `att-${attachmentSeq++}`
+
+// ---------------------------------------------------------------------------
+// Proactive workflow suggestions
+//
+// When a merchant repeatedly asks Gaia for the same *kind* of recurring task,
+// Gaia offers to turn it into a reusable workflow. Detection is intent-based
+// (keyword match), not exact text — so "What's my weekly automation rate?",
+// "show automation rate", and "automation rate this week" all count together.
+// ---------------------------------------------------------------------------
+
+// How many times the same intent must be asked before Gaia suggests a workflow.
+export const SUGGESTION_THRESHOLD = 3
+
+export type WorkflowIntent = {
+    id: string
+    label: string
+    // Any keyword match counts a message toward this intent.
+    keywords: string[]
+    // Pre-fill for the workflow creation form, derived from the request.
+    prefill: {
+        shortcut: string
+        description: string
+        instructions: string
+    }
+}
+
+export const WORKFLOW_INTENTS: WorkflowIntent[] = [
+    {
+        id: 'automation-rate',
+        label: 'automation rate',
+        keywords: ['automation rate', 'automation'],
+        prefill: {
+            shortcut: '/weekly-automation-rate',
+            description: 'Weekly automation rate summary',
+            instructions:
+                'Summarize this week’s automation rate and how it changed versus last week.',
+        },
+    },
+    {
+        id: 'csat',
+        label: 'CSAT',
+        keywords: ['csat', 'customer satisfaction', 'satisfaction'],
+        prefill: {
+            shortcut: '/weekly-csat',
+            description: 'Weekly CSAT summary',
+            instructions:
+                'Summarize this week’s CSAT and call out any notable changes by skill or intent.',
+        },
+    },
+    {
+        id: 'savings',
+        label: 'cost saved',
+        keywords: ['cost saved', 'cost savings', 'hours saved', 'savings'],
+        prefill: {
+            shortcut: '/weekly-savings',
+            description: 'Weekly savings summary',
+            instructions: 'Summarize the cost and agent hours saved this week.',
+        },
+    },
+    {
+        id: 'volume',
+        label: 'ticket volume',
+        keywords: ['ticket volume', 'volume', 'top intents'],
+        prefill: {
+            shortcut: '/weekly-volume',
+            description: 'Weekly ticket volume',
+            instructions:
+                'Summarize this week’s ticket volume and the top intents by volume.',
+        },
+    },
+]
+
+// Classify a message by intent (first keyword match wins). Returns null when
+// the request doesn't look like a recurring, workflow-able task.
+export function detectWorkflowIntent(message: string): WorkflowIntent | null {
+    const text = message.toLowerCase()
+    return (
+        WORKFLOW_INTENTS.find((intent) =>
+            intent.keywords.some((keyword) => text.includes(keyword)),
+        ) ?? null
+    )
+}

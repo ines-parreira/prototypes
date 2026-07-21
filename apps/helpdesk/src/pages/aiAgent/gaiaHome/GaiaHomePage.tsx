@@ -7,11 +7,14 @@ import { CategoryLauncher } from './CategoryLauncher'
 import { CreateWorkflowModal } from './CreateWorkflowModal'
 import { GaiaChatOverlay } from './GaiaChatOverlay'
 import {
+    detectWorkflowIntent,
     MENTION_CATEGORIES,
     nextAttachmentId,
     SEED_WORKFLOWS,
+    SUGGESTION_THRESHOLD,
     type Attachment,
     type Workflow,
+    type WorkflowIntent,
 } from './gaiaComposer'
 import { gaiaComposerOrbUrl } from './gaiaComposerOrb'
 import { MetricsChartCard } from './MetricsChartCard'
@@ -44,6 +47,17 @@ export function GaiaHomePage() {
     const [pointerMode, setPointerMode] = useState(false)
     const [workflows, setWorkflows] = useState<Workflow[]>(SEED_WORKFLOWS)
     const [createWorkflowOpen, setCreateWorkflowOpen] = useState(false)
+    // Pre-fill passed to the workflow modal (set when creating from a
+    // proactive suggestion; undefined for a blank "New workflow").
+    const [workflowPrefill, setWorkflowPrefill] = useState<
+        WorkflowIntent['prefill'] | undefined
+    >(undefined)
+    // "/" typeahead: reuses the same workflow dropdown as the "+" menu.
+    const [isWorkflowMenuOpen, setIsWorkflowMenuOpen] = useState(false)
+    // Repeated-request tracking → proactive workflow suggestion.
+    const [intentCounts, setIntentCounts] = useState<Record<string, number>>({})
+    const [dismissedIntents, setDismissedIntents] = useState<string[]>([])
+    const [suggestion, setSuggestion] = useState<WorkflowIntent | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
     const { sendPrompt, newThread, abort } = useCopilot()
     // When the docked Gaia side panel is open, gracefully hide the homepage
@@ -69,8 +83,47 @@ export function GaiaHomePage() {
     }, [])
 
     const runWorkflow = (workflow: Workflow) => {
+        setIsWorkflowMenuOpen(false)
         sendPrompt(workflow.instructions)
         setIsChatOpen(true)
+    }
+
+    // Count a sent message toward its intent and, once the same intent has been
+    // asked enough times (and wasn't recently dismissed), surface a suggestion.
+    const trackRepeatedRequest = (message: string) => {
+        const intent = detectWorkflowIntent(message)
+        if (!intent) return
+
+        const nextCount = (intentCounts[intent.id] ?? 0) + 1
+        setIntentCounts((counts) => ({ ...counts, [intent.id]: nextCount }))
+
+        if (
+            nextCount >= SUGGESTION_THRESHOLD &&
+            !dismissedIntents.includes(intent.id)
+        ) {
+            setSuggestion(intent)
+        }
+    }
+
+    const dismissSuggestion = () => {
+        // Don't surface this same intent again right after a dismissal.
+        if (suggestion) {
+            setDismissedIntents((list) => [...list, suggestion.id])
+        }
+        setSuggestion(null)
+    }
+
+    const openBlankWorkflow = () => {
+        setWorkflowPrefill(undefined)
+        setCreateWorkflowOpen(true)
+    }
+
+    const createWorkflowFromSuggestion = () => {
+        if (!suggestion) return
+        setWorkflowPrefill(suggestion.prefill)
+        setCreateWorkflowOpen(true)
+        setDismissedIntents((list) => [...list, suggestion.id])
+        setSuggestion(null)
     }
 
     const handleSend = () => {
@@ -83,10 +136,31 @@ export function GaiaHomePage() {
             ? `[Context — ${attachments.map((a) => a.label).join(', ')}]\n`
             : ''
         sendPrompt(context + message)
+        trackRepeatedRequest(message)
         setInputValue('')
         setAttachments([])
         setIsChatOpen(true)
     }
+
+    // Shared workflow list for both the "+" → "Run a workflow" submenu and the
+    // "/" typeahead — identical items, search, selection and empty states.
+    const renderWorkflowMenuItems = () => [
+        ...workflows.map((workflow) => (
+            <MenuItem
+                key={workflow.id}
+                textValue={`${workflow.shortcut} ${workflow.description ?? ''}`}
+                label={workflow.shortcut}
+                caption={workflow.description}
+                onAction={() => runWorkflow(workflow)}
+            />
+        )),
+        <MenuItem
+            key="new-workflow"
+            leadingSlot="add-plus"
+            label="New workflow"
+            onAction={openBlankWorkflow}
+        />,
+    ]
 
     // Pointer mode: click any selectable component to attach it as context.
     useEffect(() => {
@@ -164,6 +238,41 @@ export function GaiaHomePage() {
                             isPanelOpen ? css.askSectionHidden : ''
                         }`}
                     >
+                        {suggestion && (
+                            <div className={css.workflowSuggestion}>
+                                <span className={css.workflowSuggestionOrb}>
+                                    <Icon name="ai" size="sm" />
+                                </span>
+                                <div className={css.workflowSuggestionBody}>
+                                    <div
+                                        className={css.workflowSuggestionTitle}
+                                    >
+                                        It looks like you ask for this regularly
+                                    </div>
+                                    <div className={css.workflowSuggestionText}>
+                                        Would you like to turn “
+                                        {suggestion.label}” into a workflow?
+                                    </div>
+                                </div>
+                                <div className={css.workflowSuggestionActions}>
+                                    <Button
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={createWorkflowFromSuggestion}
+                                    >
+                                        Create workflow
+                                    </Button>
+                                    <Button
+                                        variant="tertiary"
+                                        size="sm"
+                                        onClick={dismissSuggestion}
+                                    >
+                                        Dismiss
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+
                         <div className={css.composer}>
                             <div className={css.inputBar}>
                                 <img
@@ -211,9 +320,17 @@ export function GaiaHomePage() {
                                     <input
                                         className={css.inputField}
                                         value={inputValue}
-                                        onChange={(event) =>
-                                            setInputValue(event.target.value)
-                                        }
+                                        onChange={(event) => {
+                                            const value = event.target.value
+                                            // "/" in an empty field triggers the
+                                            // workflows dropdown; the slash isn't
+                                            // kept in the input.
+                                            if (value === '/') {
+                                                setIsWorkflowMenuOpen(true)
+                                                return
+                                            }
+                                            setInputValue(value)
+                                        }}
                                         onKeyDown={(event) => {
                                             if (event.key === 'Enter') {
                                                 event.preventDefault()
@@ -221,6 +338,30 @@ export function GaiaHomePage() {
                                             }
                                         }}
                                     />
+                                    {/* Anchor + reused workflow dropdown for the
+                                        "/" typeahead. */}
+                                    <span
+                                        className={css.workflowAnchor}
+                                        aria-hidden
+                                    >
+                                        <Menu
+                                            aria-label="Workflows"
+                                            placement="top left"
+                                            isOpen={isWorkflowMenuOpen}
+                                            onOpenChange={setIsWorkflowMenuOpen}
+                                            isSearchable
+                                            searchPlaceholder="Search..."
+                                            trigger={
+                                                <span
+                                                    className={
+                                                        css.workflowAnchorDot
+                                                    }
+                                                />
+                                            }
+                                        >
+                                            {renderWorkflowMenuItems()}
+                                        </Menu>
+                                    </span>
                                 </div>
                                 <div className={css.inputActions}>
                                     <Menu
@@ -307,26 +448,7 @@ export function GaiaHomePage() {
                                             isSearchable
                                             searchPlaceholder="Search..."
                                         >
-                                            {workflows.map((workflow) => (
-                                                <MenuItem
-                                                    key={workflow.id}
-                                                    textValue={`${workflow.shortcut} ${workflow.description ?? ''}`}
-                                                    label={workflow.shortcut}
-                                                    caption={
-                                                        workflow.description
-                                                    }
-                                                    onAction={() =>
-                                                        runWorkflow(workflow)
-                                                    }
-                                                />
-                                            ))}
-                                            <MenuItem
-                                                leadingSlot="add-plus"
-                                                label="New workflow"
-                                                onAction={() =>
-                                                    setCreateWorkflowOpen(true)
-                                                }
-                                            />
+                                            {renderWorkflowMenuItems()}
                                         </SubMenu>
 
                                         <MenuItem
@@ -378,6 +500,7 @@ export function GaiaHomePage() {
 
                             {createWorkflowOpen && (
                                 <CreateWorkflowModal
+                                    initial={workflowPrefill}
                                     onClose={() => setCreateWorkflowOpen(false)}
                                     onSave={(workflow) =>
                                         setWorkflows((list) => [

@@ -7,19 +7,29 @@ import css from './GaiaHomePage.less'
 
 /**
  * "Create new workflow" flow surfaced from the composer's "+" → "Run a
- * workflow" → "New workflow" path. A workflow is a reusable "/shortcut" that
- * teaches Gaia a specific task; Shortcut + Instructions are required.
+ * workflow" → "New workflow" path, and from Gaia's proactive suggestion (which
+ * passes `initial` to pre-fill the fields). A workflow is a reusable
+ * "/shortcut" that teaches Gaia a specific task; Shortcut + Instructions are
+ * required. Every field stays editable before saving.
  */
 export function CreateWorkflowModal({
     onClose,
     onSave,
+    initial,
 }: {
     onClose: () => void
     onSave: (workflow: Workflow) => void
+    initial?: {
+        shortcut?: string
+        description?: string
+        instructions?: string
+    }
 }) {
-    const [shortcut, setShortcut] = useState('/')
-    const [description, setDescription] = useState('')
-    const [instructions, setInstructions] = useState('')
+    const [shortcut, setShortcut] = useState(initial?.shortcut ?? '/')
+    const [description, setDescription] = useState(initial?.description ?? '')
+    const [instructions, setInstructions] = useState(
+        initial?.instructions ?? '',
+    )
     const [showErrors, setShowErrors] = useState(false)
 
     // A shortcut needs at least one character after the leading slash.
