@@ -362,6 +362,9 @@
     }
 
     .opportunitiesHeaderTitle {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
         font-size: 18px;
         font-weight: 600;
         color: var(--content-neutral-default);
@@ -381,6 +384,8 @@
     }
 
     .opportunityCard {
+        /* Fill the grid cell so both cards share the tallest one's height. */
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -391,6 +396,17 @@
         /* Raised above the panel surface — standard Axiom card elevation. */
         background-color: var(--elevation-neutral-high);
         box-shadow: var(--effects-shadow-container);
+    }
+
+    /* Skills promo card — subtle accent wash to set it apart, but the same
+       neutral border as the other card. */
+    .opportunityCardPromo {
+        background:
+            linear-gradient(
+                180deg,
+                var(--surface-accent-secondary, #f4f1fd),
+                var(--elevation-neutral-high)
+            );
     }
 
     .opportunityTags {
@@ -428,6 +444,9 @@
     }
 
     .opportunityActions {
+        /* Pin actions to the bottom so both cards align regardless of how
+           much body copy each one has. */
+        margin-top: auto;
         display: flex;
         align-items: center;
         gap: var(--spacing-xs);

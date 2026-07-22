@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Icon, Menu, MenuItem, SubMenu, Tag } from '@gorgias/axiom'
+import {
+    Button,
+    Icon,
+    Menu,
+    MenuItem,
+    Quantity,
+    SubMenu,
+    Tag,
+} from '@gorgias/axiom'
 import { useCopilot, useCopilotPanel } from '@gorgias/copilot'
 
 import { CategoryLauncher } from './CategoryLauncher'
@@ -16,15 +24,15 @@ import {
     type WorkflowIntent,
 } from './gaiaComposer'
 import { gaiaComposerOrbUrl } from './gaiaComposerOrb'
+import { GaiaVoiceCapture } from './GaiaVoiceCapture'
 import { MetricsChartCard } from './MetricsChartCard'
 import css from './GaiaHomePage.less'
 
+// Total items on the Spotlight page (matches the opportunities list + nav
+// badge), shown as a quantity next to the homepage Spotlight header.
+const SPOTLIGHT_COUNT = 9
+
 const OPPORTUNITIES = [
-    {
-        title: 'Two skills give shoppers different return windows',
-        finding: '218 conversations affected last month',
-        automationDelta: '8%',
-    },
     {
         title: '"Order tracking" resolves below your average',
         finding: 'High volume (1,020 conversations) but 21% success',
@@ -53,6 +61,8 @@ export function GaiaHomePage() {
     // "/" typeahead: control open state, and anchor the reused workflow
     // dropdown to an invisible trigger pinned at the input's left edge.
     const [isWorkflowMenuOpen, setIsWorkflowMenuOpen] = useState(false)
+    // Voice input: while true the composer transforms into the listening state.
+    const [isListening, setIsListening] = useState(false)
     const workflowTriggerRef = useRef<HTMLButtonElement>(null)
     // Repeated-request tracking → proactive workflow suggestion.
     const [intentCounts, setIntentCounts] = useState<Record<string, number>>({})
@@ -132,8 +142,8 @@ export function GaiaHomePage() {
         setSuggestion(null)
     }
 
-    const handleSend = () => {
-        const message = inputValue.trim()
+    const submitMessage = (raw: string) => {
+        const message = raw.trim()
         if (!message) return
 
         // Pass any attached references to Gaia as structured context so its
@@ -147,6 +157,14 @@ export function GaiaHomePage() {
         trackRepeatedRequest(message)
         setInputValue('')
         setAttachments([])
+    }
+
+    const handleSend = () => submitMessage(inputValue)
+
+    // Stop listening and send whatever was transcribed to Gaia.
+    const handleVoiceSubmit = (transcript: string) => {
+        setIsListening(false)
+        submitMessage(transcript)
     }
 
     // Shared workflow list for both the "+" → "Run a workflow" submenu and the
@@ -277,217 +295,251 @@ export function GaiaHomePage() {
                             )}
 
                             <div className={css.composer}>
-                                <div className={css.inputBar}>
-                                    <img
-                                        className={css.inputOrb}
-                                        src={gaiaComposerOrbUrl}
-                                        alt=""
+                                {isListening ? (
+                                    <GaiaVoiceCapture
+                                        onCancel={() => setIsListening(false)}
+                                        onSubmit={handleVoiceSubmit}
                                     />
-                                    <div className={css.inputMain}>
-                                        {attachments.map((a) => (
-                                            <span
-                                                key={a.id}
-                                                className={css.attachChip}
-                                            >
-                                                <Icon
-                                                    name={
-                                                        a.kind === 'pointer'
-                                                            ? 'target'
-                                                            : a.kind === 'file'
-                                                              ? 'paperclip-attachment'
-                                                              : 'mention'
-                                                    }
-                                                    size="xs"
-                                                />
-                                                {a.label}
-                                                <button
-                                                    type="button"
-                                                    className={css.attachRemove}
-                                                    aria-label="Remove"
-                                                    onClick={() =>
-                                                        removeAttachment(a.id)
-                                                    }
+                                ) : (
+                                    <div className={css.inputBar}>
+                                        <img
+                                            className={css.inputOrb}
+                                            src={gaiaComposerOrbUrl}
+                                            alt=""
+                                        />
+                                        <div className={css.inputMain}>
+                                            {attachments.map((a) => (
+                                                <span
+                                                    key={a.id}
+                                                    className={css.attachChip}
                                                 >
                                                     <Icon
-                                                        name="close"
+                                                        name={
+                                                            a.kind === 'pointer'
+                                                                ? 'target'
+                                                                : a.kind ===
+                                                                    'file'
+                                                                  ? 'paperclip-attachment'
+                                                                  : 'mention'
+                                                        }
                                                         size="xs"
                                                     />
-                                                </button>
-                                            </span>
-                                        ))}
-                                        {!inputValue && !attachments.length && (
-                                            <span
-                                                key={placeholderIndex}
-                                                className={css.inputPlaceholder}
-                                            >
-                                                {PLACEHOLDERS[placeholderIndex]}
-                                            </span>
-                                        )}
-                                        <input
-                                            className={css.inputField}
-                                            value={inputValue}
-                                            onChange={(event) => {
-                                                const value = event.target.value
-                                                // "/" in an empty field opens the
-                                                // workflows dropdown (via a real
-                                                // trigger click so it anchors to the
-                                                // input); the slash isn't kept.
-                                                if (value === '/') {
-                                                    setIsWorkflowMenuOpen(true)
-                                                    return
-                                                }
-                                                setInputValue(value)
-                                            }}
-                                            onKeyDown={(event) => {
-                                                if (event.key === 'Enter') {
-                                                    event.preventDefault()
-                                                    handleSend()
-                                                }
-                                            }}
-                                        />
-                                        {/* Reused workflow dropdown for the "/"
+                                                    {a.label}
+                                                    <button
+                                                        type="button"
+                                                        className={
+                                                            css.attachRemove
+                                                        }
+                                                        aria-label="Remove"
+                                                        onClick={() =>
+                                                            removeAttachment(
+                                                                a.id,
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            name="close"
+                                                            size="xs"
+                                                        />
+                                                    </button>
+                                                </span>
+                                            ))}
+                                            {!inputValue &&
+                                                !attachments.length && (
+                                                    <span
+                                                        key={placeholderIndex}
+                                                        className={
+                                                            css.inputPlaceholder
+                                                        }
+                                                    >
+                                                        {
+                                                            PLACEHOLDERS[
+                                                                placeholderIndex
+                                                            ]
+                                                        }
+                                                    </span>
+                                                )}
+                                            <input
+                                                className={css.inputField}
+                                                value={inputValue}
+                                                onChange={(event) => {
+                                                    const value =
+                                                        event.target.value
+                                                    // "/" in an empty field opens the
+                                                    // workflows dropdown (via a real
+                                                    // trigger click so it anchors to the
+                                                    // input); the slash isn't kept.
+                                                    if (value === '/') {
+                                                        setIsWorkflowMenuOpen(
+                                                            true,
+                                                        )
+                                                        return
+                                                    }
+                                                    setInputValue(value)
+                                                }}
+                                                onKeyDown={(event) => {
+                                                    if (event.key === 'Enter') {
+                                                        event.preventDefault()
+                                                        handleSend()
+                                                    }
+                                                }}
+                                            />
+                                            {/* Reused workflow dropdown for the "/"
                                         typeahead. Its invisible trigger sits at
                                         the input's left, clicked on "/". */}
-                                        <Menu
-                                            aria-label="Workflows"
-                                            placement="top left"
-                                            isOpen={isWorkflowMenuOpen}
-                                            onOpenChange={setIsWorkflowMenuOpen}
-                                            triggerRef={workflowTriggerRef}
-                                            isSearchable
-                                            searchPlaceholder="Search..."
-                                            trigger={
-                                                <button
-                                                    type="button"
-                                                    ref={workflowTriggerRef}
-                                                    className={
-                                                        css.workflowAnchor
-                                                    }
-                                                    aria-label="Workflows"
-                                                />
-                                            }
-                                        >
-                                            {renderWorkflowMenuItems()}
-                                        </Menu>
-                                    </div>
-                                    <div className={css.inputActions}>
-                                        <Menu
-                                            aria-label="Add context"
-                                            placement="top left"
-                                            trigger={({ isOpen }) => (
-                                                <Button
-                                                    // Bordered "pressed" look while
-                                                    // the menu is open.
-                                                    variant={
-                                                        isOpen
-                                                            ? 'secondary'
-                                                            : 'tertiary'
-                                                    }
-                                                    size="sm"
-                                                    icon="add-plus"
-                                                    aria-label="Add context"
-                                                />
-                                            )}
-                                        >
-                                            <MenuItem
-                                                leadingSlot="target"
-                                                label="Pointer"
-                                                onAction={() =>
-                                                    setPointerMode(true)
+                                            <Menu
+                                                aria-label="Workflows"
+                                                placement="top left"
+                                                isOpen={isWorkflowMenuOpen}
+                                                onOpenChange={
+                                                    setIsWorkflowMenuOpen
                                                 }
-                                            />
-
-                                            <SubMenu
-                                                leadingSlot="mention"
-                                                label="Mention"
-                                            >
-                                                {MENTION_CATEGORIES.map(
-                                                    (category) => (
-                                                        <SubMenu
-                                                            key={category.id}
-                                                            leadingSlot={
-                                                                category.icon
-                                                            }
-                                                            label={
-                                                                category.label
-                                                            }
-                                                            isSearchable
-                                                            searchPlaceholder={`Search ${category.label.toLowerCase()}...`}
-                                                        >
-                                                            {category.items.map(
-                                                                (item) => (
-                                                                    <MenuItem
-                                                                        key={
-                                                                            item.id
-                                                                        }
-                                                                        textValue={`${item.label} ${item.sublabel ?? ''}`}
-                                                                        label={
-                                                                            item.label
-                                                                        }
-                                                                        caption={
-                                                                            item.sublabel
-                                                                        }
-                                                                        onAction={() =>
-                                                                            addAttachment(
-                                                                                {
-                                                                                    id: nextAttachmentId(),
-                                                                                    kind: 'mention',
-                                                                                    label: item.label,
-                                                                                    context:
-                                                                                        {
-                                                                                            category:
-                                                                                                category.id,
-                                                                                            id: item.id,
-                                                                                            label: item.label,
-                                                                                        },
-                                                                                },
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                ),
-                                                            )}
-                                                        </SubMenu>
-                                                    ),
-                                                )}
-                                            </SubMenu>
-
-                                            <SubMenu
-                                                leadingSlot="zap"
-                                                label="Run a workflow"
+                                                triggerRef={workflowTriggerRef}
                                                 isSearchable
                                                 searchPlaceholder="Search..."
+                                                trigger={
+                                                    <button
+                                                        type="button"
+                                                        ref={workflowTriggerRef}
+                                                        className={
+                                                            css.workflowAnchor
+                                                        }
+                                                        aria-label="Workflows"
+                                                    />
+                                                }
                                             >
                                                 {renderWorkflowMenuItems()}
-                                            </SubMenu>
+                                            </Menu>
+                                        </div>
+                                        <div className={css.inputActions}>
+                                            <Menu
+                                                aria-label="Add context"
+                                                placement="top left"
+                                                trigger={({ isOpen }) => (
+                                                    <Button
+                                                        // Bordered "pressed" look while
+                                                        // the menu is open.
+                                                        variant={
+                                                            isOpen
+                                                                ? 'secondary'
+                                                                : 'tertiary'
+                                                        }
+                                                        size="sm"
+                                                        icon="add-plus"
+                                                        aria-label="Add context"
+                                                    />
+                                                )}
+                                            >
+                                                <MenuItem
+                                                    leadingSlot="target"
+                                                    label="Pointer"
+                                                    onAction={() =>
+                                                        setPointerMode(true)
+                                                    }
+                                                />
 
-                                            <MenuItem
-                                                as={Link}
-                                                to="/app/gaia-scheduled-runs"
-                                                leadingSlot="calendar"
-                                                label="Schedule a run"
-                                            />
+                                                <SubMenu
+                                                    leadingSlot="mention"
+                                                    label="Mention"
+                                                >
+                                                    {MENTION_CATEGORIES.map(
+                                                        (category) => (
+                                                            <SubMenu
+                                                                key={
+                                                                    category.id
+                                                                }
+                                                                leadingSlot={
+                                                                    category.icon
+                                                                }
+                                                                label={
+                                                                    category.label
+                                                                }
+                                                                isSearchable
+                                                                searchPlaceholder={`Search ${category.label.toLowerCase()}...`}
+                                                            >
+                                                                {category.items.map(
+                                                                    (item) => (
+                                                                        <MenuItem
+                                                                            key={
+                                                                                item.id
+                                                                            }
+                                                                            textValue={`${item.label} ${item.sublabel ?? ''}`}
+                                                                            label={
+                                                                                item.label
+                                                                            }
+                                                                            caption={
+                                                                                item.sublabel
+                                                                            }
+                                                                            onAction={() =>
+                                                                                addAttachment(
+                                                                                    {
+                                                                                        id: nextAttachmentId(),
+                                                                                        kind: 'mention',
+                                                                                        label: item.label,
+                                                                                        context:
+                                                                                            {
+                                                                                                category:
+                                                                                                    category.id,
+                                                                                                id: item.id,
+                                                                                                label: item.label,
+                                                                                            },
+                                                                                    },
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    ),
+                                                                )}
+                                                            </SubMenu>
+                                                        ),
+                                                    )}
+                                                </SubMenu>
 
-                                            <MenuItem
-                                                leadingSlot="paperclip-attachment"
-                                                label="Attach file"
-                                                onAction={() =>
-                                                    fileInputRef.current?.click()
-                                                }
-                                            />
-                                        </Menu>
-                                        {inputValue.trim() ? (
-                                            <Button
-                                                variant="primary"
-                                                size="sm"
-                                                icon="send"
-                                                aria-label="Send"
-                                                onClick={handleSend}
-                                            />
-                                        ) : (
-                                            <Icon name="soundwave" size="sm" />
-                                        )}
+                                                <SubMenu
+                                                    leadingSlot="zap"
+                                                    label="Run a workflow"
+                                                    isSearchable
+                                                    searchPlaceholder="Search..."
+                                                >
+                                                    {renderWorkflowMenuItems()}
+                                                </SubMenu>
+
+                                                <MenuItem
+                                                    as={Link}
+                                                    to="/app/gaia-scheduled-runs"
+                                                    leadingSlot="calendar"
+                                                    label="Schedule a run"
+                                                />
+
+                                                <MenuItem
+                                                    leadingSlot="paperclip-attachment"
+                                                    label="Attach file"
+                                                    onAction={() =>
+                                                        fileInputRef.current?.click()
+                                                    }
+                                                />
+                                            </Menu>
+                                            {inputValue.trim() ? (
+                                                <Button
+                                                    variant="primary"
+                                                    size="sm"
+                                                    icon="send"
+                                                    aria-label="Send"
+                                                    onClick={handleSend}
+                                                />
+                                            ) : (
+                                                <Button
+                                                    variant="tertiary"
+                                                    size="sm"
+                                                    icon="soundwave"
+                                                    aria-label="Ask by voice"
+                                                    onClick={() =>
+                                                        setIsListening(true)
+                                                    }
+                                                />
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 <input
                                     ref={fileInputRef}
@@ -529,6 +581,7 @@ export function GaiaHomePage() {
                         <div className={css.opportunitiesHeader}>
                             <div className={css.opportunitiesHeaderTitle}>
                                 Spotlight
+                                <Quantity quantity={SPOTLIGHT_COUNT} />
                             </div>
                             <div className={css.opportunitiesHeaderSubtitle}>
                                 Gaia found a few gaps that require your
@@ -537,6 +590,49 @@ export function GaiaHomePage() {
                         </div>
 
                         <div className={css.opportunityGrid}>
+                            <div
+                                className={`${css.opportunityCard} ${css.opportunityCardPromo}`}
+                            >
+                                <div className={css.opportunityTags}>
+                                    <Tag size="sm" color="purple">
+                                        New
+                                    </Tag>
+                                </div>
+                                <div className={css.opportunityTitle}>
+                                    Introducing skills
+                                </div>
+                                <div className={css.opportunityFinding}>
+                                    They give control over how AI Agent handles
+                                    each conversation type. We drafted 8 skills
+                                    to replace your existent guidance.
+                                </div>
+                                <div className={css.opportunityActions}>
+                                    <Button
+                                        variant="primary"
+                                        onClick={() =>
+                                            openGaiaWith(
+                                                'Walk me through the 8 skills you drafted from my knowledge so I can review them.',
+                                            )
+                                        }
+                                    >
+                                        Review skills
+                                    </Button>
+                                    <Button
+                                        variant="tertiary"
+                                        leadingSlot={
+                                            <Icon name="ai" size="sm" />
+                                        }
+                                        onClick={() =>
+                                            openGaiaWith(
+                                                'Explain what skills are and how they work.',
+                                            )
+                                        }
+                                    >
+                                        Learn about skills
+                                    </Button>
+                                </div>
+                            </div>
+
                             {OPPORTUNITIES.map((opportunity, index) => (
                                 <div
                                     key={index}
@@ -574,15 +670,14 @@ export function GaiaHomePage() {
                                         on automation rate
                                     </div>
                                     <div className={css.opportunityActions}>
-                                        <Button intent="primary" size="sm">
+                                        <Button variant="primary">
                                             Approve
                                         </Button>
-                                        <Button intent="secondary" size="sm">
+                                        <Button variant="secondary">
                                             Dismiss
                                         </Button>
                                         <Button
-                                            intent="tertiary"
-                                            size="sm"
+                                            variant="tertiary"
                                             leadingSlot={
                                                 <Icon name="ai" size="sm" />
                                             }
@@ -597,8 +692,7 @@ export function GaiaHomePage() {
                         <Button
                             as={Link}
                             to="/app/gaia-opportunities"
-                            intent="tertiary"
-                            size="sm"
+                            variant="tertiary"
                         >
                             View all
                         </Button>

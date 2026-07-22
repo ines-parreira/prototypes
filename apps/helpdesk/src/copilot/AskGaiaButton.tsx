@@ -8,6 +8,7 @@ import { useCopilot, useCopilotPanel, useRunLifecycle } from '@gorgias/copilot'
 
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
+import { gaiaComposerOrbUrl } from '../pages/aiAgent/gaiaHome/gaiaComposerOrb'
 import { useTrackCopilotOpen } from './tracking/useTrackCopilotOpen'
 import css from './AskGaiaButton.less'
 
@@ -111,9 +112,11 @@ export const AskGaiaButton = () => {
 }
 
 const GaiaAvatar = ({ size = 24 }: { size?: number }) => (
-    <span
+    <img
         className={css.gaiaAvatar}
+        src={gaiaComposerOrbUrl}
         style={{ width: size, height: size }}
+        alt=""
         aria-hidden
     />
 )

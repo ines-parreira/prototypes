@@ -1,0 +1,132 @@
+:local {
+    /* Listening bar — same pill footprint as the composer's .inputBar so the
+       input visually "transforms" into this state. */
+    .listening {
+        position: relative;
+        width: 100%;
+        max-width: 640px;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 999px;
+        border: 1px solid var(--home-border, var(--border-neutral-default));
+        background-color: var(--home-surface-bg, var(--elevation-neutral-default));
+        box-shadow: var(--effects-shadow-container, 0 2px 8px rgba(0, 0, 0, 0.06));
+        animation: gaiaVoiceIn 0.24s ease;
+    }
+
+    @keyframes gaiaVoiceIn {
+        from {
+            opacity: 0;
+            transform: translateY(3px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Recording indicator + elapsed timer. */
+    .meta {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .dot {
+        height: 9px;
+        width: 9px;
+        border-radius: 50%;
+        background-color: var(--content-error-default, #e5484d);
+        animation: gaiaVoiceBlink 1.6s ease-in-out infinite;
+    }
+
+    @keyframes gaiaVoiceBlink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.35;
+        }
+    }
+
+    .time {
+        font-size: 14px;
+        font-variant-numeric: tabular-nums;
+        color: var(--content-neutral-secondary);
+    }
+
+    .body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    /* ---------------- Scrolling waveform ---------------- */
+
+    .waveRow {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        overflow: hidden;
+    }
+
+    .wave {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        /* Newest sample sits on the right and scrolls left. */
+        justify-content: flex-end;
+        gap: 2px;
+        height: 100%;
+    }
+
+    .bar {
+        flex-shrink: 0;
+        width: 3px;
+        height: 4px;
+        border-radius: 999px;
+        background-color: var(--content-neutral-secondary);
+        /* Smooths each ~55ms amplitude push into a calm, flowing motion. */
+        transition: height 0.11s ease-out;
+    }
+
+    .transcript {
+        font-size: 13px;
+        line-height: 1.35;
+        color: var(--content-neutral-secondary);
+        max-height: 36px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .actions {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .listening {
+            animation: none;
+        }
+
+        .dot {
+            animation: none;
+        }
+
+        .bar {
+            transition: none;
+        }
+    }
+}

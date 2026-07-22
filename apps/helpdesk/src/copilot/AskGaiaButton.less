@@ -138,17 +138,11 @@
         white-space: nowrap;
     }
 
-    // Gaia "avatar" — soft peach/coral gradient sphere.
+    // Gaia "avatar" — the real Gaia orb asset, clipped to a circle.
     .gaiaAvatar {
         flex-shrink: 0;
         display: inline-block;
         border-radius: 50%;
-        background: radial-gradient(
-            circle at 30% 30%,
-            #fde7e2 0%,
-            #f4b8ac 35%,
-            #d97766 75%,
-            #8a3625 100%
-        );
+        object-fit: cover;
     }
 }
