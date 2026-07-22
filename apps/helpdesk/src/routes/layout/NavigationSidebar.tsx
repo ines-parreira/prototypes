@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 
 import { DebugMenu, DebugMenuItem } from '@repo/debug'
 import {
@@ -35,7 +34,6 @@ import { UserMenu } from 'routes/layout/UserMenu'
 import { toggleChat } from 'utils'
 
 export function NavigationSidebar() {
-    const { pathname } = useLocation()
     const currentProduct = useCurrentRouteProduct()
     const prevNonStickyPathname = usePreviousProductNavigation()
     const { isCollapsed, toggleCollapse } = useSidebar()
@@ -150,7 +148,7 @@ export function NavigationSidebar() {
                 {!!CurrentContent && <CurrentContent />}
             </SidebarContent>
 
-            {!pathname.includes('/gaia-') && <AskGaiaButton />}
+            <AskGaiaButton />
 
             <SidebarFooter>
                 <UserMenu />

@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import {
     NavigationSection,
     NavigationSectionGroup,
@@ -13,11 +15,13 @@ import {
     Quantity,
     Tag,
     Text,
+    toast,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
 import { useCopilot, useCopilotPanel } from '@gorgias/copilot'
 
+import { CreateFolderModal } from 'pages/aiAgent/gaiaHome/CreateFolderModal'
 import type { ProductMetadata } from 'routes/layout/productMetadata'
 import { Product, productMetadata } from 'routes/layout/productMetadata'
 import { CollapsedHomeSidebar } from 'routes/layout/sidebars/CollapsedHomeSidebar'
@@ -117,6 +121,43 @@ function NewChatAction() {
     )
 }
 
+/** Hover action on the Folders section: opens the New folder modal. */
+function NewFolderAction() {
+    const [isOpen, setIsOpen] = useState(false)
+
+    return (
+        <>
+            <Tooltip
+                placement="top"
+                trigger={
+                    <Button
+                        variant="tertiary"
+                        size="sm"
+                        icon="folder-add"
+                        aria-label="New folder"
+                        onClick={(event) => {
+                            // Don't toggle the Folders disclosure when clicking.
+                            event.stopPropagation()
+                            setIsOpen(true)
+                        }}
+                    />
+                }
+            >
+                <TooltipContent title="New folder" />
+            </Tooltip>
+
+            {isOpen && (
+                <CreateFolderModal
+                    onClose={() => setIsOpen(false)}
+                    onCreate={(folder) =>
+                        toast.success(`Folder “${folder.name}” created`)
+                    }
+                />
+            )}
+        </>
+    )
+}
+
 /**
  * Prototype-only sidebar for the Gaia pages (`/app/gaia-*`). Kept separate
  * from the real Home product navigation so `/app/home` is unaffected. Uses the
@@ -181,16 +222,16 @@ function GaiaHomePrototypeSidebar() {
                     <NavigationSection
                         id="gaia-chats-folders"
                         label={<SectionLabel>Folders</SectionLabel>}
+                        actionsSlot={<NewFolderAction />}
                         defaultExpanded
                     >
                         {CHAT_FOLDERS.map((folder) => (
                             <NavigationSectionItem
                                 key={folder.id}
                                 id={`gaia-folder-${folder.id}`}
-                                to={CHATS_PATH}
+                                to={`/app/gaia-folder/${folder.id}`}
                                 label={folder.label}
                                 leadingSlot="folder"
-                                isActive={NEVER_ACTIVE}
                             />
                         ))}
                     </NavigationSection>

@@ -8,8 +8,11 @@ import {
     SearchField,
     SubMenu,
     Text,
+    toast,
 } from '@gorgias/axiom'
 
+import { CreateFolderModal } from './CreateFolderModal'
+import type { FolderDraft } from './CreateFolderModal'
 import css from './GaiaConversationsPage.less'
 
 type ChatGroup = 'Today' | 'Yesterday' | 'Last week' | 'Last month'
@@ -167,6 +170,39 @@ export function GaiaConversationsPage() {
     const [search, setSearch] = useState('')
     const query = search.trim().toLowerCase()
 
+    const [folders, setFolders] = useState(CHAT_FOLDERS)
+    const [createFolderOpen, setCreateFolderOpen] = useState(false)
+    // Chat waiting to be moved once a new folder is created (null when the
+    // folder is created from a non-chat entry point).
+    const [pendingChat, setPendingChat] = useState<Conversation | null>(null)
+
+    const moveChatToFolder = (chat: Conversation, folderLabel: string) => {
+        toast.success(`Moved “${chat.title}” to ${folderLabel}`)
+    }
+
+    const openCreateFolder = (chat: Conversation) => {
+        setPendingChat(chat)
+        setCreateFolderOpen(true)
+    }
+
+    const handleFolderCreated = (folder: FolderDraft) => {
+        setFolders((list) => [
+            ...list,
+            {
+                id: folder.name.toLowerCase().replace(/\s+/g, '-'),
+                label: folder.name,
+            },
+        ])
+        if (pendingChat) {
+            toast.success(
+                `Created “${folder.name}” and moved “${pendingChat.title}” into it`,
+            )
+        } else {
+            toast.success(`Folder “${folder.name}” created`)
+        }
+        setPendingChat(null)
+    }
+
     return (
         <div className={css.page}>
             <div className={css.surface}>
@@ -265,7 +301,7 @@ export function GaiaConversationsPage() {
                                                                 leadingSlot="folder"
                                                                 label="Move to a folder"
                                                             >
-                                                                {CHAT_FOLDERS.map(
+                                                                {folders.map(
                                                                     (
                                                                         folder,
                                                                     ) => (
@@ -274,8 +310,15 @@ export function GaiaConversationsPage() {
                                                                                 folder.id
                                                                             }
                                                                             id={`move-${folder.id}`}
+                                                                            leadingSlot="folder"
                                                                             label={
                                                                                 folder.label
+                                                                            }
+                                                                            onAction={() =>
+                                                                                moveChatToFolder(
+                                                                                    conversation,
+                                                                                    folder.label,
+                                                                                )
                                                                             }
                                                                         />
                                                                     ),
@@ -284,6 +327,11 @@ export function GaiaConversationsPage() {
                                                                     id="new-folder"
                                                                     leadingSlot="add-plus"
                                                                     label="Create new folder"
+                                                                    onAction={() =>
+                                                                        openCreateFolder(
+                                                                            conversation,
+                                                                        )
+                                                                    }
                                                                 />
                                                             </SubMenu>
                                                             <MenuItem
@@ -316,6 +364,16 @@ export function GaiaConversationsPage() {
                     </div>
                 </div>
             </div>
+
+            {createFolderOpen && (
+                <CreateFolderModal
+                    onClose={() => {
+                        setCreateFolderOpen(false)
+                        setPendingChat(null)
+                    }}
+                    onCreate={handleFolderCreated}
+                />
+            )}
         </div>
     )
 }

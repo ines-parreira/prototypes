@@ -636,19 +636,19 @@
         color: var(--content-neutral-secondary);
     }
 
-    /* Invisible anchor the "/" workflows dropdown opens from (input's left). */
+    /* Invisible trigger the "/" workflows dropdown anchors to, pinned to the
+       input's left edge. Real (non-zero) size + laid out so react-aria can
+       position the popover against it. */
     .workflowAnchor {
         position: absolute;
         left: 0;
         bottom: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .workflowAnchorDot {
-        display: block;
         width: 1px;
-        height: 1px;
+        height: 20px;
+        padding: 0;
+        border: none;
+        background: none;
+        opacity: 0;
     }
 
     /* ---------------- Proactive workflow suggestion ---------------- */
@@ -921,14 +921,15 @@
         word-break: break-word;
     }
 
+    /* Gaia's replies read as plain text (no bubble) — only the user's
+       messages get a bubble. */
     .bubbleAssistant {
-        align-self: flex-start;
-        max-width: 80%;
-        padding: var(--spacing-sm) var(--spacing-md);
-        border-radius: 16px;
-        border-bottom-left-radius: 4px;
-        background-color: var(--surface-neutral-secondary);
+        align-self: stretch;
+        max-width: 100%;
+        padding: 0;
+        background-color: transparent;
         color: var(--content-neutral-default);
+        line-height: 1.6;
         white-space: pre-wrap;
         word-break: break-word;
     }
@@ -1074,6 +1075,150 @@
         align-items: center;
         justify-content: flex-end;
         gap: var(--spacing-sm);
+    }
+
+    /* ---------------- Create folder modal ---------------- */
+
+    .folderSubviewTitle {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    /* Bordered "Add folder knowledge" / "Invite people" rows. */
+    .folderRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-sm);
+        width: 100%;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-default);
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--content-neutral-default);
+        text-align: left;
+    }
+
+    .folderRow:hover {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .folderRowMain {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        min-width: 0;
+    }
+
+    .folderRowIcon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+        border-radius: var(--spacing-xs);
+        color: var(--content-neutral-default);
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    /* Selection lists (knowledge / people sub-views). */
+    .selectList {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+        max-height: 280px;
+        overflow-y: auto;
+    }
+
+    .selectGroupLabel {
+        padding: var(--spacing-xs) 0 var(--spacing-xxxs);
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .selectRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-xs) var(--spacing-xxs);
+    }
+
+    .selectRowMain {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        min-width: 0;
+    }
+
+    .selectRowLabel {
+        font-size: 14px;
+        color: var(--content-neutral-default);
+    }
+
+    .selectEmpty {
+        padding: var(--spacing-md);
+        text-align: center;
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .selectCount {
+        margin-right: auto;
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    /* Add-knowledge file drop zone. */
+    .dropzone {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        width: 100%;
+        padding: var(--spacing-lg);
+        border: 1px dashed var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--surface-neutral-secondary);
+        cursor: pointer;
+        text-align: center;
+        transition: border-color 0.12s ease;
+    }
+
+    .dropzone:hover {
+        border-color: var(--border-accent-default);
+    }
+
+    .dropzoneIcon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: var(--content-accent-default);
+        background-color: var(--surface-accent-secondary, #ece7fb);
+    }
+
+    .dropzoneTitle {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .fileRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-xxs) var(--spacing-xxs) var(--spacing-xxs)
+            var(--spacing-xs);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xs);
     }
 }
 

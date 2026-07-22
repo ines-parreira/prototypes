@@ -10,3 +10,15 @@
         padding-bottom: var(--spacing-xs);
     }
 }
+
+/* When the Copilot panel is expanded (full-screen), keep the conversation in
+   a centered, readable column instead of stretching edge-to-edge. */
+:global {
+    [data-expanded] .copilotKitMessages {
+        width: 100%;
+        max-width: 768px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+    }
+}

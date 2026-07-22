@@ -1,0 +1,224 @@
+:local {
+    .page {
+        --home-page-bg: var(--elevation-neutral-bg);
+        --home-surface-bg: var(--elevation-neutral-default);
+        --home-border: var(--border-neutral-default);
+
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        padding: var(--layout-spacing-xs);
+        padding-left: 0;
+        overflow: hidden;
+        background-color: var(--home-page-bg);
+        color: var(--content-neutral-default);
+    }
+
+    .surface {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--home-surface-bg);
+        border: 1px solid var(--home-border);
+        border-radius: 12px;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .headerActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    /* Secondary kebab: keep the icon at full content color (black), not the
+       muted secondary-button content color. */
+    .kebabButton {
+        color: var(--content-neutral-default) !important;
+    }
+
+    .scroll {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .body {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-xl, 48px);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    /* ---------------- Description (editable) ---------------- */
+
+    .description,
+    .descriptionPlaceholder {
+        align-self: flex-start;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: text;
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .description {
+        color: var(--content-neutral-default);
+    }
+
+    .descriptionPlaceholder {
+        color: var(--content-neutral-tertiary, var(--content-neutral-secondary));
+    }
+
+    .descInput {
+        align-self: stretch;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 15px;
+        color: var(--content-neutral-default);
+    }
+
+    /* ---------------- Summary metadata ---------------- */
+
+    .meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--spacing-lg);
+        /* Extra breathing room before the composer. */
+        margin-bottom: var(--spacing-lg);
+        color: var(--content-neutral-secondary);
+    }
+
+    .metaItem {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        font-size: 14px;
+    }
+
+    /* ---------------- Composer ---------------- */
+
+    .composer {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 999px;
+        border: 1px solid var(--home-border);
+        background-color: var(--home-surface-bg);
+        box-shadow: var(--effects-shadow-container, 0 2px 8px rgba(0, 0, 0, 0.06));
+    }
+
+    .composerOrb {
+        height: 22px;
+        width: 22px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .composerInput {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 16px;
+        color: var(--content-neutral-default);
+    }
+
+    .composerInput::placeholder {
+        color: var(--content-neutral-secondary);
+    }
+
+    .composerActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        color: var(--content-neutral-secondary);
+    }
+
+    /* ---------------- Tabs + list ---------------- */
+
+    .tabsBar {
+        margin-top: var(--spacing-xs);
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .groupHeader {
+        padding: var(--spacing-md) var(--spacing-xs) var(--spacing-xxs);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--content-neutral-secondary);
+    }
+
+    .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-xs);
+        border-bottom: 1px solid var(--home-border);
+    }
+
+    .rowMain {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+        min-width: 0;
+        flex: 1;
+    }
+
+    .rowSummary {
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .rowTime {
+        flex-shrink: 0;
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+        white-space: nowrap;
+    }
+
+    .sourceRow {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        color: var(--content-neutral-default);
+    }
+
+    .emptyState {
+        padding: var(--spacing-xl, 48px) var(--spacing-md);
+        text-align: center;
+        color: var(--content-neutral-secondary);
+    }
+}

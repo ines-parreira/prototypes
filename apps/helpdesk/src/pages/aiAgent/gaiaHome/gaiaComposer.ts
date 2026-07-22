@@ -108,6 +108,16 @@ export const MENTION_CATEGORIES: MentionCategory[] = [
             { id: 'p3', label: 'Trail Vest', sublabel: 'Outerwear' },
         ],
     },
+    {
+        id: 'stores',
+        label: 'Stores',
+        icon: 'app-shopify',
+        items: [
+            { id: 's1', label: 'artemisathletix', sublabel: 'Shopify' },
+            { id: 's2', label: 'ahmed-test-store-1', sublabel: 'Shopify' },
+            { id: 's3', label: 'ariagroult', sublabel: 'Shopify' },
+        ],
+    },
 ]
 
 let attachmentSeq = 0

@@ -5,7 +5,6 @@ import { useCopilot, useCopilotPanel } from '@gorgias/copilot'
 
 import { CategoryLauncher } from './CategoryLauncher'
 import { CreateWorkflowModal } from './CreateWorkflowModal'
-import { GaiaChatOverlay } from './GaiaChatOverlay'
 import {
     detectWorkflowIntent,
     MENTION_CATEGORIES,
@@ -42,7 +41,6 @@ const PLACEHOLDERS = [
 export function GaiaHomePage() {
     const [inputValue, setInputValue] = useState('')
     const [placeholderIndex, setPlaceholderIndex] = useState(0)
-    const [isChatOpen, setIsChatOpen] = useState(false)
     const [attachments, setAttachments] = useState<Attachment[]>([])
     const [pointerMode, setPointerMode] = useState(false)
     const [workflows, setWorkflows] = useState<Workflow[]>(SEED_WORKFLOWS)
@@ -52,17 +50,27 @@ export function GaiaHomePage() {
     const [workflowPrefill, setWorkflowPrefill] = useState<
         WorkflowIntent['prefill'] | undefined
     >(undefined)
-    // "/" typeahead: reuses the same workflow dropdown as the "+" menu.
+    // "/" typeahead: control open state, and anchor the reused workflow
+    // dropdown to an invisible trigger pinned at the input's left edge.
     const [isWorkflowMenuOpen, setIsWorkflowMenuOpen] = useState(false)
+    const workflowTriggerRef = useRef<HTMLButtonElement>(null)
     // Repeated-request tracking → proactive workflow suggestion.
     const [intentCounts, setIntentCounts] = useState<Record<string, number>>({})
     const [dismissedIntents, setDismissedIntents] = useState<string[]>([])
     const [suggestion, setSuggestion] = useState<WorkflowIntent | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const { sendPrompt, newThread, abort } = useCopilot()
-    // When the docked Gaia side panel is open, gracefully hide the homepage
-    // composer instead of competing with it.
-    const { isOpen: isPanelOpen } = useCopilotPanel()
+    const { sendPrompt } = useCopilot()
+    // Submitting from the composer opens Gaia in the real Copilot panel and
+    // sends the message; while it's open we hide the homepage composer.
+    const { isOpen: isPanelOpen, setIsOpen: setPanelOpen } = useCopilotPanel()
+
+    // Open the real Gaia panel, then send the prompt on the next tick so the
+    // panel has mounted and is on the same (current) thread — otherwise the
+    // message lands on a thread the panel isn't showing and Gaia looks silent.
+    const openGaiaWith = (prompt: string) => {
+        setPanelOpen(true)
+        window.setTimeout(() => sendPrompt(prompt), 0)
+    }
 
     const addAttachment = (attachment: Attachment) =>
         setAttachments((list) => [...list, attachment])
@@ -83,9 +91,7 @@ export function GaiaHomePage() {
     }, [])
 
     const runWorkflow = (workflow: Workflow) => {
-        setIsWorkflowMenuOpen(false)
-        sendPrompt(workflow.instructions)
-        setIsChatOpen(true)
+        openGaiaWith(workflow.instructions)
     }
 
     // Count a sent message toward its intent and, once the same intent has been
@@ -135,11 +141,12 @@ export function GaiaHomePage() {
         const context = attachments.length
             ? `[Context — ${attachments.map((a) => a.label).join(', ')}]\n`
             : ''
-        sendPrompt(context + message)
+        // Open the real Gaia panel and send — the message, loading state, and
+        // response all render there. (Maximize the panel for fullscreen.)
+        openGaiaWith(context + message)
         trackRepeatedRequest(message)
         setInputValue('')
         setAttachments([])
-        setIsChatOpen(true)
     }
 
     // Shared workflow list for both the "+" → "Run a workflow" submenu and the
@@ -194,24 +201,6 @@ export function GaiaHomePage() {
             document.removeEventListener('keydown', onKeyDown)
         }
     }, [pointerMode])
-
-    const handleCloseChat = () => {
-        setIsChatOpen(false)
-        // Reset so the next message from the homepage starts a fresh thread.
-        abort()
-        newThread()
-    }
-
-    useEffect(() => {
-        if (!isChatOpen) return
-
-        const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') handleCloseChat()
-        }
-        document.addEventListener('keydown', onKeyDown)
-        return () => document.removeEventListener('keydown', onKeyDown)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isChatOpen])
 
     return (
         <main className={`${css.main} ${pointerMode ? css.pointerMode : ''}`}>
@@ -322,9 +311,10 @@ export function GaiaHomePage() {
                                         value={inputValue}
                                         onChange={(event) => {
                                             const value = event.target.value
-                                            // "/" in an empty field triggers the
-                                            // workflows dropdown; the slash isn't
-                                            // kept in the input.
+                                            // "/" in an empty field opens the
+                                            // workflows dropdown (via a real
+                                            // trigger click so it anchors to the
+                                            // input); the slash isn't kept.
                                             if (value === '/') {
                                                 setIsWorkflowMenuOpen(true)
                                                 return
@@ -338,30 +328,28 @@ export function GaiaHomePage() {
                                             }
                                         }}
                                     />
-                                    {/* Anchor + reused workflow dropdown for the
-                                        "/" typeahead. */}
-                                    <span
-                                        className={css.workflowAnchor}
-                                        aria-hidden
+                                    {/* Reused workflow dropdown for the "/"
+                                        typeahead. Its invisible trigger sits at
+                                        the input's left, clicked on "/". */}
+                                    <Menu
+                                        aria-label="Workflows"
+                                        placement="top left"
+                                        isOpen={isWorkflowMenuOpen}
+                                        onOpenChange={setIsWorkflowMenuOpen}
+                                        triggerRef={workflowTriggerRef}
+                                        isSearchable
+                                        searchPlaceholder="Search..."
+                                        trigger={
+                                            <button
+                                                type="button"
+                                                ref={workflowTriggerRef}
+                                                className={css.workflowAnchor}
+                                                aria-label="Workflows"
+                                            />
+                                        }
                                     >
-                                        <Menu
-                                            aria-label="Workflows"
-                                            placement="top left"
-                                            isOpen={isWorkflowMenuOpen}
-                                            onOpenChange={setIsWorkflowMenuOpen}
-                                            isSearchable
-                                            searchPlaceholder="Search..."
-                                            trigger={
-                                                <span
-                                                    className={
-                                                        css.workflowAnchorDot
-                                                    }
-                                                />
-                                            }
-                                        >
-                                            {renderWorkflowMenuItems()}
-                                        </Menu>
-                                    </span>
+                                        {renderWorkflowMenuItems()}
+                                    </Menu>
                                 </div>
                                 <div className={css.inputActions}>
                                     <Menu
@@ -468,12 +456,10 @@ export function GaiaHomePage() {
                                     </Menu>
                                     {inputValue.trim() ? (
                                         <Button
-                                            intent="primary"
+                                            variant="primary"
                                             size="sm"
+                                            icon="send"
                                             aria-label="Send"
-                                            leadingSlot={
-                                                <Icon name="send" size="sm" />
-                                            }
                                             onClick={handleSend}
                                         />
                                     ) : (
@@ -595,8 +581,6 @@ export function GaiaHomePage() {
                     </section>
                 </div>
             </div>
-
-            {isChatOpen && <GaiaChatOverlay onClose={handleCloseChat} />}
         </main>
     )
 }

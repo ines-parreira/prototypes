@@ -31,6 +31,7 @@ import {
 } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import { useCopilotShopContext } from 'main/app/hooks/useCopilotShopContext'
 import { GaiaConversationsPage } from 'pages/aiAgent/gaiaHome/GaiaConversationsPage'
+import { GaiaFolderPage } from 'pages/aiAgent/gaiaHome/GaiaFolderPage'
 import { GaiaHomePage } from 'pages/aiAgent/gaiaHome/GaiaHomePage'
 import { GaiaOpportunitiesPage } from 'pages/aiAgent/gaiaHome/GaiaOpportunitiesPage'
 import { ScheduledRunsPage } from 'pages/aiAgent/gaiaHome/ScheduledRunsPage'
@@ -209,6 +210,9 @@ export function AppRoutes() {
             </Route>
             <Route path={`${path}/gaia-conversations`} exact>
                 <GaiaConversationsPage />
+            </Route>
+            <Route path={`${path}/gaia-folder/:folderId`} exact>
+                <GaiaFolderPage />
             </Route>
             <Route path={`${path}/gaia-scheduled-runs`} exact>
                 <ScheduledRunsPage />

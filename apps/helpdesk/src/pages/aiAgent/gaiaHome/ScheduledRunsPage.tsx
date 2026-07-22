@@ -51,10 +51,10 @@ type LibraryItem = {
 }
 
 // Map each category to a semantic Tag color.
-const CATEGORY_COLOR: Record<Category, 'purple' | 'fuchsia' | 'orange'> = {
-    Automation: 'purple',
-    Revenue: 'fuchsia',
-    Support: 'orange',
+const CATEGORY_COLOR: Record<Category, 'grey'> = {
+    Automation: 'grey',
+    Revenue: 'grey',
+    Support: 'grey',
 }
 
 const INITIAL_AUTOMATIONS: Automation[] = [
