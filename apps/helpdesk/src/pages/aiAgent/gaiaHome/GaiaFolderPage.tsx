@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
     Button,
@@ -31,6 +31,16 @@ export function GaiaFolderPage() {
     const [draft, setDraft] = useState('')
     const [description, setDescription] = useState(folder?.description ?? '')
     const [editingDescription, setEditingDescription] = useState(false)
+
+    // Reset per-folder state when navigating between folders (the component
+    // instance is reused across folder routes).
+    useEffect(() => {
+        setDescription(folder?.description ?? '')
+        setEditingDescription(false)
+        setTab('chats')
+        setDraft('')
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [folderId])
 
     if (!folder) {
         return (

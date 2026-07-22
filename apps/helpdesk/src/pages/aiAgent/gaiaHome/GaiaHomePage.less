@@ -436,23 +436,37 @@
 
     /* ---------------- Ask section: input + chips (in normal flow) ---------------- */
 
+    /* Collapsible wrapper: when the Gaia side panel takes over, the composer
+       fades AND collapses its height so the content below smoothly slides up
+       to fill the gap (grid-template-rows 1fr → 0fr animates cleanly). */
+    .askCollapse {
+        width: 100%;
+        display: grid;
+        grid-template-rows: 1fr;
+        opacity: 1;
+        transition:
+            grid-template-rows 0.32s ease,
+            opacity 0.22s ease;
+    }
+
+    .askCollapseHidden {
+        grid-template-rows: 0fr;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .askCollapse > .askSection {
+        overflow: hidden;
+        min-height: 0;
+    }
+
     .askSection {
         width: 100%;
-        margin-top: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 14px;
-        /* Smoothly fade/slide out when the Gaia side panel takes over. */
-        transition:
-            opacity 0.28s ease,
-            transform 0.28s ease;
-    }
-
-    .askSectionHidden {
-        opacity: 0;
-        transform: translateY(12px);
-        pointer-events: none;
     }
 
     .launcher {

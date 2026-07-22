@@ -31,7 +31,7 @@ export const GAIA_FOLDERS: GaiaFolder[] = [
     {
         id: 'knowledge',
         name: 'Knowledge',
-        description: undefined,
+        description: 'Knowledge creation and optimization',
         chats: [
             {
                 id: 'k1',
