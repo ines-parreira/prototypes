@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { DebugMenu, DebugMenuItem } from '@repo/debug'
 import {
@@ -44,6 +45,10 @@ export function NavigationSidebar() {
     const { isOpen: isCopilotOpen, setIsOpen: setCopilotOpen } =
         useCopilotPanel()
     const trackOpen = useTrackCopilotOpen()
+    // The Gaia home page has its own composer, so the nav "Ask Gaia" button is
+    // redundant there.
+    const { pathname } = useLocation()
+    const isGaiaHome = pathname.endsWith('/gaia-home')
 
     useSidebarShortcuts()
 
@@ -148,7 +153,7 @@ export function NavigationSidebar() {
                 {!!CurrentContent && <CurrentContent />}
             </SidebarContent>
 
-            <AskGaiaButton />
+            {!isGaiaHome && <AskGaiaButton />}
 
             <SidebarFooter>
                 <UserMenu />

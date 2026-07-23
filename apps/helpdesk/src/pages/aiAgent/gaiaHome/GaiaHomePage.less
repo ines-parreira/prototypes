@@ -475,8 +475,14 @@
     }
 
     .askCollapse > .askSection {
-        overflow: hidden;
         min-height: 0;
+    }
+
+    /* Only clip while collapsing (so the height animates cleanly). In the
+       normal state overflow stays visible so the conversation-starter dropdown
+       can open below the chips without being cut off. */
+    .askCollapseHidden > .askSection {
+        overflow: hidden;
     }
 
     .askSection {

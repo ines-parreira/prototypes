@@ -69,7 +69,7 @@ export function CategoryLauncher({ onStarterClick }: Props) {
                         onFocus={() => setActiveId(category.id)}
                     >
                         <Button
-                            intent="secondary"
+                            variant="secondary"
                             size="md"
                             leadingSlot={
                                 <Icon name={category.icon} size="sm" />
